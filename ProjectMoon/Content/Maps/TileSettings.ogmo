@@ -1,0 +1,167 @@
+{
+  "name": "Project Moon",
+  "ogmoVersion": "3.4.0",
+  "levelPaths": ["."],
+  "backgroundColor": "#282c34ff",
+  "gridColor": "#3c4049cc",
+  "anglesRadians": true,
+  "directoryDepth": 5,
+  "layerGridDefaultSize": {"x": 8, "y": 8},
+  "levelDefaultSize": {"x": 320, "y": 240},
+  "levelMinSize": {"x": 128, "y": 128},
+  "levelMaxSize": {"x": 4096, "y": 4096},
+  "levelValues": [],
+  "defaultExportMode": ".json",
+  "compactExport": false,
+  "externalScript": "",
+  "playCommand": "",
+  "entityTags": ["player", "victim actor"],
+  "layers": [
+    {
+      "definition": "grid",
+      "name": "collisions",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "59699385",
+      "arrayMode": 1,
+      "legend": {"0": "#00000000", "1": "#ffda00ff", "r": "#ff00005b", "l": "#ec00ff78"}
+    },
+    {
+      "definition": "entity",
+      "name": "player",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "64505165",
+      "requiredTags": ["player"],
+      "excludedTags": []
+    },
+    {
+      "definition": "entity",
+      "name": "actors",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "50221107",
+      "requiredTags": [],
+      "excludedTags": []
+    },
+    {
+      "definition": "tile",
+      "name": "background",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "64509022",
+      "exportMode": 1,
+      "arrayMode": 1,
+      "defaultTileset": ""
+    }
+  ],
+  "entities": [
+    {
+      "exportID": "64496518",
+      "name": "player",
+      "limit": -1,
+      "size": {"x": 10, "y": 32},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 10, "y": 32},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": ["player"],
+      "values": []
+    },
+    {
+      "exportID": "50213715",
+      "name": "victim",
+      "limit": -1,
+      "size": {"x": 10, "y": 32},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#00adffff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 10, "y": 32},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": ["victim actor"],
+      "values": []
+    },
+    {
+      "exportID": "50225525",
+      "name": "victim_hitbox",
+      "limit": -1,
+      "size": {"x": 16, "y": 16},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#00ff24ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": true,
+      "resizeableY": true,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": []
+    }
+  ],
+  "tilesets": [
+    {"label": "New Tileset", "path": "../Sprites/tilemap.png", "image": "data:image/png;base64,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", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+  ]
+}
