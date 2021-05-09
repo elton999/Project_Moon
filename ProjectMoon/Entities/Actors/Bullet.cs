@@ -26,6 +26,9 @@ namespace ProjectMoon.Entities.Actors
             this.velocityDecrecentX = 0;
             this.velocityDecrecentY = 0;
 
+
+            this.Scene.Camera.TimeShake = 10;
+            this.Scene.Camera.ShakeMagnitude = 3.5f;
         }
 
         public override void UpdateData(GameTime gameTime)

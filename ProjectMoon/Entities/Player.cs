@@ -28,6 +28,8 @@ namespace ProjectMoon.Entities
             this.AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
             this.Origin = new Vector2(27, 16);
 
+            wait(this.RechargeFuelTime, RechargeFuel);
+
         }
 
         public override void Update(GameTime gameTime)
@@ -282,6 +284,16 @@ namespace ProjectMoon.Entities
                 this._isFly = false;
             }
         }
+
+        private float RechargeFuelTime = 1f;
+        private void RechargeFuel()
+        {
+            if (this.Scene.GameManagement.Values["POWER"] < 100)
+                this.Scene.GameManagement.Values["POWER"] = this.Scene.GameManagement.Values["POWER"] + 1;
+
+            wait(this.RechargeFuelTime, RechargeFuel);
+        }
+
         #endregion
 
 
@@ -326,10 +338,15 @@ namespace ProjectMoon.Entities
                 {
                     timerPressed = 0;
                     this.Shoot();
-                } else if (timerPressed == 0)
+                }
+                else if (timerPressed == 0)
                     this.Shoot();
-            } else
+            }
+            else
+            {
+                this._isFire = false;
                 timerPressed = 0;
+            }
         }
 
         public void Shoot()
@@ -338,6 +355,7 @@ namespace ProjectMoon.Entities
             _bullet.Scene = this.Scene;
             _bullet.spriteEffect = this.spriteEffect;
             _bullet.velocity = new Vector2(this.spriteEffect == SpriteEffects.None ? -this.BulletVelocity : this.BulletVelocity, 0);
+
             if (this.spriteEffect == SpriteEffects.None)
                 _bullet.Position = new Vector2(this.Position.X + 20, this.Position.Y + 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
             else
