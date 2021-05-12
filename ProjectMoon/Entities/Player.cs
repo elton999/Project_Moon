@@ -38,6 +38,8 @@ namespace ProjectMoon.Entities
 
             this.Animation(gameTime);
 
+            this.DamageFX(gameTime);
+
             this.Input();
 
             this.Scene.Camera.Target = new Vector2(this.Position.X + this.size.X / 2, this.Position.Y + this.size.Y / 2);
@@ -296,6 +298,42 @@ namespace ProjectMoon.Entities
 
         #endregion
 
+        public override void OnCollision(string tag = null)
+        {
+            base.OnCollision(tag);
+
+            if (tag == "enemy")
+                this.TakeDamage();
+        }
+
+        private bool _StartDamage = false;
+        private bool _DamageFX = false;
+        public void TakeDamage()
+        {
+            if (!this._StartDamage)
+            {
+                this._StartDamage = true;
+                this._DamageFX = true;
+                this.Scene.GameManagement.Values["CURRENT_LIFES"] = this.Scene.GameManagement.Values["CURRENT_LIFES"] - 1;
+
+                wait(5, new Action(() => {
+                    this._StartDamage = false;
+                    this._DamageFX = false;
+                    this.SpriteColor = Color.White;
+                }));
+            }
+        }
+
+        private void DamageFX(GameTime gameTime)
+        {
+            if (this._DamageFX)
+            {
+                if (gameTime.TotalGameTime.TotalMilliseconds % 8 > 4)
+                    this.SpriteColor = Color.Red;
+                else
+                    this.SpriteColor = Color.White;
+            }
+        }
 
         public override bool isRiding(Solid solid)
         {

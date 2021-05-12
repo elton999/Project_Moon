@@ -15,7 +15,7 @@
   "compactExport": false,
   "externalScript": "",
   "playCommand": "",
-  "entityTags": ["player", "victim actor"],
+  "entityTags": ["player", "victim actor", "actor"],
   "layers": [
     {
       "definition": "grid",
@@ -158,6 +158,42 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
+      "values": []
+    },
+    {
+      "exportID": "82049200",
+      "name": "enemy",
+      "limit": -1,
+      "size": {"x": 10, "y": 32},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#fa00ffff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 10, "y": 32},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": ["actor"],
       "values": []
     }
   ],

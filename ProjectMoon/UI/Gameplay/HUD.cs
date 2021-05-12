@@ -75,7 +75,7 @@ namespace ProjectMoon.UI.Gameplay
             this.PowerText.DrawSprite(spriteBatch);
 
             // life status
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < this.Scene.GameManagement.Values["CURRENT_LIFES"]; i++)
             {
                 this.LifeCountSprite_ON.Position = new Vector2(10 + (i*11), this.Position.Y + 16);
                 this.LifeCountSprite_ON.DrawSprite(spriteBatch);

@@ -135,10 +135,7 @@ namespace ProjectMoon
             this.GeralScene.Enemies.AddRange(this.LevelParts[this.CurrentPartLevel - 1].Enemies);
 
             // Collision
-            this.GeralScene.Grid = this.LevelParts[this.CurrentPartLevel - 1].Grid;
             this.GeralScene.AllActors.AddRange(this.LevelParts[this.CurrentPartLevel - 1].AllActors);
-            this.GeralScene.AllSolids.Clear(); 
-            this.GeralScene.AllSolids.AddRange(this.LevelParts[this.CurrentPartLevel - 1].AllSolids);
 
             if (this.GeralScene.AllActors.Count > 0) {
                 Actor _player = this.GeralScene.AllActors[0];
@@ -149,7 +146,12 @@ namespace ProjectMoon
 
                 this.GeralScene.AllActors.Insert(0, _player);
                 this.GeralScene.Players.Insert(0, _player);
+                this.LevelParts[this.CurrentPartLevel - 1].AllActors.Remove(_player);
             }
+
+            this.GeralScene.Grid = this.LevelParts[this.CurrentPartLevel - 1].Grid;
+            this.GeralScene.AllActors.AddRange(this.LevelParts[this.CurrentPartLevel - 1].AllActors);
+            this.GeralScene.AllSolids.AddRange(this.LevelParts[this.CurrentPartLevel - 1].AllSolids);
 
             foreach (List<GameObject> ListGameObject in this.GeralScene.SortLayers)
                 foreach (GameObject gameObject in ListGameObject)

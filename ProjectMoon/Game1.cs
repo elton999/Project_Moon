@@ -31,6 +31,7 @@ namespace ProjectMoon
             AssetManagement = new AssetManagement();
             AssetManagement.Set<Entities.Player>("player", "PLAYER");
             AssetManagement.Set<Entities.Actors.Victim>("victim", "MIDDLEGROUND");
+            AssetManagement.Set<Entities.Actors.Enemies.Enemy>("enemy", "ENEMIES");
 
             this.GameManagement = new GameManagement();
             this.GameManagement.game = this;
