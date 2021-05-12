@@ -40,7 +40,7 @@ namespace ProjectMoon.Entities
 
             this.Input();
 
-            this.Scene.Camera.Target = new Vector2(this.Position.X, this.Position.Y + 10);
+            this.Scene.Camera.Target = new Vector2(this.Position.X + this.size.X / 2, this.Position.Y + this.size.Y / 2);
 
         }
         

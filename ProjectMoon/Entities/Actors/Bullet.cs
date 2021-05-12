@@ -29,7 +29,12 @@ namespace ProjectMoon.Entities.Actors
 
             this.Scene.Camera.TimeShake = 10;
             this.Scene.Camera.ShakeMagnitude = 3.5f;
+
+            int randomY = getRandom.Next(-3, 3);
+            this.Position = new Vector2(this.Position.X, this.Position.Y + randomY);
         }
+
+        public static readonly Random getRandom = new Random();
 
         public override void UpdateData(GameTime gameTime)
         {
