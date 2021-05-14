@@ -129,7 +129,7 @@ namespace ProjectMoon.Entities
             if (!this._isFire)
             {
                 // ground control
-                if (this._isGrounded)
+                if (this._isGrounded && !this.CFire)
                 {
                     if (this.CRight)
                     {
@@ -184,13 +184,13 @@ namespace ProjectMoon.Entities
 
 
             if (((!this.CLeft && !this.CRight) && this._isGrounded) || 
-                ((!this.CLeft && !this.CRight) && this._isFly) || this._isFire)
+                ((!this.CLeft && !this.CRight) && this._isFly) || this.CFire)
             {
                 this.velocity.X = 0;
                 this.HorizontalSpeed = 0;
             }
 
-            if (!this.CDown && !this.CUp && this._isFly || this._isFire)
+            if (!this.CDown && !this.CUp && this._isFly || this.CFire)
             {
                 this.VertivalSpeed = 0;
                 this.velocity.Y = 0;
@@ -233,13 +233,13 @@ namespace ProjectMoon.Entities
                 this._JumpPressed = true;
             }
 
-		    if(this._JumpPressed && this._JumpPressedForce< 17){
+		    if(this._JumpPressed && this._JumpPressedForce< 20){
                 this.velocity = new Vector2(this.velocity.X, this._JumpForce);
                 this._JumpPressedForce += 1;
             } else
                 this._JumpPressed = false;
 
-		    if(this._isGrounded && !this._JumpPressed){
+		    if(this._isGrounded && !this._JumpPressed && !this.CJump){
                 this._JumpPressed = false;
                 this._JumpPressedForce = 0;
             }
@@ -306,6 +306,7 @@ namespace ProjectMoon.Entities
                 this.TakeDamage();
         }
 
+        #region damage
         private bool _StartDamage = false;
         private bool _DamageFX = false;
         public void TakeDamage()
@@ -334,6 +335,7 @@ namespace ProjectMoon.Entities
                     this.SpriteColor = Color.White;
             }
         }
+        #endregion
 
         public override bool isRiding(Solid solid)
         {
@@ -365,6 +367,7 @@ namespace ProjectMoon.Entities
         private float Cadence = 0.5f;
         private bool FirePressed = false;
         private float timerPressed = 0;
+        private bool firstBullet = false;
 
         public void Fire(GameTime gameTime)
         {
@@ -372,8 +375,9 @@ namespace ProjectMoon.Entities
             {
                 this._isFire = true;
                 timerPressed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (timerPressed >= Cadence)
+                if (timerPressed >= Cadence || !firstBullet)
                 {
+                    firstBullet = true;
                     timerPressed = 0;
                     this.Shoot();
                 }
@@ -384,6 +388,7 @@ namespace ProjectMoon.Entities
             {
                 this._isFire = false;
                 timerPressed = 0;
+                firstBullet = false;
             }
         }
 

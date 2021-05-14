@@ -39,10 +39,17 @@ namespace ProjectMoon.Entities.Actors
         public override void UpdateData(GameTime gameTime)
         {
             base.UpdateData(gameTime);
-            foreach(Actor actor in this.Scene.AllActors)
-                if(actor != this)
+            foreach (Actor actor in this.Scene.AllActors)
+            {
+                if (actor != this && actor.active)
+                {
                     if (this.overlapCheck(actor))
+                    {
                         this.OnCollision(actor.tag);
+                        actor.OnCollision(this.tag);
+                    }
+                }
+            }
 
             if (this.EdgesIsCollision.ContainsValue(true))
                 this.OnCollision("wall");

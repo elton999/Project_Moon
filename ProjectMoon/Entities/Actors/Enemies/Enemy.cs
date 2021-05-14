@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UmbrellaToolKit;
+using UmbrellaToolKit.Collision;
 
 namespace ProjectMoon.Entities.Actors.Enemies
 {
@@ -13,6 +14,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
     {
 
         public UmbrellaToolKit.Sprite.Square Box;
+        public bool isLive = true;
         public override void Start()
         {
             base.Start();
@@ -34,16 +36,35 @@ namespace ProjectMoon.Entities.Actors.Enemies
             this.velocityDecrecentY = 2050;
             this.velocityDecrecentX = 0;
         }
-        
+
+        public override void restart()
+        {
+            base.restart();
+        }
+
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            this.Box.Position = this.Position;
+            if (this.isLive) {
+                base.Update(gameTime);
+                this.Box.Position = this.Position;
 
-            if (this._StartAttack && !this._waitAttack)
+                if (this._StartAttack && !this._waitAttack)
+                {
+                    this._waitAttack = true;
+                    this._Speed = this.Scene.AllActors[0].Position.X < this.Position.X ? _Speed : -_Speed;
+                    wait(this._TimeToAttack, new Action(() => { this._Attack = true; }));
+                }
+            }
+        }
+
+        public override void OnCollision(string tag = null)
+        {
+            base.OnCollision(tag);
+            if (tag == "bullet")
             {
-                this._waitAttack = true;
-                wait(this._TimeToAttack, new Action(() => { this._Attack = true; }));
+                this.isLive = false;
+                this.active = false;
+                this.restart();
             }
         }
 
@@ -51,35 +72,92 @@ namespace ProjectMoon.Entities.Actors.Enemies
         private float _Speed = 60;
         public override void UpdateData(GameTime gameTime)
         {
+            if (this.isLive) {
+                if (this._Attack)
+                {
+                    this.velocity.X = _Speed;
+                    if (this.CheckPath())
+                        this._Speed = -this._Speed;
+                }
 
-            if (this._Attack) {
-                this.velocity.X = this.Scene.AllActors[0].Position.X < this.Position.X ? _Speed : -_Speed;
+                if (this.overlapCheckPixel(this.Scene.AllActors[0]))
+                    this.Scene.AllActors[0].OnCollision(this.tag);
+
+                base.UpdateData(gameTime);
             }
+        }
 
-            if (this.overlapCheckPixel(this.Scene.AllActors[0]))
+        public bool CheckPath()
+        {
+            Actor _actor = new Actor();
+            _actor.Position = this.Position;
+            _actor.size = this.size;
+
+            if (this._Speed > 0)
             {
-                System.Console.WriteLine("ok");
-                this.Scene.AllActors[0].OnCollision(this.tag);
+                _actor.size = new Point(1, 1);
+                _actor.Position = new Vector2(this.Position.X -3, this.Position.Y+this.size.Y - 8);
+                // check wall grid
+                if (this.Scene.Grid.checkOverlap(_actor.size, _actor.Position, _actor, true))
+                    return true;
+                // check wall
+                foreach (Solid solid in this.Scene.AllSolids)
+                    if (solid.check(this.size, new Vector2(this.Position.X - 1, this.Position.Y)))
+                        return true;
+
+                _actor.Position = new Vector2(this.Position.X + this.size.X / 2f, this.Position.Y + this.size.Y + 16);
+                // check ground grid
+                if (!this.Scene.Grid.checkOverlap(_actor.size, _actor.Position, _actor))
+                    return true;
+                // check ground
+                foreach (Solid solid in this.Scene.AllSolids)
+                    if (!solid.check(this.size, new Vector2(this.Position.X - this.size.X, this.Position.Y + 1)))
+                        return true;
+
+            } else
+            {
+                _actor.size = new Point(1, 1);
+                _actor.Position = new Vector2(this.Position.X + this.size.X + 3, this.Position.Y + this.size.Y - 8);
+                // check wall grid
+                if (this.Scene.Grid.checkOverlap(_actor.size, _actor.Position, _actor, false))
+                    return true;
+                // check wall
+                foreach (Solid solid in this.Scene.AllSolids)
+                    if (solid.check(this.size, new Vector2(this.Position.X + 1, this.Position.Y)))
+                        return true;
+
+                _actor.Position = new Vector2(this.Position.X + this.size.X, this.Position.Y + this.size.Y + 16);
+                // check ground grid
+                if (!this.Scene.Grid.checkOverlap(_actor.size, _actor.Position, _actor, true))
+                    return true;
+                // check ground
+                foreach (Solid solid in this.Scene.AllSolids)
+                    if (solid.check(this.size, new Vector2(this.Position.X + this.size.X, this.Position.Y + 1)))
+                        return true;
             }
 
-            base.UpdateData(gameTime);
+            return false;
         }
 
         private bool _StartAttack = false;
         private bool _waitAttack = false;
         private bool _Attack = false;
-        private float _TimeToAttack = 3;
+        private float _TimeToAttack = 1;
 
         public override void Isvisible()
         {
-            this._StartAttack = true;
-            base.Isvisible();
+            if (this.isLive) {
+                this._StartAttack = true;
+                base.Isvisible();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-            this.Box.Draw(spriteBatch);
+            if (this.isLive) {
+                base.Draw(spriteBatch);
+                this.Box.Draw(spriteBatch);
+            }
         }
 
     }

@@ -95,7 +95,7 @@
       "gridCellsX": 149,
       "gridCellsY": 54,
       "entities": [
-        {"name": "enemy", "id": 0, "_eid": "82049200", "x": 408, "y": 336, "originX": 0, "originY": 0}
+        {"name": "enemy", "id": 1, "_eid": "82049200", "x": 296, "y": 336, "originX": 0, "originY": 0}
       ]
     },
     {
