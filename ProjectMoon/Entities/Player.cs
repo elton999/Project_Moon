@@ -298,11 +298,12 @@ namespace ProjectMoon.Entities
 
         #endregion
 
+        private string[] _enemyTags= new string[3] { "soldier", "spider", "damage" };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
 
-            if (tag == "enemy")
+            if (_enemyTags.Contains(tag))
                 this.TakeDamage();
         }
 

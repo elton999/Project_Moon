@@ -10,16 +10,13 @@ using UmbrellaToolKit.Collision;
 
 namespace ProjectMoon.Entities.Actors.Enemies
 {
-    class Enemy : UmbrellaToolKit.Collision.Actor
+    public class Soldier : Enemy
     {
 
-        public UmbrellaToolKit.Sprite.Square Box;
-        public bool isLive = true;
         public override void Start()
         {
             base.Start();
-
-            this.tag = "enemy";
+            this.tag = "soldier";
 
             this.Scene.AllActors.Add(this);
             this.size = new Point(10, 32);
@@ -37,14 +34,10 @@ namespace ProjectMoon.Entities.Actors.Enemies
             this.velocityDecrecentX = 0;
         }
 
-        public override void restart()
-        {
-            base.restart();
-        }
-
         public override void Update(GameTime gameTime)
         {
-            if (this.isLive) {
+            if (this.isLive)
+            {
                 base.Update(gameTime);
                 this.Box.Position = this.Position;
 
@@ -52,7 +45,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
                 {
                     this._waitAttack = true;
                     this._Speed = this.Scene.AllActors[0].Position.X < this.Position.X ? _Speed : -_Speed;
-                    wait(this._TimeToAttack, new Action(() => { this._Attack = true; }));
+                    wait(this._TimeToAttack, () => { this._Attack = true; });
                 }
             }
         }
@@ -62,17 +55,15 @@ namespace ProjectMoon.Entities.Actors.Enemies
             base.OnCollision(tag);
             if (tag == "bullet")
             {
-                this.isLive = false;
+                this.live -= 10;
                 this.active = false;
-                this.restart();
             }
         }
 
-        private float GravityY = -200f;
-        private float _Speed = 60;
         public override void UpdateData(GameTime gameTime)
         {
-            if (this.isLive) {
+            if (this.isLive)
+            {
                 if (this._Attack)
                 {
                     this.velocity.X = _Speed;
@@ -96,7 +87,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
             if (this._Speed > 0)
             {
                 _actor.size = new Point(1, 1);
-                _actor.Position = new Vector2(this.Position.X -3, this.Position.Y+this.size.Y - 8);
+                _actor.Position = new Vector2(this.Position.X - 3, this.Position.Y + this.size.Y - 8);
                 // check wall grid
                 if (this.Scene.Grid.checkOverlap(_actor.size, _actor.Position, _actor, true))
                     return true;
@@ -114,7 +105,8 @@ namespace ProjectMoon.Entities.Actors.Enemies
                     if (!solid.check(this.size, new Vector2(this.Position.X - this.size.X, this.Position.Y + 1)))
                         return true;
 
-            } else
+            }
+            else
             {
                 _actor.size = new Point(1, 1);
                 _actor.Position = new Vector2(this.Position.X + this.size.X + 3, this.Position.Y + this.size.Y - 8);
@@ -146,7 +138,8 @@ namespace ProjectMoon.Entities.Actors.Enemies
 
         public override void Isvisible()
         {
-            if (this.isLive) {
+            if (this.isLive)
+            {
                 this._StartAttack = true;
                 base.Isvisible();
             }
@@ -154,11 +147,11 @@ namespace ProjectMoon.Entities.Actors.Enemies
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (this.isLive) {
+            if (this.isLive)
+            {
                 base.Draw(spriteBatch);
                 this.Box.Draw(spriteBatch);
             }
         }
-
     }
 }
