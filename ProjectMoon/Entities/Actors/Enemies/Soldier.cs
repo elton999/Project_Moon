@@ -12,7 +12,6 @@ namespace ProjectMoon.Entities.Actors.Enemies
 {
     public class Soldier : Enemy
     {
-
         public override void Start()
         {
             base.Start();
@@ -21,13 +20,16 @@ namespace ProjectMoon.Entities.Actors.Enemies
             this.Scene.AllActors.Add(this);
             this.size = new Point(10, 32);
 
-            this.Box = new UmbrellaToolKit.Sprite.Square();
-            this.Box.Position = this.Position;
-            this.Box.size = this.size;
-            this.Box.SquareColor = Color.Magenta;
-            this.Box.Scene = this.Scene;
+            if (this.Scene.GameManagement.Values["DEBUG"])
+            {
+                this.Box = new UmbrellaToolKit.Sprite.Square();
+                this.Box.Position = this.Position;
+                this.Box.size = this.size;
+                this.Box.SquareColor = Color.Magenta;
+                this.Box.Scene = this.Scene;
 
-            this.Box.Start();
+                this.Box.Start();
+            }
 
             this.gravity2D = new Vector2(0, this.GravityY);
             this.velocityDecrecentY = 2050;
@@ -39,24 +41,13 @@ namespace ProjectMoon.Entities.Actors.Enemies
             if (this.isLive)
             {
                 base.Update(gameTime);
-                this.Box.Position = this.Position;
-
+                
                 if (this._StartAttack && !this._waitAttack)
                 {
                     this._waitAttack = true;
                     this._Speed = this.Scene.AllActors[0].Position.X < this.Position.X ? _Speed : -_Speed;
                     wait(this._TimeToAttack, () => { this._Attack = true; });
                 }
-            }
-        }
-
-        public override void OnCollision(string tag = null)
-        {
-            base.OnCollision(tag);
-            if (tag == "bullet")
-            {
-                this.live -= 10;
-                this.active = false;
             }
         }
 
@@ -150,7 +141,11 @@ namespace ProjectMoon.Entities.Actors.Enemies
             if (this.isLive)
             {
                 base.Draw(spriteBatch);
-                this.Box.Draw(spriteBatch);
+                if (this.Scene.GameManagement.Values["DEBUG"])
+                {
+                    this.Box.Position = this.Position;
+                    this.Box.Draw(spriteBatch);
+                }
             }
         }
     }

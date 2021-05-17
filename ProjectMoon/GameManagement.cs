@@ -58,6 +58,7 @@ namespace ProjectMoon
             this.Values.Add("POWER", 100f);
             this.Values.Add("TOTAL_LIFES", 3);
             this.Values.Add("CURRENT_LIFES", 3);
+            this.Values.Add("DEBUG", true);
         }
 
         #region Level settings

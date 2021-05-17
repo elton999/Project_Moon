@@ -41,24 +41,23 @@ namespace ProjectMoon.Entities
             this.DamageFX(gameTime);
 
             this.Input();
-
-            this.Scene.Camera.Target = new Vector2(this.Position.X + this.size.X / 2, this.Position.Y + this.size.Y / 2);
-
         }
         
         public override void UpdateData(GameTime gameTime)
         {
             base.UpdateData(gameTime);
 
+            this.move(gameTime);
+
             this.jump();
 
             this.Fly(gameTime);
 
-            this.move(gameTime);
-
             this.Fire(gameTime);
 
             this.CheckGrounded();
+
+            this.Scene.Camera.Target = new Vector2(this.Position.X + this.size.X / 2, this.Position.Y + this.size.Y / 2);
         }
 
         #region input
@@ -122,7 +121,7 @@ namespace ProjectMoon.Entities
         private float _TotalSpeedOnGrounded = 75;
         private float _SpeedIncrement = 5;
 
-        private float _TotalSpeedFly = 70;
+        private float _TotalSpeedFly = 100;
         private float VertivalSpeed = 0;
         private void move(GameTime gameTime)
         {
@@ -171,12 +170,12 @@ namespace ProjectMoon.Entities
 
                     if (this.CUp)
                     {
-                        this.velocity.Y = this._TotalSpeedFly;
+                        this.velocity.Y = -this.VertivalSpeed;
                         this.speedIncrement_Y();
                     }
                     else if (this.CDown)
                     {
-                        this.velocity.Y = -(this._TotalSpeedFly);
+                        this.velocity.Y = (this.VertivalSpeed);
                         this.speedIncrement_Y();
                     }
                 }
@@ -264,7 +263,7 @@ namespace ProjectMoon.Entities
             } else if(!this.CFly && !this._CFlyPressed && this._onFly)
             {
                 this._CFlyPressed = true;
-            } else if(this.CFly && this._CFlyPressed && this._onFly)
+            } else if(this.CFly && this._CFlyPressed && this._onFly || this.Scene.GameManagement.Values["POWER"] <= 0)
             {
                 this._onFly = false;
             } else if (!this.CFly && this._CFlyPressed && !this._onFly)
@@ -276,7 +275,9 @@ namespace ProjectMoon.Entities
             {
                 this.Power -= this._FuelDecrement * (float)gametime.ElapsedGameTime.TotalSeconds;
                 this.velocityDecrecentY = 0;
-                this.gravity2D = new Vector2(0, 60);
+                this.moveY((-15 +this.velocity.Y )*(float)gametime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+                
+                this.gravity2D = new Vector2(0, 0);
                 this._isFly = true;
             }
             else
@@ -287,7 +288,7 @@ namespace ProjectMoon.Entities
             }
         }
 
-        private float RechargeFuelTime = 1f;
+        private float RechargeFuelTime = 0.2f;
         private void RechargeFuel()
         {
             if (this.Scene.GameManagement.Values["POWER"] < 100)
@@ -322,6 +323,7 @@ namespace ProjectMoon.Entities
                     this._StartDamage = false;
                     this._DamageFX = false;
                     this.SpriteColor = Color.White;
+                    this.Transparent = 1f;
                 }));
             }
         }
@@ -331,9 +333,14 @@ namespace ProjectMoon.Entities
             if (this._DamageFX)
             {
                 if (gameTime.TotalGameTime.TotalMilliseconds % 8 > 4)
+                {
                     this.SpriteColor = Color.Red;
-                else
+                    this.Transparent = 0.7f;
+                }
+                else { 
                     this.SpriteColor = Color.White;
+                    this.Transparent = 1;
+                }
             }
         }
         #endregion
@@ -410,7 +417,6 @@ namespace ProjectMoon.Entities
             this.velocity = new Vector2(this.velocity.X + (-_bullet.velocity.X / 2.5f), this.velocity.Y);
         }
         #endregion
-
 
         #region Animation and Render
         private void Animation(GameTime gameTime)

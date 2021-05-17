@@ -5,26 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using UmbrellaToolKit.Sprite;
+using UmbrellaToolKit;
 using UmbrellaToolKit.Collision;
 
-namespace ProjectMoon.Gameplay
+namespace ProjectMoon.Entities.Actors.Enemies
 {
-    public class HitBoxDamage : Actor
+    public class Bat : Enemy
     {
-
-        Square Box;
         public override void Start()
         {
             base.Start();
-            this.tag = "damage";
+            this.tag = "bat";
+
+            this.Scene.AllActors.Add(this);
+            this.size = new Point(10, 10);
+            this._Speed = 30;
 
             if (this.Scene.GameManagement.Values["DEBUG"])
             {
-                this.Box = new Square();
+                this.Box = new UmbrellaToolKit.Sprite.Square();
                 this.Box.Position = this.Position;
                 this.Box.size = this.size;
-                this.Box.SquareColor = Color.Red;
+                this.Box.SquareColor = Color.Black;
                 this.Box.Scene = this.Scene;
 
                 this.Box.Start();
@@ -33,19 +35,23 @@ namespace ProjectMoon.Gameplay
 
         public override void UpdateData(GameTime gameTime)
         {
-            if (this.Scene.AllActors[0].overlapCheckPixel(this))
+            if (this.isLive)
             {
-                this.Scene.AllActors[0].OnCollision(this.tag);
+                if (this.overlapCheckPixel(this.Scene.AllActors[0]))
+                    this.Scene.AllActors[0].OnCollision(this.tag);
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-            if (this.Scene.GameManagement.Values["DEBUG"])
+            if (this.isLive)
             {
-                this.Box.Position = this.Position;
-                this.Box.Draw(spriteBatch);
+                base.Draw(spriteBatch);
+                if (this.Scene.GameManagement.Values["DEBUG"])
+                {
+                    this.Box.Position = this.Position;
+                    this.Box.Draw(spriteBatch);
+                }
             }
         }
     }

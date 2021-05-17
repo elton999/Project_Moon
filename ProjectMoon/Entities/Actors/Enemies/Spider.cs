@@ -19,15 +19,18 @@ namespace ProjectMoon.Entities.Actors.Enemies
 
             this.Scene.AllActors.Add(this);
             this.size = new Point(16, 16);
-            this._Speed = 35;
+            this._Speed = 30;
 
-            this.Box = new UmbrellaToolKit.Sprite.Square();
-            this.Box.Position = this.Position;
-            this.Box.size = this.size;
-            this.Box.SquareColor = Color.Red;
-            this.Box.Scene = this.Scene;
+            if (this.Scene.GameManagement.Values["DEBUG"])
+            {
+                this.Box = new UmbrellaToolKit.Sprite.Square();
+                this.Box.Position = this.Position;
+                this.Box.size = this.size;
+                this.Box.SquareColor = Color.Red;
+                this.Box.Scene = this.Scene;
 
-            this.Box.Start();
+                this.Box.Start();
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -161,8 +164,11 @@ namespace ProjectMoon.Entities.Actors.Enemies
             if (this.isLive)
             {
                 base.Draw(spriteBatch);
-                this.Box.Position = this.Position;
-                this.Box.Draw(spriteBatch);
+                if (this.Scene.GameManagement.Values["DEBUG"])
+                {
+                    this.Box.Position = this.Position;
+                    this.Box.Draw(spriteBatch);
+                }
             }
         }
     }

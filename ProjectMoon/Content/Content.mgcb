@@ -11,7 +11,7 @@
 #-------------------------------- References --------------------------------#
 
 /reference:..\bin\Debug\net5.0\Newtonsoft.Json.dll
-/reference:..\bin\Debug\net5.0\MonoGame.ContentPipeline.UmbrellaToolKit.dll
+/reference:..\..\..\..\umbrella\UmbrellaToolKit.Pipeline\MonoGame.ContentPipeline.UmbrellaToolKit2\MonoGame.ContentPipeline.UmbrellaToolKit2\Game1\Game1\bin\Debug\netstandard2.0\MonoGame.ContentPipeline.UmbrellaToolKit.dll
 
 #---------------------------------- Content ---------------------------------#
 

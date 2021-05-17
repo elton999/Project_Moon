@@ -28,6 +28,16 @@ namespace ProjectMoon.Entities.Actors
             base.restart();
         }
 
+        public override void OnCollision(string tag = null)
+        {
+            base.OnCollision(tag);
+            if (tag == "bullet")
+            {
+                this.live -= 10;
+                this.active = false;
+            }
+        }
+
         public float GravityY = -200f;
         public float _Speed = 60;
     }
