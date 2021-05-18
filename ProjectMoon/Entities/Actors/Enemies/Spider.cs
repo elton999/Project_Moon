@@ -19,7 +19,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
 
             this.Scene.AllActors.Add(this);
             this.size = new Point(16, 16);
-            this._Speed = 30;
+            this._Speed = 25;
 
             if (this.Scene.GameManagement.Values["DEBUG"])
             {

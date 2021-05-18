@@ -118,7 +118,7 @@ namespace ProjectMoon.Entities
         private float GravityY = -200f;
 
         private float HorizontalSpeed = 0;
-        private float _TotalSpeedOnGrounded = 75;
+        private float _TotalSpeedOnGrounded = 80;
         private float _SpeedIncrement = 5;
 
         private float _TotalSpeedFly = 100;
@@ -226,15 +226,33 @@ namespace ProjectMoon.Entities
         private int _JumpPressedForce = 0;
 	    private bool _JumpPressed = false;
         private float _JumpForce = 330f; //390f;
+        private int _DashJumpForce = 200;
+        private float _DashJumpCurrentForce = 0;
+        private float _VelocityJumpInitial;
 
 	    private void jump(){
 		    if(this._isGrounded && this.CJump){
                 this._JumpPressed = true;
             }
 
-		    if(this._JumpPressed && this._JumpPressedForce< 20){
-                this.velocity = new Vector2(this.velocity.X, this._JumpForce);
-                this._JumpPressedForce += 1;
+		    if(this._JumpPressed && this._JumpPressedForce< 17){
+                if (this._JumpPressedForce == 0)
+                {
+                    this._VelocityJumpInitial = this._DashJumpForce;
+                    this.velocity.Y = 0;
+                    this.gravity2D.X = 0;
+                }
+                this._DashJumpCurrentForce = lerp(0.05f, this._DashJumpCurrentForce, 0.1f);
+                
+
+                if (this.velocity.X > 0)
+                    this.velocity = new Vector2(this._DashJumpCurrentForce*this._DashJumpForce*12, this._JumpForce);
+                else if(this.velocity.X < 0)
+                    this.velocity = new Vector2(-this._DashJumpCurrentForce*this._DashJumpForce*12, this._JumpForce);
+                else
+                    this.velocity = new Vector2(this.velocity.X, this._JumpForce);
+
+                this._JumpPressedForce += 1; 
             } else
                 this._JumpPressed = false;
 
@@ -441,7 +459,6 @@ namespace ProjectMoon.Entities
             this.Body = this.AsepriteAnimation.Body;
         }
 
-
         #region smashEFX
         private Vector2 _PositionSmash;
         private Point _BobySmash;
@@ -478,7 +495,6 @@ namespace ProjectMoon.Entities
             this._last_isgrounded = this._isGrounded;
         }
         #endregion
-
 
         private void Flip(bool right)
         {
