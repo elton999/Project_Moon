@@ -299,7 +299,7 @@ namespace ProjectMoon.Entities
 
         #endregion
 
-        private string[] _enemyTags= new string[3] { "soldier", "spider", "damage" };
+        private string[] _enemyTags= new string[4] { "soldier", "spider", "bat", "damage" };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
@@ -419,6 +419,7 @@ namespace ProjectMoon.Entities
         #endregion
 
         #region Animation and Render
+        public AsepriteAnimation AsepriteAnimation;
         private void Animation(GameTime gameTime)
         {
             if (!this._isGrounded && !this._isFly)
@@ -441,6 +442,44 @@ namespace ProjectMoon.Entities
         }
 
 
+        #region smashEFX
+        private Vector2 _PositionSmash;
+        private Point _BobySmash;
+        private bool _GroundHit = false;
+        private bool _last_isgrounded = false;
+        public void SmashEfx()
+        {
+            if (!_last_isgrounded && this._isGrounded && !_GroundHit)
+            {
+                _BobySmash.X = -15;
+                _BobySmash.Y = 5;
+                _PositionSmash.X = 2;
+                _PositionSmash.Y = -2;
+                _GroundHit = true;
+                wait(0.2f, () => {
+                    _BobySmash = new Point(0,0);
+                    _PositionSmash = new Vector2(0,0);
+                    _GroundHit = false;
+                });
+            }
+            /*else if (this.isHeadHit && !isGrounded)
+            {
+                _widthSmash = -10;
+                _heightSmash = 5;
+                _positionXSmash = -7;
+                _positionYSmash = 0;
+            }*/
+            else if (!_GroundHit)
+            {
+                _BobySmash = new Point(0, 0);
+                _PositionSmash = new Vector2(0, 0);
+            }
+
+            this._last_isgrounded = this._isGrounded;
+        }
+        #endregion
+
+
         private void Flip(bool right)
         {
             if (right)
@@ -449,11 +488,16 @@ namespace ProjectMoon.Entities
                 this.spriteEffect = SpriteEffects.FlipHorizontally;
         }
 
-        public AsepriteAnimation AsepriteAnimation;
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-            this.DrawSprite(spriteBatch);
+            //this.DrawSprite(spriteBatch);
+            this.SmashEfx();
+
+            spriteBatch.Draw(
+                this.Sprite, 
+                new Rectangle((int)(this.Position.X - _PositionSmash.X), (int)(this.Position.Y - _PositionSmash.Y),
+                this.Body.Width - _BobySmash.X, this.Body.Height - _BobySmash.Y), 
+                this.Body, this.SpriteColor * this.Transparent, this.Rotation, this.Origin, this.spriteEffect, 0);
         }
         #endregion
     }

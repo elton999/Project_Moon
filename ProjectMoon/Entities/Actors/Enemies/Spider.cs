@@ -41,6 +41,11 @@ namespace ProjectMoon.Entities.Actors.Enemies
         public override void UpdateData(GameTime gameTime)
         {
             //base.UpdateData(gameTime);
+            if (this.isLive)
+            {
+                if (this.overlapCheckPixel(this.Scene.AllActors[0]))
+                    this.Scene.AllActors[0].OnCollision(this.tag);
+            }
             this.CheckPath(gameTime);
         }
 

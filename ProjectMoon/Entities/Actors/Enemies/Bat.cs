@@ -19,7 +19,11 @@ namespace ProjectMoon.Entities.Actors.Enemies
 
             this.Scene.AllActors.Add(this);
             this.size = new Point(10, 10);
-            this._Speed = 30;
+            this._Speed = 5;
+
+            this.InitialPosition = this.Position;
+            this._XCon = getRandom.Next(5, 15);
+            this._YCon = getRandom.Next(15, 25);
 
             if (this.Scene.GameManagement.Values["DEBUG"])
             {
@@ -33,13 +37,25 @@ namespace ProjectMoon.Entities.Actors.Enemies
             }
         }
 
+        float _YCon = 20;
+        float _XCon = 10;
         public override void UpdateData(GameTime gameTime)
         {
             if (this.isLive)
             {
                 if (this.overlapCheckPixel(this.Scene.AllActors[0]))
                     this.Scene.AllActors[0].OnCollision(this.tag);
+
+                this.Position.Y = this.InitialPosition.Y + (int)(Math.Sin(gameTime.TotalGameTime.TotalMilliseconds * 0.001f * this._Speed) * _YCon);
+                this.Position.X = this.InitialPosition.X + (int)(Math.Cos(gameTime.TotalGameTime.TotalMilliseconds * 0.001f * this._Speed) * _XCon);
+
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch)
