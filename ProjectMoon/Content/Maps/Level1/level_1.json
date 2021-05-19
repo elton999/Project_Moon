@@ -113,9 +113,77 @@
         {"name": "spider", "id": 2, "_eid": "03827655", "x": 320, "y": 248, "originX": 0, "originY": 0},
         {"name": "spider", "id": 3, "_eid": "03827655", "x": 344, "y": 280, "originX": 0, "originY": 0},
         {"name": "damage", "id": 4, "_eid": "04966844", "x": 344, "y": 360, "width": 32, "height": 8, "originX": 0, "originY": 0},
-        {"name": "bat", "id": 5, "_eid": "19011701", "x": 520, "y": 336, "originX": 0, "originY": 0},
-        {"name": "bat", "id": 6, "_eid": "19011701", "x": 544, "y": 312, "originX": 0, "originY": 0},
-        {"name": "bat", "id": 7, "_eid": "19011701", "x": 504, "y": 320, "originX": 0, "originY": 0}
+        {
+          "name": "bat",
+          "id": 8,
+          "_eid": "19011701",
+          "x": 440,
+          "y": 264,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "0"}
+        },
+        {"name": "jumper", "id": 9, "_eid": "39175669", "x": 32, "y": 216, "originX": 0, "originY": 0},
+        {
+          "name": "bat",
+          "id": 10,
+          "_eid": "19011701",
+          "x": 512,
+          "y": 312,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "1"}
+        },
+        {
+          "name": "bat",
+          "id": 11,
+          "_eid": "19011701",
+          "x": 528,
+          "y": 336,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "1"}
+        },
+        {
+          "name": "bat",
+          "id": 12,
+          "_eid": "19011701",
+          "x": 864,
+          "y": 248,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "0"}
+        },
+        {
+          "name": "bat",
+          "id": 13,
+          "_eid": "19011701",
+          "x": 888,
+          "y": 248,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "0"}
+        },
+        {
+          "name": "bat",
+          "id": 14,
+          "_eid": "19011701",
+          "x": 1032,
+          "y": 232,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "0"}
+        },
+        {
+          "name": "bat",
+          "id": 15,
+          "_eid": "19011701",
+          "x": 720,
+          "y": 248,
+          "originX": 0,
+          "originY": 0,
+          "values": {"behavior": "0"}
+        }
       ]
     },
     {
@@ -6972,10 +7040,10 @@
           [19, 2],
           [19, 2],
           [19, 2],
-          [19, 2],
-          [19, 2],
-          [19, 2],
-          [19, 2],
+          [-1],
+          [-1],
+          [-1],
+          [-1],
           [-1],
           [-1],
           [-1],

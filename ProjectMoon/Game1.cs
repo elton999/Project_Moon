@@ -35,6 +35,7 @@ namespace ProjectMoon
             AssetManagement.Set<Entities.Actors.Enemies.Soldier>("soldier", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Spider>("spider", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Bat>("bat", "ENEMIES");
+            AssetManagement.Set<Entities.Actors.Enemies.Jumper>("jumper", "ENEMIES");
 
             this.GameManagement = new GameManagement();
             this.GameManagement.game = this;

@@ -317,7 +317,7 @@ namespace ProjectMoon.Entities
 
         #endregion
 
-        private string[] _enemyTags= new string[4] { "soldier", "spider", "bat", "damage" };
+        private string[] _enemyTags= new string[5] { "soldier", "spider", "bat", "jumper", "damage" };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
@@ -426,13 +426,18 @@ namespace ProjectMoon.Entities
             _bullet.velocity = new Vector2(this.spriteEffect == SpriteEffects.None ? -this.BulletVelocity : this.BulletVelocity, 0);
 
             if (this.spriteEffect == SpriteEffects.None)
+            {
                 _bullet.Position = new Vector2(this.Position.X + 20, this.Position.Y + 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
+                moveX(-10);
+                SmashEfx(true);
+            }
             else
+            {
                 _bullet.Position = new Vector2(this.Position.X - 20, this.Position.Y + 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
-
+                moveX(10);
+                SmashEfx(true);
+            }
             _bullet.Start();
-
-            this.velocity = new Vector2(this.velocity.X + (-_bullet.velocity.X / 2.5f), this.velocity.Y);
         }
         #endregion
 
@@ -463,10 +468,11 @@ namespace ProjectMoon.Entities
         private Vector2 _PositionSmash;
         private Point _BobySmash;
         private bool _GroundHit = false;
+        private bool _ShootSmashEFX = false;
         private bool _last_isgrounded = false;
-        public void SmashEfx()
+        public void SmashEfx(bool _shooting =  false)
         {
-            if (!_last_isgrounded && this._isGrounded && !_GroundHit)
+            if (!_last_isgrounded && this._isGrounded && !_GroundHit && !_shooting)
             {
                 _BobySmash.X = -15;
                 _BobySmash.Y = 5;
@@ -479,6 +485,24 @@ namespace ProjectMoon.Entities
                     _GroundHit = false;
                 });
             }
+
+            if (_shooting && !_ShootSmashEFX)
+            {
+                _ShootSmashEFX = true;
+
+                _BobySmash.X = 10;
+                _BobySmash.Y = -5;
+                _PositionSmash.X = 2;
+                _PositionSmash.Y = 3;
+                _GroundHit = true;
+                wait(0.2f, () => {
+                    _BobySmash = new Point(0, 0);
+                    _PositionSmash = new Vector2(0, 0);
+                    _ShootSmashEFX = false;
+                    _GroundHit = false;
+                });
+            }
+
             /*else if (this.isHeadHit && !isGrounded)
             {
                 _widthSmash = -10;
