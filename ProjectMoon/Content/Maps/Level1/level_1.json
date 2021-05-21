@@ -183,6 +183,18 @@
           "originX": 0,
           "originY": 0,
           "values": {"behavior": "0"}
+        },
+        {
+          "name": "fish",
+          "id": 17,
+          "_eid": "46495642",
+          "x": 168,
+          "y": 312,
+          "originX": 0,
+          "originY": 0,
+          "nodes": [
+            {"x": 168, "y": 232}
+          ]
         }
       ]
     },

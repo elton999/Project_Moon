@@ -88,24 +88,86 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
     "duration": 200
+   },
+   {
+    "filename": "regina 10.aseprite",
+    "frame": { "x": 640, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 11.aseprite",
+    "frame": { "x": 704, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 12.aseprite",
+    "frame": { "x": 768, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 13.aseprite",
+    "frame": { "x": 832, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 14.aseprite",
+    "frame": { "x": 896, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 15.aseprite",
+    "frame": { "x": 960, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
    }
  ],
  "meta": {
   "app": "http://www.aseprite.org/",
-  "version": "1.2.25-x64",
+  "version": "1.2.27-x64",
   "image": "Regina.png",
   "format": "RGBA8888",
-  "size": { "w": 640, "h": 64 },
+  "size": { "w": 1024, "h": 64 },
   "scale": "1",
   "frameTags": [
-   { "name": "idle", "from": 2, "to": 2, "direction": "forward" },
-   { "name": "walk", "from": 3, "to": 6, "direction": "forward" },
-   { "name": "jump", "from": 7, "to": 7, "direction": "forward" },
-   { "name": "jet-pack", "from": 8, "to": 9, "direction": "forward" }
+   { "name": "idle-jetpack", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "idle-no-jetpack", "from": 1, "to": 1, "direction": "forward" },
+   { "name": "walk-jetpack", "from": 2, "to": 5, "direction": "forward" },
+   { "name": "jump-jetpack", "from": 6, "to": 6, "direction": "forward" },
+   { "name": "fly", "from": 7, "to": 8, "direction": "forward" },
+   { "name": "walk-no-jetpack", "from": 9, "to": 12, "direction": "forward" },
+   { "name": "jump-no-jetpack", "from": 13, "to": 13, "direction": "forward" },
+   { "name": "shoot-jetpack", "from": 14, "to": 14, "direction": "forward" },
+   { "name": "shoot-no-jetpack", "from": 15, "to": 15, "direction": "forward" }
   ],
   "layers": [
-   { "name": "Layer 4 Copy Copy Copy Copy", "opacity": 255, "blendMode": "normal" },
-   { "name": "Layer 4 Copy Copy", "opacity": 255, "blendMode": "normal" }
+   { "name": "body", "opacity": 255, "blendMode": "normal" },
+   { "name": "legs", "opacity": 255, "blendMode": "normal" },
+   { "name": "arms", "opacity": 255, "blendMode": "normal" },
+   { "name": "jetpack", "opacity": 255, "blendMode": "normal" },
+   { "name": "shadow", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]
