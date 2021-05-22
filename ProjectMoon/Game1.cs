@@ -32,11 +32,15 @@ namespace ProjectMoon
             AssetManagement.Set<Entities.Player>("player", "PLAYER");
             AssetManagement.Set<Entities.Actors.Victim>("victim", "MIDDLEGROUND");
             AssetManagement.Set<Gameplay.HitBoxDamage>("damage", "MIDDLEGROUND");
+            
+            // Enemies
             AssetManagement.Set<Entities.Actors.Enemies.Soldier>("soldier", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Spider>("spider", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Bat>("bat", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Jumper>("jumper", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Fish>("fish", "ENEMIES");
+            AssetManagement.Set<Entities.Actors.Enemies.Shooter>("shooter", "ENEMIES");
+            AssetManagement.Set<Entities.Actors.Enemies.Vomiter>("vomiter", "ENEMIES");
 
             this.GameManagement = new GameManagement();
             this.GameManagement.game = this;

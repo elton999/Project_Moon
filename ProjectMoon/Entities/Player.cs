@@ -320,7 +320,7 @@ namespace ProjectMoon.Entities
 
         #endregion
 
-        private string[] _enemyTags= new string[5] { "soldier", "spider", "bat", "jumper", "damage" };
+        private string[] _enemyTags= new string[6] { "soldier", "spider", "bat", "jumper", "damage", "bullet" };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);

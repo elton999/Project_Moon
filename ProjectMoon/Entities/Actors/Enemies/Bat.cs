@@ -93,7 +93,6 @@ namespace ProjectMoon.Entities.Actors.Enemies
                     } else{
                         this.CurrentStatus = Status.IDLE_FLYING;
                         this._PositionIdleFly = this.Position;
-                        Console.WriteLine("teste");
                     }
                 }
             }

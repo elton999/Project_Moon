@@ -12,6 +12,7 @@ namespace ProjectMoon.Entities.Actors
 {
     class Bullet : Actor
     {
+        public bool FromEnemy = false;
         public override void Start()
         {
             base.Start();
@@ -26,12 +27,14 @@ namespace ProjectMoon.Entities.Actors
             this.velocityDecrecentX = 0;
             this.velocityDecrecentY = 0;
 
+            if (!FromEnemy)
+            {
+                this.Scene.Camera.TimeShake = 10;
+                this.Scene.Camera.ShakeMagnitude = 3.5f;
 
-            this.Scene.Camera.TimeShake = 10;
-            this.Scene.Camera.ShakeMagnitude = 3.5f;
-
-            int randomY = getRandom.Next(-3, 3);
-            this.Position = new Vector2(this.Position.X, this.Position.Y + randomY);
+                int randomY = getRandom.Next(-3, 3);
+                this.Position = new Vector2(this.Position.X, this.Position.Y + randomY);
+            }
         }
 
         public static readonly Random getRandom = new Random();
@@ -45,8 +48,11 @@ namespace ProjectMoon.Entities.Actors
                 {
                     if (this.overlapCheck(actor))
                     {
-                        this.OnCollision(actor.tag);
-                        actor.OnCollision(this.tag);
+                        if (actor.tag == "player" && this.FromEnemy || actor.tag != "player" && !this.FromEnemy)
+                        {
+                            this.OnCollision(actor.tag);
+                            actor.OnCollision(this.tag);
+                        }
                     }
                 }
             }
