@@ -30,6 +30,11 @@
 /processor:OgmoTileMapProcessor
 /build:Maps/Level2/level_1.json
 
+#begin Maps/Level3/level_1.json
+/importer:OgmoTileMapImporter
+/processor:OgmoTileMapProcessor
+/build:Maps/Level3/level_1.json
+
 #begin Maps/TileSettings.ogmo
 /importer:OgmoImporter
 /processor:OgmoProcessor

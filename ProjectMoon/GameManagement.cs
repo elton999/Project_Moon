@@ -17,11 +17,11 @@ namespace ProjectMoon
         public Game1 game;
 
         public Scene GeralScene;
-        public int CurrentLevel = 1;
+        public int CurrentLevel = 3;
         public int CurrentPartLevel = 1;
         public string CurrentPathLevel { get => "Maps/Level" + CurrentLevel + "/level_"; }
         public List<Scene> LevelParts;
-        public int[] NumberPartOfLevel = {2, 1};
+        public int[] NumberPartOfLevel = {2, 1, 1};
 
 
         public HUD GameplayHud;
