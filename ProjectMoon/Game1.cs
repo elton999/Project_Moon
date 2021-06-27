@@ -13,11 +13,15 @@ namespace ProjectMoon
         public GameManagement GameManagement;
         public AssetManagement AssetManagement;
 
+        public static Game1 Instance;
+
         public Game1()
         {
+            if (Instance == null)
+                Instance = this;
             _graphics = new GraphicsDeviceManager(this);
             Window.AllowUserResizing = true;
-            
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -32,7 +36,7 @@ namespace ProjectMoon
             AssetManagement.Set<Entities.Player>("player", "PLAYER");
             AssetManagement.Set<Entities.Actors.Victim>("victim", "MIDDLEGROUND");
             AssetManagement.Set<Gameplay.HitBoxDamage>("damage", "MIDDLEGROUND");
-            
+
             // Enemies
             AssetManagement.Set<Entities.Actors.Enemies.Soldier>("soldier", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Spider>("spider", "ENEMIES");
@@ -43,7 +47,6 @@ namespace ProjectMoon
             AssetManagement.Set<Entities.Actors.Enemies.Vomiter>("vomiter", "ENEMIES");
 
             this.GameManagement = new GameManagement();
-            this.GameManagement.game = this;
             this.GameManagement.Start();
 
             base.Initialize();
