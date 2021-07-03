@@ -50,7 +50,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
         }
 
         private bool _currentMovimentX = false;
-	    private bool _currentMovimentY = false;
+        private bool _currentMovimentY = false;
         public void CheckPath(GameTime gameTime)
         {
             _groundTop = false;
@@ -64,7 +64,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
             {
                 if (
                         (this.Scene.Grid.checkOverlap(this.size, new Vector2(this.Position.X - 1, this.Position.Y + 1), this) ||
-                        this.Scene.Grid.checkOverlap(this.size, new Vector2(this.Position.X + 1, this.Position.Y + 1), this)) 
+                        this.Scene.Grid.checkOverlap(this.size, new Vector2(this.Position.X + 1, this.Position.Y + 1), this))
                         && _currentMovimentX
                     )
                 {
@@ -103,7 +103,6 @@ namespace ProjectMoon.Entities.Actors.Enemies
             _currentMovimentY = false;
 
             float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            string _tag;
             if (_groundRight)
             {
                 _currentMovimentY = true;
@@ -129,7 +128,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
             {
                 //setAnimationMovement("moveT");
                 _currentMovimentX = true;
-                moveX(t * -_Speed, (string _tag) =>  moveY(t * _Speed, null));
+                moveX(t * -_Speed, (string _tag) => moveY(t * _Speed, null));
             }
         }
 
@@ -145,7 +144,8 @@ namespace ProjectMoon.Entities.Actors.Enemies
             {
                 rt = true;
                 _groundRight = true;
-            } else if (grid.checkOverlap(this.size, new Vector2(this.Position.X - 1, this.Position.Y), this))
+            }
+            else if (grid.checkOverlap(this.size, new Vector2(this.Position.X - 1, this.Position.Y), this))
             {
                 rt = true;
                 _groundLeft = true;
@@ -155,7 +155,8 @@ namespace ProjectMoon.Entities.Actors.Enemies
             {
                 rt = true;
                 _groundBottom = true;
-            } else if (grid.checkOverlap(this.size, new Vector2(this.Position.X, this.Position.Y - 1), this))
+            }
+            else if (grid.checkOverlap(this.size, new Vector2(this.Position.X, this.Position.Y - 1), this))
             {
                 rt = true;
                 _groundTop = true;

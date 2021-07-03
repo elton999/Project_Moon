@@ -15,7 +15,7 @@ namespace ProjectMoon
 
         public HUD GameplayHud;
         public static GameManagement Instance;
-        public void Start()
+        public override void Start()
         {
             if (Instance == null)
                 Instance = this;

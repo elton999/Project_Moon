@@ -33,7 +33,7 @@ namespace ProjectMoon
             _graphics.ApplyChanges();
 
             AssetManagement = new AssetManagement();
-            AssetManagement.Set<Entities.Player>("player", "PLAYER");
+            AssetManagement.Set<Entities.Player.Player>("player", "PLAYER");
             AssetManagement.Set<Entities.Actors.Victim>("victim", "MIDDLEGROUND");
             AssetManagement.Set<Gameplay.HitBoxDamage>("damage", "MIDDLEGROUND");
 

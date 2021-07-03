@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UmbrellaToolKit.Sprite;
 using UmbrellaToolKit.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ProjectMoon.Gameplay;
 
-namespace ProjectMoon.Entities
+namespace ProjectMoon.Entities.Player
 {
-    class Player : Actor
+    public class Player : Actor
     {
+
+        public Jetpack Jetpack;
+        public Weapon Weapon;
         public override void Start()
         {
             base.Start();
@@ -24,25 +25,25 @@ namespace ProjectMoon.Entities
             this.velocityDecrecentY = 2050;
             this.velocityDecrecentX = 0;
 
+            this.Jetpack = new Jetpack(this);
+            this.Weapon = new Weapon(this);
+
             this.Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
             this.AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
             this.Origin = new Vector2(27, 16);
-
-            wait(this.RechargeFuelTime, RechargeFuel);
-
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            this.Input();
-
             this.Animation(gameTime);
+
+            this.Input();
 
             this.DamageFX(gameTime);
         }
-        
+
         public override void UpdateData(GameTime gameTime)
         {
             base.UpdateData(gameTime);
@@ -51,9 +52,9 @@ namespace ProjectMoon.Entities
 
             this.jump();
 
-            this.Fly(gameTime);
+            this.Jetpack.Update(gameTime);
 
-            this.Fire(gameTime);
+            this.Weapon.Update(gameTime, this.CFire);
 
             this.CheckGrounded();
 
@@ -67,8 +68,8 @@ namespace ProjectMoon.Entities
         bool CDown = false;
 
         bool CJump = false;
-        bool CFly = false;
-        bool CFire = false;
+        public bool CFly = false;
+        public bool CFire = false;
 
         private void Input()
         {
@@ -88,7 +89,7 @@ namespace ProjectMoon.Entities
             if (Keyboard.GetState().IsKeyUp(Keys.Up))
             {
                 CUp = false;
-                _upShoot = false;
+                this.Weapon.UpShoot = false;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
@@ -115,10 +116,9 @@ namespace ProjectMoon.Entities
                 CFire = false;
         }
         #endregion
-
         #region physics
         #region move
-        private float GravityY = -200f;
+        public float GravityY = -200f;
 
         private float HorizontalSpeed = 0;
         private float _TotalSpeedOnGrounded = 80;
@@ -128,7 +128,7 @@ namespace ProjectMoon.Entities
         private float VertivalSpeed = 0;
         private void move(GameTime gameTime)
         {
-            if (!this._isFire)
+            if (!this.Weapon.IsFire && !this.Weapon.UpShoot)
             {
                 // ground control
                 if (this._isGrounded && !this.CFire)
@@ -152,7 +152,7 @@ namespace ProjectMoon.Entities
                 }
 
                 // flying control
-                if (this._isFly)
+                if (this.Jetpack.isFly)
                 {
                     if (this.CRight)
                     {
@@ -185,14 +185,14 @@ namespace ProjectMoon.Entities
             }
 
 
-            if (((!this.CLeft && !this.CRight) && this._isGrounded) || 
-                ((!this.CLeft && !this.CRight) && this._isFly) || this.CFire)
+            if (((!this.CLeft && !this.CRight) && this._isGrounded) ||
+                ((!this.CLeft && !this.CRight) && this.Jetpack.isFly) || (this.CFire || this.Weapon.UpShoot))
             {
                 this.velocity.X = 0;
                 this.HorizontalSpeed = 0;
             }
 
-            if (!this.CDown && !this.CUp && this._isFly || this.CFire)
+            if (!this.CDown && !this.CUp && this.Jetpack.isFly || this.CFire)
             {
                 this.VertivalSpeed = 0;
                 this.velocity.Y = 0;
@@ -208,7 +208,7 @@ namespace ProjectMoon.Entities
             if (this.HorizontalSpeed < this._TotalSpeedOnGrounded)
                 this.HorizontalSpeed += this._SpeedIncrement;
 
-            if (this.HorizontalSpeed >  this._TotalSpeedOnGrounded)
+            if (this.HorizontalSpeed > this._TotalSpeedOnGrounded)
                 this.HorizontalSpeed = this._TotalSpeedOnGrounded;
         }
 
@@ -217,7 +217,7 @@ namespace ProjectMoon.Entities
         /// </summary>
         private void speedIncrement_Y()
         {
-            if (this.VertivalSpeed <this._TotalSpeedFly)
+            if (this.VertivalSpeed < this._TotalSpeedFly)
                 this.VertivalSpeed += this._SpeedIncrement;
 
             if (this.VertivalSpeed > this._TotalSpeedFly)
@@ -227,18 +227,21 @@ namespace ProjectMoon.Entities
 
         #region Jump
         private int _JumpPressedForce = 0;
-	    private bool _JumpPressed = false;
+        private bool _JumpPressed = false;
         private float _JumpForce = 330f; //390f;
         private int _DashJumpForce = 200;
         private float _DashJumpCurrentForce = 0;
         private float _VelocityJumpInitial;
 
-	    private void jump(){
-		    if(this._isGrounded && this.CJump){
+        private void jump()
+        {
+            if (this._isGrounded && this.CJump)
+            {
                 this._JumpPressed = true;
             }
 
-		    if(this._JumpPressed && this._JumpPressedForce< 17){
+            if (this._JumpPressed && this._JumpPressedForce < 17)
+            {
                 if (this._JumpPressedForce == 0)
                 {
                     this._VelocityJumpInitial = this._DashJumpForce;
@@ -246,81 +249,29 @@ namespace ProjectMoon.Entities
                     this.gravity2D.X = 0;
                 }
                 this._DashJumpCurrentForce = lerp(0.05f, this._DashJumpCurrentForce, 0.1f);
-                
+
 
                 if (this.velocity.X > 0)
-                    this.velocity = new Vector2(this._DashJumpCurrentForce*this._DashJumpForce*12, this._JumpForce);
-                else if(this.velocity.X < 0)
-                    this.velocity = new Vector2(-this._DashJumpCurrentForce*this._DashJumpForce*12, this._JumpForce);
+                    this.velocity = new Vector2(this._DashJumpCurrentForce * this._DashJumpForce * 12, this._JumpForce);
+                else if (this.velocity.X < 0)
+                    this.velocity = new Vector2(-this._DashJumpCurrentForce * this._DashJumpForce * 12, this._JumpForce);
                 else
                     this.velocity = new Vector2(this.velocity.X, this._JumpForce);
 
-                this._JumpPressedForce += 1; 
-            } else
+                this._JumpPressedForce += 1;
+            }
+            else
                 this._JumpPressed = false;
 
-		    if(this._isGrounded && !this._JumpPressed && !this.CJump){
+            if (this._isGrounded && !this._JumpPressed && !this.CJump)
+            {
                 this._JumpPressed = false;
                 this._JumpPressedForce = 0;
             }
         }
         #endregion
 
-        #region Fly
-        private float Power { 
-            get => this.Scene.GameManagement.Values["POWER"]; 
-            set => this.Scene.GameManagement.Values["POWER"] = value; 
-        }
-        private float _FuelDecrement = 20f;
-        private bool _isFly = false;
-        private bool _CFlyPressed = false;
-        private bool _onFly = false;
-        private void Fly(GameTime gametime)
-        {
-            if (this.CFly && !this._CFlyPressed && !this._onFly)
-            {
-                this._onFly = true;
-                moveY(1, null);
-            } else if(!this.CFly && !this._CFlyPressed && this._onFly)
-            {
-                this._CFlyPressed = true;
-            } else if(this.CFly && this._CFlyPressed && this._onFly || this.Scene.GameManagement.Values["POWER"] <= 0)
-            {
-                this._onFly = false;
-            } else if (!this.CFly && this._CFlyPressed && !this._onFly)
-            {
-                this._CFlyPressed = false;
-            }
-
-            if (this._onFly && this.Power > 0)
-            {
-                this.Power -= this._FuelDecrement * (float)gametime.ElapsedGameTime.TotalSeconds;
-                this.velocityDecrecentY = 0;
-                this.moveY((-15 +this.velocity.Y )*(float)gametime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-                
-                this.gravity2D = new Vector2(0, 0);
-                this._isFly = true;
-            }
-            else
-            {
-                this.velocityDecrecentY = 2050;
-                this.gravity2D = new Vector2(0, this.GravityY);
-                this._isFly = false;
-            }
-        }
-
-        private float RechargeFuelTime = 0.2f;
-        private void RechargeFuel()
-        {
-            if (this.Scene.GameManagement.Values["POWER"] < 100)
-                this.Scene.GameManagement.Values["POWER"] = this.Scene.GameManagement.Values["POWER"] + 1;
-
-            wait(this.RechargeFuelTime, RechargeFuel);
-        }
-
-        #endregion
-
-        private string[] _enemyTags= new string[6] { "soldier", "spider", "bat", "jumper", "damage", "bullet" };
+        private string[] _enemyTags = new string[6] { "soldier", "spider", "bat", "jumper", "damage", "bullet" };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
@@ -340,7 +291,8 @@ namespace ProjectMoon.Entities
                 this._DamageFX = true;
                 this.Scene.GameManagement.Values["CURRENT_LIFES"] = this.Scene.GameManagement.Values["CURRENT_LIFES"] - 1;
 
-                wait(5, new Action(() => {
+                wait(5, new Action(() =>
+                {
                     this._StartDamage = false;
                     this._DamageFX = false;
                     this.SpriteColor = Color.White;
@@ -358,7 +310,8 @@ namespace ProjectMoon.Entities
                     this.SpriteColor = Color.Red;
                     this.Transparent = 0.7f;
                 }
-                else { 
+                else
+                {
                     this.SpriteColor = Color.White;
                     this.Transparent = 1;
                 }
@@ -387,90 +340,28 @@ namespace ProjectMoon.Entities
         }
         #endregion
 
-        #region shooting
-        private float BulletVelocity = 150f;
-        private bool _isFire = false;
-        private int _swingBullet = 2;
-        
-        // Cadence
-        private float Cadence = 0.5f;
-        private bool FirePressed = false;
-        private float timerPressed = 0;
-        private bool firstBullet = false;
-
-        public void Fire(GameTime gameTime)
-        {
-            if (this.CFire)
-            {
-                this._isFire = true;
-                timerPressed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (timerPressed >= Cadence || !firstBullet)
-                {
-                    firstBullet = true;
-                    timerPressed = 0;
-                    this.Shoot();
-                }
-            }
-            else
-            {
-                this._isFire = false;
-                timerPressed = 0;
-                firstBullet = false;
-            }
-        }
-
-        bool _upShoot = false;
-        public void Shoot()
-        {
-            Actors.Bullet _bullet = new Actors.Bullet();
-            _bullet.Scene = this.Scene;
-            _bullet.spriteEffect = this.spriteEffect;
-            _bullet.velocity = new Vector2(this.spriteEffect == SpriteEffects.None ? -this.BulletVelocity : this.BulletVelocity, this._upShoot? this.BulletVelocity : 0);
-           
-            if (this.spriteEffect == SpriteEffects.None)
-            {
-                if(!this._upShoot)
-                    _bullet.Position = new Vector2(this.Position.X + 20, this.Position.Y + 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
-                else
-                    _bullet.Position = new Vector2(this.Position.X + 10, this.Position.Y - 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
-                moveX(-10);
-                SmashEfx(true);
-            }
-            else
-            {
-                if (!this._upShoot)
-                    _bullet.Position = new Vector2(this.Position.X - 20, this.Position.Y + 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
-                else
-                    _bullet.Position = new Vector2(this.Position.X - 10, this.Position.Y - 10 + (new Random()).Next(-this._swingBullet, this._swingBullet));
-                moveX(10);
-                SmashEfx(true);
-            }
-            _bullet.Start();
-        }
-        #endregion
-
         #region Animation and Render
         public AsepriteAnimation AsepriteAnimation;
         private void Animation(GameTime gameTime)
         {
-            if (!this._isGrounded && !this._isFly)
+            if (!this._isGrounded && !this.Jetpack.isFly)
                 this.AsepriteAnimation.Play(gameTime, "jump-jetpack", AsepriteAnimation.AnimationDirection.LOOP);
-            else if (this._isFire)
+            else if (this._isGrounded && this.CUp)
+            {
+                this.Weapon.UpShoot = true;
+                this.AsepriteAnimation.Play(gameTime, "shoot-jetpack", AsepriteAnimation.AnimationDirection.FORWARD);
+            }
+            else if (this.Weapon.IsFire)
             {
                 if (this.AsepriteAnimation.lastFrame)
-                    this._isFire = false;
+                    this.Weapon.IsFire = false;
                 else
                 {
-                    if (this.CUp)
-                    {
-                        this._upShoot = true;
-                        this.AsepriteAnimation.Play(gameTime, "shoot-jetpack", AsepriteAnimation.AnimationDirection.FORWARD);
-                    }
-                    else
+                    if (!this.Weapon.UpShoot)
                         this.AsepriteAnimation.Play(gameTime, "jump-jetpack", AsepriteAnimation.AnimationDirection.FORWARD);
                 }
             }
-            else if (this._isFly)
+            else if (this.Jetpack.isFly)
                 this.AsepriteAnimation.Play(gameTime, "fly", AsepriteAnimation.AnimationDirection.LOOP);
             else if (CRight || CLeft)
                 this.AsepriteAnimation.Play(gameTime, "walk-jetpack", AsepriteAnimation.AnimationDirection.LOOP);
@@ -486,7 +377,7 @@ namespace ProjectMoon.Entities
         private bool _GroundHit = false;
         private bool _ShootSmashEFX = false;
         private bool _last_isgrounded = false;
-        public void SmashEfx(bool _shooting =  false)
+        public void SmashEfx(bool _shooting = false)
         {
             if (!_last_isgrounded && this._isGrounded && !_GroundHit && !_shooting)
             {
@@ -495,9 +386,10 @@ namespace ProjectMoon.Entities
                 _PositionSmash.X = 2;
                 _PositionSmash.Y = -2;
                 _GroundHit = true;
-                wait(0.2f, () => {
-                    _BobySmash = new Point(0,0);
-                    _PositionSmash = new Vector2(0,0);
+                wait(0.2f, () =>
+                {
+                    _BobySmash = new Point(0, 0);
+                    _PositionSmash = new Vector2(0, 0);
                     _GroundHit = false;
                 });
             }
@@ -511,7 +403,8 @@ namespace ProjectMoon.Entities
                 _PositionSmash.X = 2;
                 _PositionSmash.Y = 3;
                 _GroundHit = true;
-                wait(0.2f, () => {
+                wait(0.2f, () =>
+                {
                     _BobySmash = new Point(0, 0);
                     _PositionSmash = new Vector2(0, 0);
                     _ShootSmashEFX = false;
@@ -542,9 +435,9 @@ namespace ProjectMoon.Entities
             this.SmashEfx();
 
             spriteBatch.Draw(
-                this.Sprite, 
+                this.Sprite,
                 new Rectangle((int)(this.Position.X - _PositionSmash.X), (int)(this.Position.Y - _PositionSmash.Y),
-                this.Body.Width - _BobySmash.X, this.Body.Height - _BobySmash.Y), 
+                this.Body.Width - _BobySmash.X, this.Body.Height - _BobySmash.Y),
                 this.Body, this.SpriteColor * this.Transparent, this.Rotation, this.Origin, this.spriteEffect, 0);
         }
         #endregion
