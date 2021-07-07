@@ -23,7 +23,6 @@ namespace ProjectMoon.Gameplay
 
         // Cadence
         private float Cadence = 0.5f;
-        private bool FirePressed = false;
         private float timerPressed = 0;
         private bool firstBullet = false;
 

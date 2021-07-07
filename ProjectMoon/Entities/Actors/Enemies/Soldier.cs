@@ -41,7 +41,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
             if (this.isLive)
             {
                 base.Update(gameTime);
-                
+
                 if (this._StartAttack && !this._waitAttack)
                 {
                     this._waitAttack = true;
@@ -143,6 +143,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
                 base.Draw(spriteBatch);
                 if (this.Scene.GameManagement.Values["DEBUG"])
                 {
+                    this.Box.Scene = this.Scene;
                     this.Box.Position = this.Position;
                     this.Box.Draw(spriteBatch);
                 }

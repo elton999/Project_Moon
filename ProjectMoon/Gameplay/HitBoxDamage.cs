@@ -44,6 +44,7 @@ namespace ProjectMoon.Gameplay
             base.Draw(spriteBatch);
             if (this.Scene.GameManagement.Values["DEBUG"])
             {
+                this.Box.Scene = this.Scene;
                 this.Box.Position = this.Position;
                 this.Box.Draw(spriteBatch);
             }

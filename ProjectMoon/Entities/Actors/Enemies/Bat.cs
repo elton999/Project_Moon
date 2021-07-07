@@ -49,7 +49,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
 
         float _YCon = 20;
         float _XCon = 10;
-        
+
         private enum Status { IDLE, IDLE_FLYING, ATTACK, }
         private Status CurrentStatus = Status.IDLE;
         private Status InitialStatus;
@@ -89,8 +89,10 @@ namespace ProjectMoon.Entities.Actors.Enemies
                     {
                         this.Position.Y = lerp(this.Position.Y, this._PositionToAttack.Y, ((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f * this._Speed));
                         this.Position.X = lerp(this.Position.X, this._PositionToAttack.X, ((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f * this._Speed));
-                                           
-                    } else{
+
+                    }
+                    else
+                    {
                         this.CurrentStatus = Status.IDLE_FLYING;
                         this._PositionIdleFly = this.Position;
                     }
@@ -101,7 +103,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -111,6 +113,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
                 base.Draw(spriteBatch);
                 if (this.Scene.GameManagement.Values["DEBUG"])
                 {
+                    this.Box.Scene = this.Scene;
                     this.Box.Position = this.Position;
                     this.Box.Draw(spriteBatch);
                 }

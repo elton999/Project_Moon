@@ -56,6 +56,8 @@ namespace ProjectMoon
             base.Update(gameTime);
 
             this.SceneManagement.Update(gameTime);
+            System.Console.Clear();
+            System.Console.WriteLine(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public void Render(SpriteBatch spriteBatch)

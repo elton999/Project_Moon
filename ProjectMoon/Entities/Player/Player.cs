@@ -433,12 +433,13 @@ namespace ProjectMoon.Entities.Player
         {
             //this.DrawSprite(spriteBatch);
             this.SmashEfx();
-
+            BeginDraw(spriteBatch);
             spriteBatch.Draw(
                 this.Sprite,
                 new Rectangle((int)(this.Position.X - _PositionSmash.X), (int)(this.Position.Y - _PositionSmash.Y),
                 this.Body.Width - _BobySmash.X, this.Body.Height - _BobySmash.Y),
                 this.Body, this.SpriteColor * this.Transparent, this.Rotation, this.Origin, this.spriteEffect, 0);
+            EndDraw(spriteBatch);
         }
         #endregion
     }

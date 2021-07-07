@@ -37,7 +37,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
         private bool _Attack = true;
         private bool _BackToInitialPosition = false;
         private float timer = 0;
-        private float Duration = 1*1000;
+        private float Duration = 1 * 1000;
         public override void UpdateData(GameTime gameTime)
         {
             float _deltaTime = (float)gameTime.ElapsedGameTime.Milliseconds;
@@ -52,11 +52,11 @@ namespace ProjectMoon.Entities.Actors.Enemies
                     timer = 0;
                     _Attack = false;
                     _BackToInitialPosition = true;
-                    
+
                 }
             }
 
-            if(!_Attack && _BackToInitialPosition)
+            if (!_Attack && _BackToInitialPosition)
             {
                 timer += _deltaTime;
                 if (timer < Duration)
@@ -84,6 +84,7 @@ namespace ProjectMoon.Entities.Actors.Enemies
                 base.Draw(spriteBatch);
                 if (this.Scene.GameManagement.Values["DEBUG"])
                 {
+                    this.Box.Scene = this.Scene;
                     this.Box.Position = this.Position;
                     this.Box.Draw(spriteBatch);
                 }
