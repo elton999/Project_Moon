@@ -10,7 +10,7 @@ namespace ProjectMoon
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public GameManagement GameManagement;
+        public GameManagementGame GameManagement;
         public AssetManagement AssetManagement;
 
         public static Game1 Instance;
@@ -46,7 +46,7 @@ namespace ProjectMoon
             AssetManagement.Set<Entities.Actors.Enemies.Shooter>("shooter", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Vomiter>("vomiter", "ENEMIES");
 
-            this.GameManagement = new GameManagement();
+            this.GameManagement = new GameManagementGame();
             this.GameManagement.Start();
 
             base.Initialize();
@@ -73,7 +73,7 @@ namespace ProjectMoon
         {
             GraphicsDevice.Clear(Color.Black);
 
-            this.GameManagement.Render(_spriteBatch);
+            this.GameManagement.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }

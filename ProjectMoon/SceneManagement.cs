@@ -1,31 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using UmbrellaToolKit;
-using ProjectMoon.UI.Gameplay;
 using UmbrellaToolKit.Collision;
-using ProjectMoon.Entities;
 
 namespace ProjectMoon
 {
-    public class SceneManagement
+    public class SceneManagementGame : UmbrellaToolKit.SceneManagement
     {
-        public Scene MainScene;
-        public int CurrentLevel = 1;
         public int CurrentPartLevel = 1;
-        public string CurrentPathLevel { get => "Maps/Level" + CurrentLevel + "/level_"; }
+        public string CurrentPathLevel { get => "Maps/Level" + CurrentScene + "/level_"; }
         public List<Scene> LevelParts;
         public int[] NumberPartOfLevel = { 2, 1, 1 };
 
-        public void Start()
+        public override void Start()
         {
-
+            this.GameManagement = GameManagementGame.Instance;
             this.MainScene = new Scene(Game1.Instance.GraphicsDevice, Game1.Instance.Content);
-            this.MainScene.GameManagement = GameManagement.Instance;
+            this.MainScene.GameManagement = GameManagementGame.Instance;
             this.MainScene.SetSizes((int)(426 / 1.18f), (int)(240 / 1.18f));
             this.MainScene.CreateBackBuffer();
             this.MainScene.CreateCamera();
@@ -37,9 +29,9 @@ namespace ProjectMoon
             this.SetLevel();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            if (GameManagement.Instance.isPlaying)
+            if (GameManagementGame.Instance.isPlaying)
             {
                 this.MainScene.Update(gameTime);
                 if (this.CheckPlayerPart(this.CurrentPartLevel))
@@ -47,7 +39,7 @@ namespace ProjectMoon
                     int _newPartOfLevel = this.checkOfPlayer();
                     if (_newPartOfLevel != this.CurrentPartLevel)
                     {
-                        GameManagement.Instance.CurrentStatus = GameManagement.Status.STOP;
+                        GameManagementGame.Instance.CurrentStatus = GameManagement.Status.STOP;
                         this.AddPartOfLevelOnMainScene(_newPartOfLevel);
 
                         this.MainScene.LevelSize = this.LevelParts[_newPartOfLevel - 1].LevelSize;
@@ -63,18 +55,18 @@ namespace ProjectMoon
                             this.MainScene.Players[0].Position.Y
                             );
 
-                        GameManagement.Instance.wait(0.5f, new Action(() =>
+                        GameManagementGame.Instance.wait(0.5f, new Action(() =>
                         {
                             this.CurrentPartLevel = _newPartOfLevel;
                             this.LoadLevel();
                             this.SetLevel();
-                            GameManagement.Instance.CurrentStatus = GameManagement.Status.PLAYING;
+                            GameManagementGame.Instance.CurrentStatus = GameManagement.Status.PLAYING;
                         }));
                     }
                 }
             }
 
-            if (GameManagement.Instance.isStoping)
+            if (GameManagementGame.Instance.isStoping)
             {
                 this.MainScene.Camera.moveX((float)gameTime.ElapsedGameTime.TotalSeconds);
                 this.MainScene.Camera.moveY((float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -84,12 +76,12 @@ namespace ProjectMoon
         public void LoadLevel()
         {
             this.LevelParts = new List<Scene>();
-            for (int i = 0; i < this.NumberPartOfLevel[this.CurrentLevel - 1]; i++)
+            for (int i = 0; i < this.NumberPartOfLevel[this.CurrentScene - 1]; i++)
             {
                 Scene scene = new Scene(Game1.Instance.GraphicsDevice, Game1.Instance.Content);
 
                 scene.MapLevelPath = this.CurrentPathLevel;
-                scene.GameManagement = GameManagement.Instance;
+                scene.GameManagement = GameManagementGame.Instance;
                 scene.SetLevel(i + 1);
 
                 scene.Grid.CollidesRamps.Add("r");
@@ -122,7 +114,7 @@ namespace ProjectMoon
 
         public int checkOfPlayer()
         {
-            for (int i = 0; i < this.NumberPartOfLevel[this.CurrentLevel - 1]; i++)
+            for (int i = 0; i < this.NumberPartOfLevel[this.CurrentScene - 1]; i++)
             {
                 if (!this.CheckPlayerPart(i + 1))
                     return i + 1;

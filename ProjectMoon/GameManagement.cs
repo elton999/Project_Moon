@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectMoon.UI.Gameplay;
 
 namespace ProjectMoon
 {
-    public class GameManagement : UmbrellaToolKit.GameManagement
+    public class GameManagementGame : UmbrellaToolKit.GameManagement
     {
-        public SceneManagement SceneManagement;
-
         public HUD GameplayHud;
-        public static GameManagement Instance;
+        public static GameManagementGame Instance;
+
         public override void Start()
         {
+            this.Game = Game1.Instance;
+            base.Start();
             if (Instance == null)
                 Instance = this;
             this.SetAllValues();
-            this.SceneManagement = new SceneManagement();
+            this.SceneManagement = new SceneManagementGame();
+            this.SceneManagement.GameManagement = this;
             this.SceneManagement.Start();
 
             this.GameplayHud = new HUD();
@@ -56,13 +53,12 @@ namespace ProjectMoon
             base.Update(gameTime);
 
             this.SceneManagement.Update(gameTime);
-            System.Console.Clear();
-            System.Console.WriteLine(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
-        public void Render(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             this.SceneManagement.MainScene.Draw(spriteBatch, Game1.Instance.GraphicsDevice, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width, Game1.Instance.GraphicsDevice.Viewport.Height));
+            base.Draw(spriteBatch);
         }
     }
 }
