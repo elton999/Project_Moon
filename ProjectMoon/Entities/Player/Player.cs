@@ -19,11 +19,8 @@ namespace ProjectMoon.Entities.Player
             base.Start();
             this.Scene.AllActors.Add(this);
             this.size = new Point(10, 32);
+            this.gravity2D.Y = 0f;
             this.tag = "player";
-
-            this.gravity2D = new Vector2(0, this.GravityY);
-            this.velocityDecrecentY = 2050;
-            this.velocityDecrecentX = 0;
 
             this.Jetpack = new Jetpack(this);
             this.Weapon = new Weapon(this);
@@ -116,13 +113,14 @@ namespace ProjectMoon.Entities.Player
                 CFire = false;
         }
         #endregion
+
         #region physics
         #region move
-        public float GravityY = -200f;
+        public float GravityY = 0.0008f;
 
         private float HorizontalSpeed = 0;
         private float _TotalSpeedOnGrounded = 80;
-        private float _SpeedIncrement = 5;
+        private float _SpeedIncrement = -0.07f;
 
         private float _TotalSpeedFly = 100;
         private float VertivalSpeed = 0;
@@ -228,7 +226,7 @@ namespace ProjectMoon.Entities.Player
         #region Jump
         private int _JumpPressedForce = 0;
         private bool _JumpPressed = false;
-        private float _JumpForce = 330f; //390f;
+        private float _JumpForce = 0.012f;
         private int _DashJumpForce = 200;
         private float _DashJumpCurrentForce = 0;
         private float _VelocityJumpInitial;
@@ -240,7 +238,7 @@ namespace ProjectMoon.Entities.Player
                 this._JumpPressed = true;
             }
 
-            if (this._JumpPressed && this._JumpPressedForce < 17)
+            if (this._JumpPressed && this._JumpPressedForce < 1)
             {
                 if (this._JumpPressedForce == 0)
                 {
@@ -251,12 +249,17 @@ namespace ProjectMoon.Entities.Player
                 this._DashJumpCurrentForce = lerp(0.05f, this._DashJumpCurrentForce, 0.1f);
 
 
-                if (this.velocity.X > 0)
+                /*if (this.velocity.X > 0)
                     this.velocity = new Vector2(this._DashJumpCurrentForce * this._DashJumpForce * 12, this._JumpForce);
                 else if (this.velocity.X < 0)
                     this.velocity = new Vector2(-this._DashJumpCurrentForce * this._DashJumpForce * 12, this._JumpForce);
                 else
                     this.velocity = new Vector2(this.velocity.X, this._JumpForce);
+                */
+
+                float g = (2f * this._JumpForce) / (MathF.Pow(0.08f, 2f));
+                float initJumpVelocity = MathF.Sqrt(2.0f * g * this._JumpForce);
+                this.velocity.Y = -initJumpVelocity;
 
                 this._JumpPressedForce += 1;
             }

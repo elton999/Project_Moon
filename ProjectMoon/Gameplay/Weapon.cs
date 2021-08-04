@@ -17,7 +17,7 @@ namespace ProjectMoon.Gameplay
             this._actor = actor;
         }
 
-        private float BulletVelocity = 150f;
+        private float BulletVelocity = -0.2f;
         public bool IsFire = false;
         private int _swingBullet = 2;
 

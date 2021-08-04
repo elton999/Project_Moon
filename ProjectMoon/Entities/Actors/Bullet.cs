@@ -26,8 +26,6 @@ namespace ProjectMoon.Entities.Actors
             this.Scene.AllActors.Add(this);
             this.Scene.Middleground.Add(this);
             this.gravity2D = new Vector2(0, 0);
-            this.velocityDecrecentX = 0;
-            this.velocityDecrecentY = 0;
 
             if (!FromEnemy)
             {
@@ -57,8 +55,26 @@ namespace ProjectMoon.Entities.Actors
                 }
             }
 
-            if (this.EdgesIsCollision.ContainsValue(true))
+            if (this.EdgesIsCollision.ContainsValue(true) || this.CheckSolidOverlap())
                 this.OnCollision("wall");
+        }
+
+        private bool CheckSolidOverlap()
+        {
+            var checkPosition = this.Position;
+            checkPosition.X += MathF.Sign(this.velocity.X);
+
+            foreach (Solid solid in this.Scene.AllSolids)
+                if (solid.check(this.size, checkPosition))
+                    return true;
+
+            var actor = new Actor();
+            actor.Position = checkPosition;
+            actor.size = this.size;
+            if (this.Scene.Grid.checkOverlapActor(actor, true))
+                return true;
+
+            return false;
         }
 
         public override void OnCollision(string tag = null)

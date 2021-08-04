@@ -7,8 +7,8 @@ namespace ProjectMoon
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        public GraphicsDeviceManager _graphics;
+        public SpriteBatch _spriteBatch;
 
         public GameManagementGame GameManagement;
         public AssetManagement AssetManagement;
