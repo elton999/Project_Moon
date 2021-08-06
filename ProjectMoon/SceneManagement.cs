@@ -40,7 +40,7 @@ namespace ProjectMoon
                     if (_newPartOfLevel != this.CurrentPartLevel)
                     {
                         GameManagementGame.Instance.CurrentStatus = GameManagement.Status.STOP;
-                        this.AddPartOfLevelOnMainScene(_newPartOfLevel);
+                        AddPartOfLevelOnMainScene(_newPartOfLevel);
 
                         this.MainScene.LevelSize = this.LevelParts[_newPartOfLevel - 1].LevelSize;
                         this.MainScene.ScreemOffset = this.LevelParts[_newPartOfLevel - 1].ScreemOffset;
@@ -48,18 +48,18 @@ namespace ProjectMoon
                         Point _playerSize = this.MainScene.Players[0].size;
                         Vector2 _playerPosition = this.MainScene.Players[0].Position;
                         Vector2 _cameraOrigin = this.MainScene.Camera.Origin;
-                        Vector2 _cameraPosition = new Vector2(this.MainScene.Camera.Position.X - _cameraOrigin.X, this.MainScene.Camera.Position.Y - _cameraOrigin.Y);
+                        Vector2 _cameraPosition = this.MainScene.Camera.Position;
 
                         this.MainScene.Camera.Target = new Vector2(
-                            _cameraPosition.X < _playerPosition.X ? _playerPosition.X + _playerSize.X + _cameraOrigin.X : _playerPosition.X - _cameraOrigin.X,
+                            _cameraPosition.X < _playerPosition.X ? _playerPosition.X + _cameraOrigin.X : _playerPosition.X - _cameraOrigin.X,
                             this.MainScene.Players[0].Position.Y
-                            );
+                        );
 
                         GameManagementGame.Instance.wait(0.5f, new Action(() =>
                         {
                             this.CurrentPartLevel = _newPartOfLevel;
-                            this.LoadLevel();
-                            this.SetLevel();
+                            LoadLevel();
+                            SetLevel();
                             GameManagementGame.Instance.CurrentStatus = GameManagement.Status.PLAYING;
                         }));
                     }
@@ -68,11 +68,16 @@ namespace ProjectMoon
 
             if (GameManagementGame.Instance.isStoping)
             {
-                this.MainScene.Camera.moveX((float)gameTime.ElapsedGameTime.TotalSeconds);
-                this.MainScene.Camera.moveY((float)gameTime.ElapsedGameTime.TotalSeconds);
+                this.MainScene.Camera.Position = Vector2.Lerp(
+                    this.MainScene.Camera.Position,
+                    this.MainScene.Camera.Target,
+                    (float)gameTime.ElapsedGameTime.TotalSeconds * 8f
+                );
             }
 
         }
+
+
         public void LoadLevel()
         {
             this.LevelParts = new List<Scene>();
@@ -93,17 +98,17 @@ namespace ProjectMoon
 
         public bool CheckPlayerPart(int partLevel)
         {
+            partLevel--;
             Actor _AreaScene = new Actor();
             _AreaScene.size = new Point(
-                (int)(this.LevelParts[partLevel - 1].LevelSize.X + (this.MainScene.AllActors[0].velocity.X > 0 ? -1 : 1)),
-                (int)(this.LevelParts[partLevel - 1].LevelSize.Y)
+                (int)(this.LevelParts[partLevel].LevelSize.X + MathF.Sign(this.MainScene.AllActors[0].velocity.X)),
+                (int)(this.LevelParts[partLevel].LevelSize.Y)
             );
 
             _AreaScene.Position = new Vector2(
-                this.LevelParts[partLevel - 1].ScreemOffset.X - (this.MainScene.AllActors[0].velocity.X > 0 ? -2 : 2),
-                this.LevelParts[partLevel - 1].ScreemOffset.Y
+                this.LevelParts[partLevel].ScreemOffset.X - MathF.Sin(this.MainScene.AllActors[0].velocity.X) * 50f,
+                this.LevelParts[partLevel].ScreemOffset.Y
             );
-
 
             if (this.MainScene.AllActors.Count > 0)
                 if (this.MainScene.AllActors[0].overlapCheck(_AreaScene))

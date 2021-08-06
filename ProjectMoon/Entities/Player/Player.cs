@@ -11,7 +11,6 @@ namespace ProjectMoon.Entities.Player
 {
     public class Player : Actor
     {
-
         public Jetpack Jetpack;
         public Weapon Weapon;
         public override void Start()
@@ -118,12 +117,8 @@ namespace ProjectMoon.Entities.Player
         #region move
         public float GravityY = 0.0008f;
 
-        private float HorizontalSpeed = 0;
-        private float _TotalSpeedOnGrounded = 80;
-        private float _SpeedIncrement = -0.07f;
+        private float _SpeedIncrement = -0.05f;
 
-        private float _TotalSpeedFly = 100;
-        private float VertivalSpeed = 0;
         private void move(GameTime gameTime)
         {
             if (!this.Weapon.IsFire && !this.Weapon.UpShoot)
@@ -133,19 +128,13 @@ namespace ProjectMoon.Entities.Player
                 {
                     if (this.CRight)
                     {
-                        if (this.velocity.X > 0)
-                            this.HorizontalSpeed = 0;
-                        this.velocity.X = (-this.HorizontalSpeed);
+                        this.velocity.X = (-this._SpeedIncrement);
                         this.Flip(true);
-                        this.speedIncrement_X();
                     }
                     else if (this.CLeft)
                     {
-                        if (this.velocity.X < 0)
-                            this.HorizontalSpeed = 0;
-                        this.velocity.X = (this.HorizontalSpeed);
+                        this.velocity.X = (this._SpeedIncrement);
                         this.Flip(false);
-                        this.speedIncrement_X();
                     }
                 }
 
@@ -154,72 +143,29 @@ namespace ProjectMoon.Entities.Player
                 {
                     if (this.CRight)
                     {
-                        if (this.velocity.X > 0)
-                            this.HorizontalSpeed = 0;
-                        this.velocity.X = -(this.HorizontalSpeed);
+                        this.velocity.X = -(this._SpeedIncrement);
                         this.Flip(true);
-                        this.speedIncrement_X();
                     }
                     else if (this.CLeft)
                     {
-                        if (this.velocity.X < 0)
-                            this.HorizontalSpeed = 0;
-                        this.velocity.X = (this.HorizontalSpeed);
+                        this.velocity.X = (this._SpeedIncrement);
                         this.Flip(false);
-                        this.speedIncrement_X();
                     }
 
                     if (this.CUp)
-                    {
-                        this.velocity.Y = -this.VertivalSpeed;
-                        this.speedIncrement_Y();
-                    }
+                        this.velocity.Y = this._SpeedIncrement;
                     else if (this.CDown)
-                    {
-                        this.velocity.Y = (this.VertivalSpeed);
-                        this.speedIncrement_Y();
-                    }
+                        this.velocity.Y = -(this._SpeedIncrement);
                 }
             }
 
 
             if (((!this.CLeft && !this.CRight) && this._isGrounded) ||
                 ((!this.CLeft && !this.CRight) && this.Jetpack.isFly) || (this.CFire || this.Weapon.UpShoot))
-            {
                 this.velocity.X = 0;
-                this.HorizontalSpeed = 0;
-            }
 
-            if (!this.CDown && !this.CUp && this.Jetpack.isFly || this.CFire)
-            {
-                this.VertivalSpeed = 0;
+            if (!this.CDown && !this.CUp && this.Jetpack.isFly)
                 this.velocity.Y = 0;
-            }
-        }
-
-
-        /// <summary>
-        /// Speed Increment Horizontal
-        /// </summary>
-        private void speedIncrement_X()
-        {
-            if (this.HorizontalSpeed < this._TotalSpeedOnGrounded)
-                this.HorizontalSpeed += this._SpeedIncrement;
-
-            if (this.HorizontalSpeed > this._TotalSpeedOnGrounded)
-                this.HorizontalSpeed = this._TotalSpeedOnGrounded;
-        }
-
-        /// <summary>
-        /// Speed Increment Vertival
-        /// </summary>
-        private void speedIncrement_Y()
-        {
-            if (this.VertivalSpeed < this._TotalSpeedFly)
-                this.VertivalSpeed += this._SpeedIncrement;
-
-            if (this.VertivalSpeed > this._TotalSpeedFly)
-                this.VertivalSpeed = this._TotalSpeedFly;
         }
         #endregion
 
@@ -227,36 +173,22 @@ namespace ProjectMoon.Entities.Player
         private int _JumpPressedForce = 0;
         private bool _JumpPressed = false;
         private float _JumpForce = 0.012f;
-        private int _DashJumpForce = 200;
-        private float _DashJumpCurrentForce = 0;
-        private float _VelocityJumpInitial;
+        private float _DashJumpForce = 0.095f;
 
         private void jump()
         {
             if (this._isGrounded && this.CJump)
             {
                 this._JumpPressed = true;
+
+                if (this.velocity.X > 0)
+                    this.velocity.X = _DashJumpForce;
+                else if (this.velocity.X < 0)
+                    this.velocity.X = -_DashJumpForce;
             }
 
             if (this._JumpPressed && this._JumpPressedForce < 1)
             {
-                if (this._JumpPressedForce == 0)
-                {
-                    this._VelocityJumpInitial = this._DashJumpForce;
-                    this.velocity.Y = 0;
-                    this.gravity2D.X = 0;
-                }
-                this._DashJumpCurrentForce = lerp(0.05f, this._DashJumpCurrentForce, 0.1f);
-
-
-                /*if (this.velocity.X > 0)
-                    this.velocity = new Vector2(this._DashJumpCurrentForce * this._DashJumpForce * 12, this._JumpForce);
-                else if (this.velocity.X < 0)
-                    this.velocity = new Vector2(-this._DashJumpCurrentForce * this._DashJumpForce * 12, this._JumpForce);
-                else
-                    this.velocity = new Vector2(this.velocity.X, this._JumpForce);
-                */
-
                 float g = (2f * this._JumpForce) / (MathF.Pow(0.08f, 2f));
                 float initJumpVelocity = MathF.Sqrt(2.0f * g * this._JumpForce);
                 this.velocity.Y = -initJumpVelocity;

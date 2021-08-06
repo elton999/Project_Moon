@@ -42,15 +42,12 @@ namespace ProjectMoon.Entities.Actors
             base.UpdateData(gameTime);
             foreach (Actor actor in this.Scene.AllActors)
             {
-                if (actor != this && actor.active)
+                if (actor != this && actor.active && this.overlapCheck(actor))
                 {
-                    if (this.overlapCheck(actor))
+                    if (actor.tag == "player" && this.FromEnemy || actor.tag != "player" && !this.FromEnemy)
                     {
-                        if (actor.tag == "player" && this.FromEnemy || actor.tag != "player" && !this.FromEnemy)
-                        {
-                            this.OnCollision(actor.tag);
-                            actor.OnCollision(this.tag);
-                        }
+                        this.OnCollision(actor.tag);
+                        actor.OnCollision(this.tag);
                     }
                 }
             }

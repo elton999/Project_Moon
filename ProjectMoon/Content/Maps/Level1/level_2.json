@@ -119,7 +119,9 @@
           "nodes": [
             {"x": 96, "y": 216}
           ]
-        }
+        },
+        {"name": "collision level", "id": 8, "_eid": "19915055", "x": -8, "y": 192, "width": 16, "height": 8, "originX": 0, "originY": 0},
+        {"name": "collision level", "id": 9, "_eid": "19915055", "x": -8, "y": 328, "width": 16, "height": 8, "originX": 0, "originY": 0}
       ]
     },
     {
