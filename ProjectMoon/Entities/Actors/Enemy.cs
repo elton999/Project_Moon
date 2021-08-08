@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using UmbrellaToolKit;
-using UmbrellaToolKit.Collision;
+﻿using UmbrellaToolKit.Collision;
 
 namespace ProjectMoon.Entities.Actors
 {
-    public class Enemy : Actor
+    public abstract class Enemy : Actor
     {
 
         public UmbrellaToolKit.Sprite.Square Box;

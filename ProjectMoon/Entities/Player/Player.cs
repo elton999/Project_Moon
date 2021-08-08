@@ -160,13 +160,15 @@ namespace ProjectMoon.Entities.Player
             }
 
 
-            if (((!this.CLeft && !this.CRight) && this._isGrounded) ||
-                ((!this.CLeft && !this.CRight) && this.Jetpack.isFly) || (this.CFire || this.Weapon.UpShoot))
+            if ((IsNotPressLeftAndRight && this._isGrounded) ||
+                (IsNotPressLeftAndRight && this.Jetpack.isFly) || (this.CFire || this.Weapon.UpShoot))
                 this.velocity.X = 0;
 
             if (!this.CDown && !this.CUp && this.Jetpack.isFly)
                 this.velocity.Y = 0;
         }
+
+        private bool IsNotPressLeftAndRight { get => !this.CLeft && !this.CRight; }
         #endregion
 
         #region Jump
@@ -206,7 +208,14 @@ namespace ProjectMoon.Entities.Player
         }
         #endregion
 
-        private string[] _enemyTags = new string[6] { "soldier", "spider", "bat", "jumper", "damage", "bullet" };
+        private string[] _enemyTags = new string[6] {
+             "soldier",
+             "spider",
+             "bat",
+             "jumper",
+             "damage",
+             "bullet"
+        };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
@@ -224,7 +233,7 @@ namespace ProjectMoon.Entities.Player
             {
                 this._StartDamage = true;
                 this._DamageFX = true;
-                this.Scene.GameManagement.Values["CURRENT_LIFES"] = this.Scene.GameManagement.Values["CURRENT_LIFES"] - 1;
+                this.Scene.GameManagement.Values["CURRENT_LIFES"]--;
 
                 wait(5, new Action(() =>
                 {
@@ -358,21 +367,17 @@ namespace ProjectMoon.Entities.Player
 
         private void Flip(bool right)
         {
-            if (right)
-                this.spriteEffect = SpriteEffects.None;
-            else
-                this.spriteEffect = SpriteEffects.FlipHorizontally;
+            this.spriteEffect = right ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //this.DrawSprite(spriteBatch);
             this.SmashEfx();
             BeginDraw(spriteBatch);
             spriteBatch.Draw(
                 this.Sprite,
-                new Rectangle((int)(this.Position.X - _PositionSmash.X), (int)(this.Position.Y - _PositionSmash.Y),
-                this.Body.Width - _BobySmash.X, this.Body.Height - _BobySmash.Y),
+                new Rectangle(Vector2.Subtract(this.Position, _PositionSmash).ToPoint(),
+                Vector2.Subtract(this.Body.Size.ToVector2(), _BobySmash.ToVector2()).ToPoint()),
                 this.Body, this.SpriteColor * this.Transparent, this.Rotation, this.Origin, this.spriteEffect, 0);
             EndDraw(spriteBatch);
         }
