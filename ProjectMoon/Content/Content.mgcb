@@ -10,8 +10,8 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:../../../../umbrella/UmbrellaToolKit.Pipeline/MonoGame.ContentPipeline.UmbrellaToolKit2/MonoGame.ContentPipeline.UmbrellaToolKit2/Game1/Game1/bin/Debug/netstandard2.0/linux-x64/publish/Newtonsoft.Json.dll
-/reference:../../../../umbrella/UmbrellaToolKit.Pipeline/MonoGame.ContentPipeline.UmbrellaToolKit2/MonoGame.ContentPipeline.UmbrellaToolKit2/Game1/Game1/bin/Debug/netstandard2.0/MonoGame.ContentPipeline.UmbrellaToolKit.dll
+/reference:..\bin\Debug\net5.0\Newtonsoft.Json.dll
+/reference:..\..\..\..\umbrella\UmbrellaToolKit.Pipeline\MonoGame.ContentPipeline.UmbrellaToolKit2\MonoGame.ContentPipeline.UmbrellaToolKit2\Game1\Game1\bin\Debug\netstandard2.0\MonoGame.ContentPipeline.UmbrellaToolKit.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -39,6 +39,24 @@
 /importer:OgmoImporter
 /processor:OgmoProcessor
 /build:Maps/TileSettings.ogmo
+
+#begin Shaders/Light.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Light.fx
+
+#begin Sprites/light.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/light.png
 
 #begin Sprites/Player/Player.png
 /importer:TextureImporter

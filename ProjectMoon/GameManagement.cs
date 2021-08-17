@@ -28,6 +28,12 @@ namespace ProjectMoon
 
             this.SceneManagement.MainScene.LevelReady = true;
             this.CurrentStatus = Status.PLAYING;
+
+            // teste light
+            /*var lights = new Light();
+            lights.Scene = this.SceneManagement.MainScene;
+            this.SceneManagement.MainScene.UI.Add(lights);
+            lights.Start();*/
         }
 
         // gameplay
