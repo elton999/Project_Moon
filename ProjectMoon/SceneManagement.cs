@@ -152,14 +152,7 @@ namespace ProjectMoon
         {
             var newCurrentScene = this.LevelParts[this.CurrentPartLevel - 1];
 
-            this.MainScene.Foreground.Clear();
-            this.MainScene.Foreground.AddRange(newCurrentScene.Foreground);
-            this.MainScene.Middleground.Clear();
-            this.MainScene.Middleground.AddRange(newCurrentScene.Middleground);
-            this.MainScene.Backgrounds.Clear();
-            this.MainScene.Backgrounds.AddRange(newCurrentScene.Backgrounds);
-            this.MainScene.Enemies.Clear();
-            this.MainScene.Enemies.AddRange(newCurrentScene.Enemies);
+            SetNewScene(newCurrentScene);
 
             // Collision
             this.MainScene.AllActors.AddRange(newCurrentScene.AllActors);
@@ -191,5 +184,16 @@ namespace ProjectMoon
             this.MainScene.addLayers();
         }
 
+        private void SetNewScene(Scene newCurrentScene)
+        {
+            this.MainScene.Foreground.Clear();
+            this.MainScene.Foreground.AddRange(newCurrentScene.Foreground);
+            this.MainScene.Middleground.Clear();
+            this.MainScene.Middleground.AddRange(newCurrentScene.Middleground);
+            this.MainScene.Backgrounds.Clear();
+            this.MainScene.Backgrounds.AddRange(newCurrentScene.Backgrounds);
+            this.MainScene.Enemies.Clear();
+            this.MainScene.Enemies.AddRange(newCurrentScene.Enemies);
+        }
     }
 }

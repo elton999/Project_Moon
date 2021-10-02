@@ -15,17 +15,10 @@ namespace ProjectMoon
             base.Start();
             if (Instance == null)
                 Instance = this;
+
             this.SetAllValues();
-            this.SceneManagement = new SceneManagementGame();
-            this.SceneManagement.GameManagement = this;
-            this.SceneManagement.Start();
-
-            this.GameplayHud = new HUD();
-            this.GameplayHud.Scene = this.SceneManagement.MainScene;
-
-            this.GameplayHud.Start();
-            this.SceneManagement.MainScene.UI.Add(this.GameplayHud);
-
+            setSceneSettings();
+            CreateHud();
             this.SceneManagement.MainScene.LevelReady = true;
             this.CurrentStatus = Status.PLAYING;
 
@@ -34,6 +27,21 @@ namespace ProjectMoon
             lights.Scene = this.SceneManagement.MainScene;
             this.SceneManagement.MainScene.UI.Add(lights);
             lights.Start();*/
+        }
+
+        private void setSceneSettings()
+        {
+            this.SceneManagement = new SceneManagementGame();
+            this.SceneManagement.GameManagement = this;
+            this.SceneManagement.Start();
+        }
+
+        private void CreateHud()
+        {
+            this.GameplayHud = new HUD();
+            this.GameplayHud.Scene = this.SceneManagement.MainScene;
+            this.GameplayHud.Start();
+            this.SceneManagement.MainScene.UI.Add(this.GameplayHud);
         }
 
         // gameplay
