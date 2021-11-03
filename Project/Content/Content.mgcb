@@ -15,7 +15,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-
 #begin Maps/Level1/level_1.json
 /importer:OgmoTileMapImporter
 /processor:OgmoTileMapProcessor
@@ -36,10 +35,18 @@
 /processor:OgmoTileMapProcessor
 /build:Maps/Level3/level_1.json
 
+#begin Maps/TileSettings.ldtk
+/importer:LdtkImporter
+/processor:LdtkProcessor
+/build:Maps/TileSettings.ldtk;Maps/TileSettingsLdtk.ldtk
+
 #begin Maps/TileSettings.ogmo
 /importer:OgmoImporter
 /processor:OgmoProcessor
 /build:Maps/TileSettings.ogmo
+
+#begin new.cdb
+/copy:new.cdb
 
 #begin Shaders/Light.fx
 /importer:EffectImporter
@@ -104,8 +111,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/tilemap.png
-
-
-#begin new.cdb
-/copy:new.cdb
 

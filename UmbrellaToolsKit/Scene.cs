@@ -79,11 +79,11 @@ namespace UmbrellaToolsKit
         #endregion
 
         #region Load Level Tilemap
-        public Ogmo.TileMap tileMap;
         public Ogmo.TileSet tileSet;
         public GameManagement GameManagement;
 
         public string MapLevelPath = "Maps/level_";
+        public string MapLevelLdtkPath = "Maps/TileMap";
         public string TileMapPath = "Sprites/tilemap";
 
         public Vector2 LevelSize;
@@ -93,15 +93,23 @@ namespace UmbrellaToolsKit
             System.Console.WriteLine($"Level: {this.MapLevelPath + level}");
             this.CreateCamera();
 
-            this.tileMap = Content.Load<Ogmo.TileMap>(this.MapLevelPath + level);
+            Ogmo.TileMap tileMap = Content.Load<Ogmo.TileMap>(this.MapLevelPath + level);
 
             Texture2D _tilemapSprite = Content.Load<Texture2D>(this.TileMapPath);
 
-            this.tileMap.Create(this, this.tileMap, _tilemapSprite);
+            TileMap.TileMap.Create(this, tileMap, _tilemapSprite);
             this.CreateBackBuffer();
 
             this.LevelReady = true;
             System.Console.WriteLine("\nDone");
+        }
+
+        public void SetLevelLdtk(int level)
+        {
+            System.Console.WriteLine($"Level: {this.MapLevelLdtkPath}");
+            Texture2D _tilemapSprite = Content.Load<Texture2D>(this.TileMapPath);
+
+            var tileMap = Content.Load<ldtk.LdtkJson>(this.MapLevelLdtkPath);
         }
 
         public void CreateCamera()
