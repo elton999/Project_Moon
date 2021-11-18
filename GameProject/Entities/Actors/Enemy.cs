@@ -30,7 +30,7 @@ namespace GameProject.Entities.Actors
             }
         }
 
-        public float GravityY = -200f;
-        public float _Speed = 60;
+        public float GravityY = 200f;
+        public float _Speed = 90;
     }
 }

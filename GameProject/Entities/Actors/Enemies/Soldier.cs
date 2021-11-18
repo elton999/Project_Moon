@@ -34,6 +34,7 @@ namespace GameProject.Entities.Actors.Enemies
             this.gravity2D = new Vector2(0, this.GravityY);
             this.velocityDecrecentY = 2050;
             this.velocityDecrecentX = 0;
+            this._Speed = 200;
         }
 
         public override void Update(GameTime gameTime)
@@ -45,7 +46,7 @@ namespace GameProject.Entities.Actors.Enemies
                 if (this._StartAttack && !this._waitAttack)
                 {
                     this._waitAttack = true;
-                    this._Speed = this.Scene.AllActors[0].Position.X < this.Position.X ? _Speed : -_Speed;
+                    this._Speed = this.Scene.AllActors[0].Position.X < this.Position.X ? -_Speed : _Speed;
                     wait(this._TimeToAttack, () => { this._Attack = true; });
                 }
             }

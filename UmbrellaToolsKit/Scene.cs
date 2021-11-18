@@ -110,6 +110,8 @@ namespace UmbrellaToolsKit
             Texture2D _tilemapSprite = Content.Load<Texture2D>(this.TileMapPath);
 
             var tileMap = Content.Load<ldtk.LdtkJson>(this.MapLevelLdtkPath);
+
+            TileMap.TileMap.Create(this, tileMap, "Level_" + level, _tilemapSprite);
         }
 
         public void CreateCamera()

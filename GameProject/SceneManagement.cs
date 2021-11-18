@@ -11,10 +11,11 @@ namespace GameProject
         public int CurrentPartLevel = 1;
         public string CurrentPathLevel { get => "Maps/Level" + CurrentScene + "/level_"; }
         public List<Scene> LevelParts;
-        public int[] NumberPartOfLevel = { 2, 1, 1 };
+        public int[] NumberPartOfLevel = { 1, 1, 1 };
 
         public override void Start()
         {
+            CurrentScene = 2;
             this.GameManagement = GameManagementGame.Instance;
             this.MainSceneSettings();
             this.LoadLevel();
@@ -97,7 +98,9 @@ namespace GameProject
 
                 scene.MapLevelPath = this.CurrentPathLevel;
                 scene.GameManagement = GameManagementGame.Instance;
-                scene.SetLevel(i + 1);
+                //scene.SetLevel(i + 1);
+                scene.MapLevelLdtkPath = "Maps/TileSettingsLdtk";
+                scene.SetLevelLdtk(2);
 
                 scene.Grid.CollidesRamps.Add("r");
                 scene.Grid.CollidesRamps.Add("l");

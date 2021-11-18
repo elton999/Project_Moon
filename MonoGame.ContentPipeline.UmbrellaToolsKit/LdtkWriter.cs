@@ -9,11 +9,11 @@ namespace MonoGame.ContentPipeline.UmbrellaToolsKit
     {
         protected override void Write(ContentWriter output, TWrite value)
         {
-            output.Write(Newtonsoft.Json.JsonConvert.SerializeObject(value));
+            output.Write(ldtk.Serialize.ToJson(value));
         }
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "ldtk.LdtkJson, MonoGame.ContentPipeline.UmbrellaToolKit";
+            return "UmbrellaToolsKit.Ldtk.LdtkReader, UmbrellaToolsKit";
         }
     }
 }
