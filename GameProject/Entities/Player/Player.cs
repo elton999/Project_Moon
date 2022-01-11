@@ -33,11 +33,11 @@ namespace GameProject.Entities.Player
         {
             base.Update(gameTime);
 
-            this.Animation(gameTime);
+            Animation(gameTime);
 
-            this.Input();
+            Input();
 
-            this.DamageFX(gameTime);
+            DamageFX(gameTime);
         }
 
         public override void UpdateData(GameTime gameTime)

@@ -85,7 +85,7 @@ namespace UmbrellaToolsKit
 
             if (this.UseLevelLimits)
             {
-                float maxValue = this.Scene.LevelSize.Y - this.Scene.ScreemOffset.Y - this.Origin.Y;
+                float maxValue = this.Scene.LevelSize.Y + this.Scene.ScreemOffset.Y - this.Origin.Y;
                 float minValue = this.Scene.ScreemOffset.Y + this.Origin.Y;
                 this._position.Y = Math.Min(this._position.Y, maxValue);
                 this._position.Y = Math.Max(this._position.Y, minValue);
