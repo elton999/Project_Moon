@@ -21,7 +21,7 @@ namespace GameProject.Entities.Player
         private bool _CFlyPressed = false;
         private bool _onFly = false;
 
-        public void Update(GameTime gametime)
+       /*ublic void Update(GameTime gametime)
         {
             updateFlyStatus();
             checkFuel(gametime);
@@ -46,7 +46,7 @@ namespace GameProject.Entities.Player
             {
                 this._CFlyPressed = false;
             }
-        }
+        }*/
 
         private void checkFuel(GameTime gametime)
         {
