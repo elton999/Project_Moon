@@ -15,7 +15,6 @@ namespace GameProject.Entities.Player.States
 
         public override void InputUpdate()
         {
-            base.InputUpdate();
             var keyboard = Keyboard.GetState();
 
             if(keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.Left))
@@ -23,10 +22,11 @@ namespace GameProject.Entities.Player.States
                 Player.SwitchState(new PlayerStateWalk());
             }
 
-            if(keyboard.IsKeyDown(Keys.Z))
+            if(keyboard.IsKeyDown(Keys.Z) && _jumpButtonReleased)
             {
                 Player.SwitchState(new PlayerStateJump());
             }
+            base.InputUpdate();
         }
 
         public override void LogicUpdate(GameTime gameTime)

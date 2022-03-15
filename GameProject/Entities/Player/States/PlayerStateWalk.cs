@@ -24,10 +24,11 @@ namespace GameProject.Entities.Player.States
                 Player.Flip(false);
             }
 
-            if (keyboard.IsKeyDown(Keys.Z))
+            if (keyboard.IsKeyDown(Keys.Z) && _jumpButtonReleased)
             {
                 Player.SwitchState(new PlayerStateJump());
             }
+            base.InputUpdate();
         }
 
         public override void LogicUpdate(GameTime gameTime)
