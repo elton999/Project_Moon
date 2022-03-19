@@ -13,7 +13,7 @@ namespace GameProject.Entities.Player.States
         public override void Enter()
         {
             base.Enter();
-            _direction = Vector2.UnitX * Math.Sign(Player.velocity.X * 1000);
+            _direction = Vector2.UnitX * Math.Sign(Player.velocity.X);
             jumpDash();
         }
 
@@ -33,7 +33,7 @@ namespace GameProject.Entities.Player.States
         {
             _timer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Player.AsepriteAnimation.Play(gameTime, "jump-jetpack", animationDirection);
+            Player.AsepriteAnimation.Play(gameTime, "jump", animationDirection);
         }
 
         public override void PhysicsUpdate(GameTime gameTime)

@@ -26,8 +26,17 @@ namespace GameProject.Entities.Player.States
         public override void LogicUpdate(GameTime gameTime)
         {
             base.LogicUpdate(gameTime);
+            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
 
-            Player.AsepriteAnimation.Play(gameTime, "jump-jetpack", AsepriteAnimation.AnimationDirection.LOOP);
+            if (!Player.IsGrounded)
+                Player.AsepriteAnimation.Play(gameTime, "jump", animationDirection);
+            else
+            {
+                if(_buttonUpPressed && Player.IsGrounded)
+                    Player.AsepriteAnimation.Play(gameTime, "shoot-up", animationDirection);
+                else
+                    Player.AsepriteAnimation.Play(gameTime, "shoot", animationDirection);
+            }
 
             if (_shooting)
             {
@@ -36,9 +45,7 @@ namespace GameProject.Entities.Player.States
             }
 
             if(!_shooting)
-            {
                 Player.SwitchState(new PlayerStateIdle());
-            }
         }
     }
 }

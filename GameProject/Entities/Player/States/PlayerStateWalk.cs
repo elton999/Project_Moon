@@ -34,7 +34,7 @@ namespace GameProject.Entities.Player.States
         public override void LogicUpdate(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Player.AsepriteAnimation.Play(gameTime, "walk-jetpack", animationDirection);
+            Player.AsepriteAnimation.Play(gameTime, "walk", animationDirection);
 
             if (_direction != null && _direction.X == 0)
             {

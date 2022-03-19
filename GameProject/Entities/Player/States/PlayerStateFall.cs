@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using UmbrellaToolsKit.Sprite;
 
 namespace GameProject.Entities.Player.States
@@ -9,7 +8,7 @@ namespace GameProject.Entities.Player.States
         public override void LogicUpdate(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Player.AsepriteAnimation.Play(gameTime, "jump-jetpack", animationDirection);
+            Player.AsepriteAnimation.Play(gameTime, "jump", animationDirection);
         }
 
         public override void PhysicsUpdate(GameTime gameTime)

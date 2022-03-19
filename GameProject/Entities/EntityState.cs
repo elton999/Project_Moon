@@ -3,10 +3,10 @@ namespace GameProject.Entities
 {
     public abstract class EntityState
     {
-        public virtual void Enter() { }
-        public virtual void LogicUpdate(GameTime gameTime) { }
-        public virtual void PhysicsUpdate(GameTime gameTime) { }
-        public virtual void InputUpdate() { }
-        public virtual void Exit() { }
+        public abstract void Enter();
+        public abstract void LogicUpdate(GameTime gameTime);
+        public abstract void PhysicsUpdate(GameTime gameTime);
+        public abstract void InputUpdate();
+        public abstract void Exit();
     }
 }
