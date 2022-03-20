@@ -11,49 +11,48 @@ namespace GameProject
         public int CurrentPartLevel = 1;
         public string CurrentPathLevel { get => "Maps/Level" + CurrentScene + "/level_"; }
         public List<Scene> LevelParts;
-        public int[] NumberPartOfLevel = { 1, 1, 1 };
+        public int[] NumberPartOfLevel = { 2, 1};
 
         public override void Start()
         {
-            CurrentScene = 2;
-            this.GameManagement = GameManagementGame.Instance;
-            this.MainSceneSettings();
-            this.LoadLevel();
-            this.SetLevel();
+            GameManagement = GameManagementGame.Instance;
+            MainSceneSettings();
+            LoadLevel();
+            SetLevel();
         }
 
         private void MainSceneSettings()
         {
-            this.MainScene = new Scene(Game1.Instance.GraphicsDevice, Game1.Instance.Content);
-            this.MainScene.GameManagement = GameManagementGame.Instance;
-            this.MainScene.SetSizes((int)(426 / 1.18f), (int)(240 / 1.18f));
-            this.MainScene.CreateBackBuffer();
-            this.MainScene.CreateCamera();
-            this.MainScene.Camera.Position = Vector2.Add(this.MainScene.Camera.Position, Vector2.Divide(this.MainScene.Sizes.ToVector2(), 2f));
+            MainScene = new Scene(Game1.Instance.GraphicsDevice, Game1.Instance.Content);
+            MainScene.GameManagement = GameManagementGame.Instance;
+            MainScene.SetSizes((int)(426 / 1.18f), (int)(240 / 1.18f));
+            MainScene.CreateBackBuffer();
+            MainScene.CreateCamera();
+            MainScene.Camera.Position = Vector2.Add(this.MainScene.Camera.Position, Vector2.Divide(this.MainScene.Sizes.ToVector2(), 2f));
 
-            this.MainScene.updateDataTime = 1 / 60f;
+            MainScene.updateDataTime = 1 / 60f;
         }
 
         public override void Update(GameTime gameTime)
         {
             if (GameManagementGame.Instance.isPlaying)
             {
-                this.MainScene.Update(gameTime);
+                MainScene.Update(gameTime);
 
                 if (CheckPlayerPart(CurrentPartLevel) && checkOfPlayer() != CurrentPartLevel)
                 {
-                    int _newPartOfLevel = this.checkOfPlayer();
+                    int _newPartOfLevel = checkOfPlayer();
                     GameManagementGame.Instance.CurrentStatus = GameManagement.Status.STOP;
                     AddPartOfLevelOnMainScene(_newPartOfLevel);
 
-                    this.MainScene.LevelSize = this.LevelParts[_newPartOfLevel - 1].LevelSize;
-                    this.MainScene.ScreemOffset = this.LevelParts[_newPartOfLevel - 1].ScreemOffset;
+                    MainScene.LevelSize = LevelParts[_newPartOfLevel - 1].LevelSize;
+                    MainScene.ScreemOffset = LevelParts[_newPartOfLevel - 1].ScreemOffset;
 
-                    this.SetNewTargetCamera();
+                    SetNewTargetCamera();
 
                     GameManagementGame.Instance.wait(0.5f, new Action(() =>
                     {
-                        this.CurrentPartLevel = _newPartOfLevel;
+                        CurrentPartLevel = _newPartOfLevel;
                         LoadLevel();
                         SetLevel();
                         GameManagementGame.Instance.CurrentStatus = GameManagement.Status.PLAYING;
@@ -68,9 +67,9 @@ namespace GameProject
         {
             if (GameManagementGame.Instance.isStoping)
             {
-                this.MainScene.Camera.Position = Vector2.Lerp(
-                    this.MainScene.Camera.Position,
-                    this.MainScene.Camera.Target,
+                MainScene.Camera.Position = Vector2.Lerp(
+                    MainScene.Camera.Position,
+                    MainScene.Camera.Target,
                     (float)gameTime.ElapsedGameTime.TotalSeconds * 8f
                 );
             }
@@ -78,34 +77,33 @@ namespace GameProject
 
         private void SetNewTargetCamera()
         {
-            Point _playerSize = this.MainScene.Players[0].size;
-            Vector2 _playerPosition = this.MainScene.Players[0].Position;
-            Vector2 _cameraOrigin = this.MainScene.Camera.Origin;
-            Vector2 _cameraPosition = this.MainScene.Camera.Position;
+            Point _playerSize = MainScene.Players[0].size;
+            Vector2 _playerPosition = MainScene.Players[0].Position;
+            Vector2 _cameraOrigin = MainScene.Camera.Origin;
+            Vector2 _cameraPosition = MainScene.Camera.Position;
 
-            this.MainScene.Camera.Target = new Vector2(
+            MainScene.Camera.Target = new Vector2(
                 _cameraPosition.X < _playerPosition.X ? _playerPosition.X + _cameraOrigin.X : _playerPosition.X - _cameraOrigin.X,
-                this.MainScene.Players[0].Position.Y
+                MainScene.Players[0].Position.Y
             );
         }
 
         public void LoadLevel()
         {
-            this.LevelParts = new List<Scene>();
-            for (int i = 0; i < this.NumberPartOfLevel[this.CurrentScene - 1]; i++)
+            LevelParts = new List<Scene>();
+            for (int i = 1; i <= NumberPartOfLevel[CurrentScene - 1]; i++)
             {
                 Scene scene = new Scene(Game1.Instance.GraphicsDevice, Game1.Instance.Content);
 
                 scene.MapLevelPath = this.CurrentPathLevel;
                 scene.GameManagement = GameManagementGame.Instance;
-                //scene.SetLevel(i + 1);
                 scene.MapLevelLdtkPath = "Maps/TileSettingsLdtk";
-                scene.SetLevelLdtk(2);
+                scene.SetLevelLdtk(i);
 
-                scene.Grid.CollidesRamps.Add("r");
-                scene.Grid.CollidesRamps.Add("l");
+                scene.Grid.CollidesRamps.Add("3");
+                scene.Grid.CollidesRamps.Add("2");
 
-                this.LevelParts.Add(scene);
+                LevelParts.Add(scene);
             }
         }
 
@@ -113,19 +111,19 @@ namespace GameProject
         {
             partLevel--;
             var areaScene = new Actor();
-            var player = this.MainScene.AllActors[0];
+            var player = MainScene.AllActors[0];
 
             areaScene.size = new Point(
-                (int)(this.LevelParts[partLevel].LevelSize.X + Math.Sign(player.velocity.X)),
-                (int)(this.LevelParts[partLevel].LevelSize.Y)
+                (int)(LevelParts[partLevel].LevelSize.X + Math.Sign(player.velocity.X)),
+                (int)(LevelParts[partLevel].LevelSize.Y)
             );
 
             areaScene.Position = new Vector2(
-                this.LevelParts[partLevel].ScreemOffset.X - (float)Math.Sin(player.velocity.X) * 50f,
-                this.LevelParts[partLevel].ScreemOffset.Y
+                LevelParts[partLevel].ScreemOffset.X - (float)Math.Sin(player.velocity.X) * 50f,
+                LevelParts[partLevel].ScreemOffset.Y
             );
 
-            if (this.MainScene.AllActors.Count > 0 && player.overlapCheck(areaScene))
+            if (MainScene.AllActors.Count > 0 && player.overlapCheck(areaScene))
                 return false;
 
             return true;
@@ -133,70 +131,70 @@ namespace GameProject
 
         public int checkOfPlayer()
         {
-            for (int i = 0; i < this.NumberPartOfLevel[this.CurrentScene - 1]; i++)
-                if (!this.CheckPlayerPart(i + 1))
+            for (int i = 0; i < NumberPartOfLevel[CurrentScene - 1]; i++)
+                if (!CheckPlayerPart(i + 1))
                     return i + 1;
-            return this.CurrentPartLevel;
+            return CurrentPartLevel;
         }
 
         public void AddPartOfLevelOnMainScene(int partLevel)
         {
-            this.MainScene.Foreground.AddRange(this.LevelParts[partLevel - 1].Foreground);
-            this.MainScene.Middleground.AddRange(this.LevelParts[partLevel - 1].Middleground);
-            this.MainScene.Backgrounds.AddRange(this.LevelParts[partLevel - 1].Backgrounds);
-            this.MainScene.Enemies.AddRange(this.LevelParts[partLevel - 1].Enemies);
+            MainScene.Foreground.AddRange(LevelParts[partLevel - 1].Foreground);
+            MainScene.Middleground.AddRange(LevelParts[partLevel - 1].Middleground);
+            MainScene.Backgrounds.AddRange(LevelParts[partLevel - 1].Backgrounds);
+            MainScene.Enemies.AddRange(LevelParts[partLevel - 1].Enemies);
 
-            foreach (List<GameObject> ListGameObject in this.MainScene.SortLayers)
+            foreach (List<GameObject> ListGameObject in MainScene.SortLayers)
                 foreach (GameObject gameObject in ListGameObject)
-                    gameObject.Scene = this.MainScene;
+                    gameObject.Scene = MainScene;
         }
 
         public void SetLevel()
         {
-            var newCurrentScene = this.LevelParts[this.CurrentPartLevel - 1];
+            var newCurrentScene = LevelParts[CurrentPartLevel - 1];
 
             SetNewScene(newCurrentScene);
 
             // Collision
-            this.MainScene.AllActors.AddRange(newCurrentScene.AllActors);
+            MainScene.AllActors.AddRange(newCurrentScene.AllActors);
 
-            if (this.MainScene.AllActors.Count > 0)
+            if (MainScene.AllActors.Count > 0)
             {
-                Actor player = this.MainScene.AllActors[0];
-                this.MainScene.AllActors.Clear();
+                Actor player = MainScene.AllActors[0];
+                MainScene.AllActors.Clear();
 
-                if (this.MainScene.Players.Count > 0)
-                    this.MainScene.Players.RemoveAt(0);
+                if (MainScene.Players.Count > 0)
+                    MainScene.Players.RemoveAt(0);
 
-                this.MainScene.AllActors.Insert(0, player);
-                this.MainScene.Players.Insert(0, player);
+                MainScene.AllActors.Insert(0, player);
+                MainScene.Players.Insert(0, player);
                 newCurrentScene.AllActors.Remove(player);
             }
 
-            this.MainScene.Grid = newCurrentScene.Grid;
-            this.MainScene.AllActors.AddRange(newCurrentScene.AllActors);
-            this.MainScene.AllSolids.AddRange(newCurrentScene.AllSolids);
+            MainScene.Grid = newCurrentScene.Grid;
+            MainScene.AllActors.AddRange(newCurrentScene.AllActors);
+            MainScene.AllSolids.AddRange(newCurrentScene.AllSolids);
 
             foreach (List<GameObject> ListGameObject in this.MainScene.SortLayers)
                 foreach (GameObject gameObject in ListGameObject)
                     gameObject.Scene = this.MainScene;
 
-            this.MainScene.Grid.Scene = this.MainScene;
-            this.MainScene.ScreemOffset = newCurrentScene.ScreemOffset;
-            this.MainScene.LevelSize = newCurrentScene.LevelSize;
-            this.MainScene.addLayers();
+            MainScene.Grid.Scene = this.MainScene;
+            MainScene.ScreemOffset = newCurrentScene.ScreemOffset;
+            MainScene.LevelSize = newCurrentScene.LevelSize;
+            MainScene.addLayers();
         }
 
         private void SetNewScene(Scene newCurrentScene)
         {
-            this.MainScene.Foreground.Clear();
-            this.MainScene.Foreground.AddRange(newCurrentScene.Foreground);
-            this.MainScene.Middleground.Clear();
-            this.MainScene.Middleground.AddRange(newCurrentScene.Middleground);
-            this.MainScene.Backgrounds.Clear();
-            this.MainScene.Backgrounds.AddRange(newCurrentScene.Backgrounds);
-            this.MainScene.Enemies.Clear();
-            this.MainScene.Enemies.AddRange(newCurrentScene.Enemies);
+            MainScene.Foreground.Clear();
+            MainScene.Foreground.AddRange(newCurrentScene.Foreground);
+            MainScene.Middleground.Clear();
+            MainScene.Middleground.AddRange(newCurrentScene.Middleground);
+            MainScene.Backgrounds.Clear();
+            MainScene.Backgrounds.AddRange(newCurrentScene.Backgrounds);
+            MainScene.Enemies.Clear();
+            MainScene.Enemies.AddRange(newCurrentScene.Enemies);
         }
     }
 }

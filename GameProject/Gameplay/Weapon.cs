@@ -27,6 +27,7 @@ namespace GameProject.Gameplay
         private Vector2 _weaponPositionUp = new Vector2(10, -10);
 
         public bool IsFire = false;
+        public bool UpShoot = false;
 
         public void Update(GameTime gameTime, bool fire)
         {
@@ -49,20 +50,23 @@ namespace GameProject.Gameplay
             }
         }
 
-        public bool UpShoot = false;
         public void Shoot()
         {
             Bullet bullet = CreateBullet();
+            bullet.Position = GetRandomBulletPosition();
+            bullet.Start();
+        }
+
+        private Vector2 GetRandomBulletPosition()
+        {
             Vector2 randomPosition = Vector2.UnitY * (new Random()).Next(-_swingBullet, _swingBullet);
 
-                if (!UpShoot)
-                    randomPosition += _actor.spriteEffect == SpriteEffects.None ? _weaponPositionNormal : _weaponPositionNormal * new Vector2(-1, 1);
-                else
-                    randomPosition += _actor.spriteEffect == SpriteEffects.None ?  _weaponPositionUp : _weaponPositionUp * new Vector2(-1, 1);
+            if (!UpShoot)
+                randomPosition += _actor.spriteEffect == SpriteEffects.None ? _weaponPositionNormal : _weaponPositionNormal * new Vector2(-1, 1);
+            else
+                randomPosition += _actor.spriteEffect == SpriteEffects.None ? _weaponPositionUp : _weaponPositionUp * new Vector2(-1, 1);
 
-            bullet.Position = _actor.Position + randomPosition;
-
-            bullet.Start();
+            return _actor.Position + randomPosition;
         }
 
         private Bullet CreateBullet()

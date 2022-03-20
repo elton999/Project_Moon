@@ -87,10 +87,5 @@ namespace GameProject.Entities.Actors
             base.Destroy();
             this.Scene.AllActors.Remove(this);
         }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
     }
 }

@@ -11,16 +11,16 @@ namespace GameProject
 
         public override void Start()
         {
-            this.Game = Game1.Instance;
+            Game = Game1.Instance;
             base.Start();
             if (Instance == null)
                 Instance = this;
 
-            this.SetAllValues();
+            SetAllValues();
             setSceneSettings();
             CreateHud();
-            this.SceneManagement.MainScene.LevelReady = true;
-            this.CurrentStatus = Status.PLAYING;
+            SceneManagement.MainScene.LevelReady = true;
+            CurrentStatus = Status.PLAYING;
 
             // teste light
             /*var lights = new Light();
@@ -31,36 +31,36 @@ namespace GameProject
 
         private void setSceneSettings()
         {
-            this.SceneManagement = new SceneManagementGame();
-            this.SceneManagement.GameManagement = this;
-            this.SceneManagement.Start();
+            SceneManagement = new SceneManagementGame();
+            SceneManagement.GameManagement = this;
+            SceneManagement.Start();
         }
 
         private void CreateHud()
         {
-            this.GameplayHud = new HUD();
-            this.GameplayHud.Scene = this.SceneManagement.MainScene;
-            this.GameplayHud.Start();
-            this.SceneManagement.MainScene.UI.Add(this.GameplayHud);
+            GameplayHud = new HUD();
+            GameplayHud.Scene = this.SceneManagement.MainScene;
+            GameplayHud.Start();
+            SceneManagement.MainScene.UI.Add(this.GameplayHud);
         }
 
         // gameplay
         public void SetAllValues()
         {
-            this.Values.Add("POWER", 100f);
-            this.Values.Add("TOTAL_LIFES", 3);
-            this.Values.Add("CURRENT_LIFES", 3);
-            this.Values.Add("DEBUG", true);
+            Values.Add("POWER", 100f);
+            Values.Add("TOTAL_LIFES", 3);
+            Values.Add("CURRENT_LIFES", 3);
+            Values.Add("DEBUG", true);
         }
 
         public bool isPlaying
         {
-            get => this.CurrentStatus == Status.PLAYING;
+            get => CurrentStatus == Status.PLAYING;
         }
 
         public bool isStoping
         {
-            get => this.CurrentStatus == Status.STOP;
+            get => CurrentStatus == Status.STOP;
         }
         public override void Update(GameTime gameTime)
         {
@@ -69,7 +69,11 @@ namespace GameProject
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            this.SceneManagement.MainScene.Draw(spriteBatch, Game1.Instance.GraphicsDevice, new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width, Game1.Instance.GraphicsDevice.Viewport.Height));
+            this.SceneManagement.MainScene.Draw(
+                spriteBatch,
+                Game1.Instance.GraphicsDevice, 
+                new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width, 
+                Game1.Instance.GraphicsDevice.Viewport.Height));
             base.Draw(spriteBatch);
         }
     }

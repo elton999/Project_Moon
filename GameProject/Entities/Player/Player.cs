@@ -20,7 +20,6 @@ namespace GameProject.Entities.Player
         public float GravityY = 0.0008f;
         public float SpeedIncrement = -0.05f;
 
-
         public override void Start()
         {
             base.Start();
