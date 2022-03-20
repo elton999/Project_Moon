@@ -38,7 +38,7 @@ namespace GameProject
             AssetManagement.Set<Gameplay.HitBoxDamage>("damage", "MIDDLEGROUND");
 
             // Enemies
-            AssetManagement.Set<Entities.Actors.Enemies.Soldier>("soldier", "ENEMIES");
+            AssetManagement.Set<Entities.Actors.Enemies.Soldier>("Soldier", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Spider>("spider", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Bat>("bat", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Jumper>("jumper", "ENEMIES");
