@@ -40,7 +40,7 @@ namespace GameProject.Entities.Actors.Enemies
 
         public override void Update(GameTime gameTime)
         {
-            if (isLive) return;
+            if (!isLive) return;
             
             base.Update(gameTime);
 
@@ -55,6 +55,7 @@ namespace GameProject.Entities.Actors.Enemies
         public override void UpdateData(GameTime gameTime)
         {
             if (!isLive) return;
+
             if (_Attack)
             {
                 velocity.X = _Speed;

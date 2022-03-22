@@ -100,12 +100,6 @@ namespace GameProject.Entities.Actors.Enemies
             }
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (this.isLive)

@@ -6,7 +6,7 @@ using UmbrellaToolsKit.Collision;
 
 namespace GameProject
 {
-    public class SceneManagementGame : UmbrellaToolsKit.SceneManagement
+    public class SceneManagementGame : SceneManagement
     {
         public int CurrentPartLevel = 1;
         public string CurrentPathLevel { get => "Maps/Level" + CurrentScene + "/level_"; }
@@ -77,7 +77,6 @@ namespace GameProject
 
         private void SetNewTargetCamera()
         {
-            Point _playerSize = MainScene.Players[0].size;
             Vector2 _playerPosition = MainScene.Players[0].Position;
             Vector2 _cameraOrigin = MainScene.Camera.Origin;
             Vector2 _cameraPosition = MainScene.Camera.Position;
