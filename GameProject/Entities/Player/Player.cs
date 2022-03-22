@@ -34,18 +34,17 @@ namespace GameProject.Entities.Player
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
             Origin = new Vector2(27, 16);
 
-            CurrentState = new States.PlayerStateIdle();
-            CurrentState.Player = this;
-            CurrentState.Enter();
+            SwitchState(new States.PlayerStateIdle());
 
             velocityDecrecentY = 2050;
             gravity2D = new Vector2(0, GravityY);
-
         }
 
         public void SwitchState(States.PlayerState state)
         {
-            CurrentState.Exit();
+            if(CurrentState != null)
+                CurrentState.Exit();
+
             state.Player = this;
             state.Enter();
             CurrentState = state;
