@@ -91,6 +91,7 @@
   "frameTags": [
    { "name": "idle", "from": 1, "to": 1, "direction": "reverse" },
    { "name": "jump", "from": 2, "to": 2, "direction": "forward" },
+   { "name": "fall", "from": 2, "to": 2, "direction": "forward" },
    { "name": "shoot", "from": 3, "to": 3, "direction": "forward" },
    { "name": "shoot-up", "from": 4, "to": 4, "direction": "forward" },
    { "name": "walk", "from": 5, "to": 8, "direction": "forward" }

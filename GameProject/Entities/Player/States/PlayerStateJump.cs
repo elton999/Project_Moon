@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using UmbrellaToolsKit.Sprite;
 
 namespace GameProject.Entities.Player.States
 {
@@ -12,14 +11,9 @@ namespace GameProject.Entities.Player.States
 
         public override void Enter()
         {
-            base.Enter();
             _direction = Vector2.UnitX * Math.Sign(Player.velocity.X);
-            jumpDash();
-        }
-
-        private void jumpDash()
-        {
             Player.velocity.X = _direction.X * Player.DashJumpForce;
+            base.Enter();
         }
 
         public override void InputUpdate()
@@ -32,8 +26,7 @@ namespace GameProject.Entities.Player.States
         public override void LogicUpdate(GameTime gameTime)
         {
             _timer -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Player.AsepriteAnimation.Play(gameTime, "jump", animationDirection);
+            Player.Behavior.Jump(gameTime);
         }
 
         public override void PhysicsUpdate(GameTime gameTime)

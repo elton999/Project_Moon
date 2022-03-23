@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Linq;
+using GameProject.Gameplay;
 using UmbrellaToolsKit.Sprite;
 using UmbrellaToolsKit.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using GameProject.Gameplay;
+using GameProject.Entities.Actors.Behavior;
 
 namespace GameProject.Entities.Player
 {
     public class Player : Actor
     {
-        public States.PlayerState CurrentState;
-        public Jetpack Jetpack;
         public Weapon Weapon;
+        public States.PlayerState CurrentState;
 
         public float JumpForce = 0.012f;
         public float DashJumpForce = 0.095f;
-        public float GravityY = 0.0008f;
         public float SpeedIncrement = -0.05f;
+
+        public bool IsFlying = false;
+
+        public IBehaviorAdapter Behavior;
 
         public override void Start()
         {
@@ -26,19 +28,18 @@ namespace GameProject.Entities.Player
             Scene.AllActors.Add(this);
             size = new Point(10, 32);
             tag = "player";
-
-            Jetpack = new Jetpack(this);
             Weapon = new Weapon(this);
 
             Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
             Origin = new Vector2(27, 16);
 
-            SwitchState(new States.PlayerStateIdle());
+            SwitchBehavior(new Behavior.PlayerOnGrounded(this, this, AsepriteAnimation));
 
-            velocityDecrecentY = 2050;
-            gravity2D = new Vector2(0, GravityY);
+            SwitchState(new States.PlayerStateIdle());
         }
+
+        public void SwitchBehavior(IBehaviorAdapter behavior) => Behavior = behavior;
 
         public void SwitchState(States.PlayerState state)
         {

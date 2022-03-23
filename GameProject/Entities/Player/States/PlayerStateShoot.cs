@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using UmbrellaToolsKit.Sprite;
 
 namespace GameProject.Entities.Player.States
 {
@@ -26,16 +25,16 @@ namespace GameProject.Entities.Player.States
         public override void LogicUpdate(GameTime gameTime)
         {
             base.LogicUpdate(gameTime);
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
 
             if (!Player.IsGrounded)
-                Player.AsepriteAnimation.Play(gameTime, "jump", animationDirection);
+                Player.Behavior.Jump(gameTime);
             else
             {
-                if(_buttonUpPressed && Player.IsGrounded)
+                /*if (_buttonUpPressed && Player.IsGrounded)
                     Player.AsepriteAnimation.Play(gameTime, "shoot-up", animationDirection);
                 else
-                    Player.AsepriteAnimation.Play(gameTime, "shoot", animationDirection);
+                    Player.AsepriteAnimation.Play(gameTime, "shoot", animationDirection);*/
+                Player.Behavior.Attack(gameTime);
             }
 
             if (_shooting)

@@ -1,81 +1,36 @@
 using Microsoft.Xna.Framework;
+using GameProject.Entities.Player.Interfaces;
+
 namespace GameProject.Entities.Player
 {
     public class Jetpack
     {
-        private Player _player;
+        public static float RechargeFuelTime = 0.2f;
+        public static float FuelDecrement = 20f;
 
-        public Jetpack(Player player)
+        public static void CheckFuel(GameTime gameTime, Player player)
         {
-            this._player = player;
-            this._player.wait(this.RechargeFuelTime, RechargeFuel);
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            player.Scene.GameManagement.Values["POWER"] = player.Scene.GameManagement.Values["POWER"] - FuelDecrement * deltaTime;
+
+            if (player.Scene.GameManagement.Values["POWER"] <= 0) 
+                NoFuelOnFlight(player);
         }
 
-        private float Power
+        public static void NoFuelOnFlight(Player player)
         {
-            get => this._player.Scene.GameManagement.Values["POWER"];
-            set => this._player.Scene.GameManagement.Values["POWER"] = value;
-        }
-        private float _FuelDecrement = 20f;
-        public bool isFly = false;
-        private bool _CFlyPressed = false;
-        private bool _onFly = false;
-
-       /*ublic void Update(GameTime gametime)
-        {
-            updateFlyStatus();
-            checkFuel(gametime);
+            player.SwitchBehavior(new Behavior.PlayerOnGrounded(player, player, player.AsepriteAnimation));
+            player.SwitchState(new States.PlayerStateFall());
         }
 
-        private void updateFlyStatus()
+        public static void RechargeFuel(Player player)
         {
-            if (this._player.CFly && !this._CFlyPressed && !this._onFly)
+            if (player.Scene.GameManagement.Values["POWER"] < 100)
             {
-                this._onFly = true;
-                this._player.moveY(1, null);
+                player.Scene.GameManagement.Values["POWER"] += 1;
+                player.wait(RechargeFuelTime, () => RechargeFuel(player));
             }
-            else if (!this._player.CFly && !this._CFlyPressed && this._onFly)
-            {
-                this._CFlyPressed = true;
-            }
-            else if (this._player.CFly && this._CFlyPressed && this._onFly || this.Power <= 0)
-            {
-                this._onFly = false;
-            }
-            else if (!this._player.CFly && this._CFlyPressed && !this._onFly)
-            {
-                this._CFlyPressed = false;
-            }
-        }*/
-
-        private void checkFuel(GameTime gametime)
-        {
-            if (this._onFly && this.Power > 0)
-            {
-                this.Power -= this._FuelDecrement * (float)gametime.ElapsedGameTime.TotalSeconds;
-                this._player.velocityDecrecentY = 0;
-                this._player.moveY((-15 + this._player.velocity.Y) * (float)gametime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-
-                this._player.gravity2D = new Vector2(0, 0);
-                this.isFly = true;
-            }
-            else this.noFuelOnFlight();
         }
 
-        private void noFuelOnFlight()
-        {
-            this._player.velocityDecrecentY = 2050;
-            this._player.gravity2D = new Vector2(0, this._player.GravityY);
-            this.isFly = false;
-        }
-
-        private float RechargeFuelTime = 0.2f;
-        private void RechargeFuel()
-        {
-            if (this.Power < 100)
-                this.Power = this.Power + 1;
-
-            this._player.wait(this.RechargeFuelTime, RechargeFuel);
-        }
     }
 }

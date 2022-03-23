@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using UmbrellaToolsKit.Sprite;
 
 namespace GameProject.Entities.Player.States
 {
@@ -20,7 +19,8 @@ namespace GameProject.Entities.Player.States
 
             _buttonUpPressed = keyboard.IsKeyDown(Keys.Up);
 
-            if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.Left))
+            // TODO: colocar as keys em um array
+            if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.Down))
                 Player.SwitchState(new PlayerStateWalk());
 
             if(keyboard.IsKeyDown(Keys.Z) && _jumpButtonReleased)
@@ -29,18 +29,12 @@ namespace GameProject.Entities.Player.States
             base.InputUpdate();
         }
 
-        public override void LogicUpdate(GameTime gameTime)
-        {
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            if(!_buttonUpPressed)
-                Player.AsepriteAnimation.Play(gameTime, "idle", animationDirection);
-            else
-                Player.AsepriteAnimation.Play(gameTime, "shoot-up", animationDirection);
-        }
+        public override void LogicUpdate(GameTime gameTime) => Player.Behavior.Idle(gameTime);
 
         public override void PhysicsUpdate(GameTime gameTime)
         {
-            if (!Player.IsGrounded)
+            base.PhysicsUpdate(gameTime);
+            if (!Player.IsGrounded && !Player.IsFlying)
                 Player.SwitchState(new PlayerStateFall());
         }
     }
