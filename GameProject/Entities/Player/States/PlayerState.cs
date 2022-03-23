@@ -21,7 +21,7 @@ namespace GameProject.Entities.Player.States
                 Player.SwitchState(new PlayerStateShoot());
 
             float power = (float)Player.Scene.GameManagement.Values["POWER"];
-            if (keyboard.IsKeyDown(Keys.C) && power > 0f)
+            if (keyboard.IsKeyDown(Keys.C) && power > 0f && !Player.IsFlying)
                 Player.SwitchBehavior(new Behavior.PlayerFlying(Player, Player, Player.AsepriteAnimation));
         }
 

@@ -47,6 +47,7 @@ namespace UmbrellaToolsKit
                 var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 this.moveX(delta);
                 this.moveY(delta);
+                if (Scene.PixelArt) Position = Position.ToPoint().ToVector2();
             }
 
         }

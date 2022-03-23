@@ -6,9 +6,8 @@ using GameProject.Entities.Player.Interfaces;
 
 namespace GameProject.Entities.Player.Behavior
 {
-    public class PlayerFlying : IBehaviorAdapter, IPlayerReference
+    public class PlayerFlying : Jetpack, IBehaviorAdapter, IPlayerReference
     {
-        public Player Player { get; set; }
         public Actor Actor { get; set; }
         public AsepriteAnimation Animation { get; set; }
 
@@ -39,7 +38,7 @@ namespace GameProject.Entities.Player.Behavior
 
         public void Move(GameTime gameTime, Vector2 speed)
         {
-            Jetpack.CheckFuel(gameTime, Player);
+            CheckFuel(gameTime);
 
             Actor.velocityDecrecentY = 0;
             Actor.velocity.Y = -1f * (float)gameTime.ElapsedGameTime.TotalSeconds;

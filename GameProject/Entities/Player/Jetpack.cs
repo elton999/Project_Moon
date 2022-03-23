@@ -3,32 +3,40 @@ using GameProject.Entities.Player.Interfaces;
 
 namespace GameProject.Entities.Player
 {
-    public class Jetpack
+    public class Jetpack : IPlayerReference
     {
-        public static float RechargeFuelTime = 0.2f;
-        public static float FuelDecrement = 20f;
+        public Player Player { get; set; }
+        public float Power
+        {
+            get => Player.Scene.GameManagement.Values["POWER"];
+            set => Player.Scene.GameManagement.Values["POWER"] = value;
+        }
+        public readonly float RechargeFuelTime = 0.2f;
+        public readonly float FuelDecrement = 20f;
 
-        public static void CheckFuel(GameTime gameTime, Player player)
+        public void CheckFuel(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            player.Scene.GameManagement.Values["POWER"] = player.Scene.GameManagement.Values["POWER"] - FuelDecrement * deltaTime;
+            Power -= FuelDecrement * deltaTime;
 
-            if (player.Scene.GameManagement.Values["POWER"] <= 0) 
-                NoFuelOnFlight(player);
+            if (Power < 0) 
+                NoFuelOnFlight();
         }
 
-        public static void NoFuelOnFlight(Player player)
+        public  void NoFuelOnFlight()
         {
-            player.SwitchBehavior(new Behavior.PlayerOnGrounded(player, player, player.AsepriteAnimation));
-            player.SwitchState(new States.PlayerStateFall());
+            Player.SwitchBehavior(new Behavior.PlayerOnGrounded(Player, Player, Player.AsepriteAnimation));
+            Player.SwitchState(new States.PlayerStateFall());
         }
 
-        public static void RechargeFuel(Player player)
+        public  void RechargeFuel()
         {
-            if (player.Scene.GameManagement.Values["POWER"] < 100)
+            if (Player.IsFlying) return;
+
+            if (Power < 100)
             {
-                player.Scene.GameManagement.Values["POWER"] += 1;
-                player.wait(RechargeFuelTime, () => RechargeFuel(player));
+                Power++;
+                Player.wait(RechargeFuelTime, RechargeFuel);
             }
         }
 
