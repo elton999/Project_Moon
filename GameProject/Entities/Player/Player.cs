@@ -6,6 +6,7 @@ using UmbrellaToolsKit.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Entities.Actors.Behavior;
+using GameProject.Entities.Player.Behavior;
 
 namespace GameProject.Entities.Player
 {
@@ -20,7 +21,7 @@ namespace GameProject.Entities.Player
 
         public bool IsFlying = false;
 
-        public IBehaviorAdapter Behavior;
+        public PlayerBasicBehavior Behavior;
 
         public override void Start()
         {
@@ -39,7 +40,7 @@ namespace GameProject.Entities.Player
             SwitchState(new States.PlayerStateIdle());
         }
 
-        public void SwitchBehavior(IBehaviorAdapter behavior) => Behavior = behavior;
+        public void SwitchBehavior(PlayerBasicBehavior behavior) => Behavior = behavior;
 
         public void SwitchState(States.PlayerState state)
         {
@@ -54,8 +55,8 @@ namespace GameProject.Entities.Player
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            CurrentState.LogicUpdate(gameTime);
             CurrentState.InputUpdate();
+            CurrentState.LogicUpdate(gameTime);
 
             //DamageFX(gameTime);
         }

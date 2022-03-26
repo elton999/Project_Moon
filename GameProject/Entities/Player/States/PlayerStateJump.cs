@@ -19,8 +19,7 @@ namespace GameProject.Entities.Player.States
         public override void InputUpdate()
         {
             base.InputUpdate();
-            var keyboard = Keyboard.GetState();
-            _canJump = keyboard.IsKeyDown(Keys.Z) && _timer > 0;
+            _canJump = ButtonJump && _timer > 0;
         }
 
         public override void LogicUpdate(GameTime gameTime)

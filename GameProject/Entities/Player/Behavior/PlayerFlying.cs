@@ -1,22 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using UmbrellaToolsKit.Sprite;
 using UmbrellaToolsKit.Collision;
-using GameProject.Entities.Actors.Behavior;
-using GameProject.Entities.Player.Interfaces;
 
 namespace GameProject.Entities.Player.Behavior
 {
-    public class PlayerFlying : Jetpack, IBehaviorAdapter, IPlayerReference
+    public class PlayerFlying : PlayerBasicBehavior
     {
-        public Actor Actor { get; set; }
-        public AsepriteAnimation Animation { get; set; }
-
-        public PlayerFlying(Actor actor, Player player, AsepriteAnimation animation)
+        public PlayerFlying(Actor actor, Player player, AsepriteAnimation animation):base(actor, player, animation)
         {
-            Player = player;
-            Actor = actor;
-            Animation = animation;
-
             Player.IsFlying = true;
             Actor.moveY(-2);
 
@@ -24,40 +15,38 @@ namespace GameProject.Entities.Player.Behavior
             Actor.velocityDecrecentY = 0;
         }
 
-        public void Idle(GameTime gameTime)
+        public override void Idle(GameTime gameTime)
         {
+            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
+            Animation.Play(gameTime, "jump", animationDirection);
+
+            if (Player.CurrentState.ButtonShoot)
+                Shoot(gameTime, Player.CurrentState.ButtonUP);
+        }
+
+        public override void Walk(GameTime gameTime)
+        {
+            if (Player.CurrentState.ButtonShoot)
+                Shoot(gameTime, Player.CurrentState.ButtonUP);
+
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
             Animation.Play(gameTime, "jump", animationDirection);
         }
 
-        public void Walk(GameTime gameTime)
+        public override void Shoot(GameTime gameTime, bool upShoot)
         {
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
+            upShoot = false;
+            base.Shoot(gameTime, upShoot);
         }
 
-        public void Move(GameTime gameTime, Vector2 speed)
+        public override void Move(GameTime gameTime, Vector2 speed)
         {
             CheckFuel(gameTime);
 
             Actor.velocityDecrecentY = 0;
-            Actor.velocity.Y = -1f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Actor.velocity.Y = -0.5f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             Actor.velocity.Y += speed.Y;
             Actor.velocity.X = speed.X;
         }
-
-        public void Attack(GameTime gameTime)
-        {
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
-        }
-
-        public void Fall(GameTime gameTime)
-        {
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
-        }
-
-        public void Jump(GameTime gameTime) { }
     }
 }

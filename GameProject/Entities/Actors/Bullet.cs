@@ -8,63 +8,71 @@ namespace GameProject.Entities.Actors
 {
     class Bullet : Actor
     {
-        static readonly Random getRandom = new Random();
-
         public bool FromEnemy = false;
         public override void Start()
         {
             base.Start();
-            this.Sprite = this.Scene.Content.Load<Texture2D>(this.Scene.TileMapPath);
-            this.Body = new Rectangle(new Point(64, 80), new Point(8, 8));
-            this.tag = "bullet";
+            Sprite = Scene.Content.Load<Texture2D>(Scene.TileMapPath);
+            Body = new Rectangle(new Point(64, 80), new Point(8, 8));
+            tag = "bullet";
 
-            this.size = new Point(8, 8);
-            this.Scene.AllActors.Add(this);
-            this.Scene.Middleground.Add(this);
-            this.gravity2D = new Vector2(0, 0);
+            size = new Point(8, 8);
+            Scene.AllActors.Add(this);
+            Scene.Middleground.Add(this);
+            gravity2D = new Vector2(0, 0);
 
             if (!FromEnemy)
             {
-                this.Scene.Camera.TimeShake = 10;
-                this.Scene.Camera.ShakeMagnitude = 3.5f;
+                Scene.Camera.TimeShake = 10;
+                Scene.Camera.ShakeMagnitude = 3.5f;
 
-                int randomY = getRandom.Next(-3, 3);
-                this.Position = new Vector2(this.Position.X, this.Position.Y + randomY);
+                int randomY = getRandom.Next(-2, 2);
+                Position += Vector2.UnitY * randomY;
             }
         }
 
         public override void UpdateData(GameTime gameTime)
         {
             base.UpdateData(gameTime);
-            foreach (Actor actor in this.Scene.AllActors)
+            foreach (Actor actor in Scene.AllActors)
             {
-                if (actor != this && actor.active && this.overlapCheck(actor))
+                if (actor != this && actor.active && overlapCheck(actor))
                 {
-                    if (actor.tag == "player" && this.FromEnemy || actor.tag != "player" && !this.FromEnemy)
+                    if (actor.tag == "player" && FromEnemy || actor.tag != "player" && !FromEnemy)
                     {
-                        this.OnCollision(actor.tag);
+                        OnCollision(actor.tag);
                         actor.OnCollision(this.tag);
                     }
                 }
             }
 
-            if (this.EdgesIsCollision.ContainsValue(true) || this.CheckSolidOverlap())
-                this.OnCollision("wall");
+            if (EdgesIsCollision.ContainsValue(true) || CheckSolidOverlap())
+                OnCollision("wall");
         }
 
-        private bool CheckSolidOverlap()
+        public static Bullet CreateBullet(Actor actor, Vector2 bulletVelocity)
         {
-            var checkPosition = this.Position;
-            checkPosition.X += Math.Sign(this.velocity.X);
+            var bullet = new Bullet();
+            bullet.Scene = actor.Scene;
+            bullet.spriteEffect = actor.spriteEffect;
+            bullet.velocity = bulletVelocity;
+            return bullet;
+        }
+
+        public bool CheckSolidOverlap()
+        {
+            var checkPosition = Position;
+            checkPosition += new Vector2(Math.Sign(velocity.X), Math.Sign(velocity.Y));
 
             foreach (Solid solid in this.Scene.AllSolids)
-                if (solid.check(this.size, checkPosition))
+                if (solid.check(size, checkPosition))
                     return true;
 
             var actor = new Actor();
             actor.Position = checkPosition;
-            actor.size = this.size;
-            if (this.Scene.Grid.checkOverlapActor(actor, true))
+            actor.size = size;
+
+            if (Scene.Grid.checkOverlapActor(actor, true))
                 return true;
 
             return false;
@@ -73,19 +81,19 @@ namespace GameProject.Entities.Actors
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
-            this.RemoveFromScene = true;
+            RemoveFromScene = true;
         }
 
         public override void IsNotvisible()
         {
             base.IsNotvisible();
-            this.Destroy();
+            Destroy();
         }
 
         public override void Destroy()
         {
             base.Destroy();
-            this.Scene.AllActors.Remove(this);
+            Scene.AllActors.Remove(this);
         }
     }
 }

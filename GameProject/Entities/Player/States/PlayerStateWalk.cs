@@ -1,48 +1,45 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GameProject.Entities.Player.States
 {
     public class PlayerStateWalk : PlayerState
     {
+        public override void Enter()
+        {
+            base.Enter();
+        }
+
         public override void InputUpdate()
         {
             _direction = Vector2.Zero;
-            
-            var keyboard = Keyboard.GetState();
-            
-            if (keyboard.IsKeyDown(Keys.Right))
+
+            if (ButtonRight)
             {
                 _direction = Vector2.UnitX * - 1f;
                 Player.Flip(true);
             }
-
-            if (keyboard.IsKeyDown(Keys.Left))
+            else if (ButtonLeft)
             {
                 _direction = Vector2.UnitX;
                 Player.Flip(false);
             }
 
-            if (keyboard.IsKeyDown(Keys.Up))
+            if (ButtonUP)
                 _direction.Y = 1;
-
-            if (keyboard.IsKeyDown(Keys.Down))
+            
+            if (ButtonDown)
                 _direction.Y = -1;
 
-
-            if (keyboard.IsKeyDown(Keys.Z) && _jumpButtonReleased)
+            if (CanJump && ButtonJump)
                 Player.SwitchState(new PlayerStateJump());
-
+            
             base.InputUpdate();
         }
 
         public override void LogicUpdate(GameTime gameTime)
         {
             Player.Behavior.Walk(gameTime);
-
-            if (_direction != null && _direction.X == 0)
-                Player.SwitchState(new PlayerStateIdle());
         }
 
         public override void PhysicsUpdate(GameTime gameTime)

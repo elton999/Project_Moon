@@ -1,66 +1,68 @@
 ﻿using Microsoft.Xna.Framework;
 using UmbrellaToolsKit.Sprite;
 using UmbrellaToolsKit.Collision;
-using GameProject.Entities.Actors.Behavior;
 
 namespace GameProject.Entities.Player.Behavior
 {
-    public class PlayerOnGrounded : Jetpack, IBehaviorAdapter
+    public class PlayerOnGrounded : PlayerBasicBehavior
     {
-        private readonly float _gravityY = 0.0008f;
-        public Actor Actor { get; set; }
-        public AsepriteAnimation Animation { get; set; }
+        public PlayerOnGrounded(Actor actor, Player player, AsepriteAnimation animation):base(actor, player, animation){}
 
-        public PlayerOnGrounded(Actor actor, Player player, AsepriteAnimation animation)
+        public override void Idle(GameTime gameTime)
         {
-            Actor = actor;
-            Animation = animation;
-            Player = player;
-            Player.IsFlying = false;
-
-            RechargeFuel();
-            
-            Actor.gravity2D = _gravityY * Vector2.UnitY;
-            Actor.velocityDecrecentY = 2050;
-        }
-
-        public void Idle(GameTime gameTime)
-        {
-            // TODO: condicition for shoot and shoot-up animation
-            var animationDirection = AsepriteAnimation.AnimationDirection.FORWARD;
-            Animation.Play(gameTime, "idle", animationDirection);
-        }
-
-        public void Attack(GameTime gameTime)
-        {
-            var animationDirection = AsepriteAnimation.AnimationDirection.FORWARD;
-            Animation.Play(gameTime, "shoot", animationDirection);
-        }
-
-        public void Walk(GameTime gameTime)
-        {
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            if (Actor.velocity.X != 0)
-                Animation.Play(gameTime, "walk", animationDirection);
+            if (Player.CurrentState.ButtonShoot)
+                Shoot(gameTime, Player.CurrentState.ButtonUP);
             else
-                Idle(gameTime);
+                base.Idle(gameTime);
         }
 
-        public void Move(GameTime gametime, Vector2 speed)
+        public override void Walk(GameTime gameTime)
         {
-            Actor.velocity = speed * Vector2.UnitX + Actor.velocity * Vector2.UnitY;
+            if (Player.CurrentState.ButtonShoot)
+                Shoot(gameTime, Player.CurrentState.ButtonUP);
+            else
+                base.Walk(gameTime);
         }
 
-        public void Jump(GameTime gameTime)
+        public override void Move(GameTime gametime, Vector2 speed)
         {
+            if (Player.IsGrounded && Player.CurrentState.ButtonShoot)
+            {
+                Actor.velocity.X = 0;
+                return;
+            }
+            base.Move(gametime, speed);
+        }
+
+        public override void Jump(GameTime gameTime)
+        {
+            base.Jump(gameTime);
+            if (Player.CurrentState.ButtonShoot)
+                base.Shoot(gameTime, false);
+        }
+
+        public override void Fall(GameTime gameTime) => Jump(gameTime);
+
+        public override void Shoot(GameTime gameTime, bool upShoot)
+        {
+            base.Shoot(gameTime, upShoot);
+
+            if (Player.IsGrounded)
+                ShootAnimation(gameTime, upShoot);
+            else
+                Jump(gameTime);
+        }
+
+        public void ShootAnimation(GameTime gameTime, bool upShoot)
+        {
+            Actor.velocity.X = 0;
+
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
+            if (!upShoot)
+                Animation.Play(gameTime, "shoot", animationDirection);
+            else
+                Animation.Play(gameTime, "shoot-up", animationDirection);
         }
 
-        public void Fall(GameTime gameTime)
-        {
-            var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "fall", animationDirection);
-        }
     }
 }

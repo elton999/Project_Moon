@@ -5,8 +5,7 @@ namespace GameProject.Entities.Player.States
 {
     public class PlayerStateIdle : PlayerState
     {
-        private bool _buttonUpPressed = false;
-
+        
         public override void Enter()
         {
             base.Enter();
@@ -17,15 +16,12 @@ namespace GameProject.Entities.Player.States
         {
             var keyboard = Keyboard.GetState();
 
-            _buttonUpPressed = keyboard.IsKeyDown(Keys.Up);
-
-            // TODO: colocar as keys em um array
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.Down))
                 Player.SwitchState(new PlayerStateWalk());
 
-            if(keyboard.IsKeyDown(Keys.Z) && _jumpButtonReleased)
+            if (CanJump)
                 Player.SwitchState(new PlayerStateJump());
-
+         
             base.InputUpdate();
         }
 
