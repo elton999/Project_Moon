@@ -8,9 +8,14 @@ namespace GameProject.Entities.Player.States
 
         public override void PhysicsUpdate(GameTime gameTime)
         {
-            //base.PhysicsUpdate(gameTime);
             if (Player.IsGrounded)
                 Player.SwitchState(new PlayerStateIdle());
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            Player.CoroutineManagement.StarCoroutine(Player.Squash());
         }
     }
 }

@@ -1,17 +1,26 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Collections;
 using GameProject.Gameplay;
+using UmbrellaToolsKit;
 using UmbrellaToolsKit.Sprite;
 using UmbrellaToolsKit.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GameProject.Entities.Actors.Behavior;
 using GameProject.Entities.Player.Behavior;
 
 namespace GameProject.Entities.Player
 {
     public class Player : Actor
     {
+        private string[] _enemyTags = new string[6] {
+             "soldier",
+             "spider",
+             "bat",
+             "jumper",
+             "damage",
+             "bullet"
+        };
+
         public Weapon Weapon;
         public States.PlayerState CurrentState;
 
@@ -22,6 +31,8 @@ namespace GameProject.Entities.Player
         public bool IsFlying = false;
 
         public PlayerBasicBehavior Behavior;
+
+        public CoroutineManagement CoroutineManagement = new();
 
         public override void Start()
         {
@@ -35,7 +46,7 @@ namespace GameProject.Entities.Player
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
             Origin = new Vector2(27, 16);
 
-            SwitchBehavior(new Behavior.PlayerOnGrounded(this, this, AsepriteAnimation));
+            SwitchBehavior(new PlayerOnGrounded(this, this, AsepriteAnimation));
 
             SwitchState(new States.PlayerStateIdle());
         }
@@ -58,7 +69,7 @@ namespace GameProject.Entities.Player
             CurrentState.InputUpdate();
             CurrentState.LogicUpdate(gameTime);
 
-            //DamageFX(gameTime);
+            CoroutineManagement.Update(gameTime);
         }
 
         public override void UpdateData(GameTime gameTime)
@@ -72,18 +83,6 @@ namespace GameProject.Entities.Player
         }
 
         #region physics
-
-        #endregion
-
-
-        private string[] _enemyTags = new string[6] {
-             "soldier",
-             "spider",
-             "bat",
-             "jumper",
-             "damage",
-             "bullet"
-        };
         public override void OnCollision(string tag = null)
         {
             base.OnCollision(tag);
@@ -91,45 +90,6 @@ namespace GameProject.Entities.Player
             if (_enemyTags.Contains(tag))
                 this.TakeDamage();
         }
-
-        #region damage
-        private bool _StartDamage = false;
-        private bool _DamageFX = false;
-        public void TakeDamage()
-        {
-            if (!this._StartDamage)
-            {
-                this._StartDamage = true;
-                this._DamageFX = true;
-                this.Scene.GameManagement.Values["CURRENT_LIFES"]--;
-
-                wait(5, new Action(() =>
-                {
-                    this._StartDamage = false;
-                    this._DamageFX = false;
-                    this.SpriteColor = Color.White;
-                    this.Transparent = 1f;
-                }));
-            }
-        }
-
-        private void DamageFX(GameTime gameTime)
-        {
-            if (this._DamageFX)
-            {
-                if (gameTime.TotalGameTime.TotalMilliseconds % 8 > 4)
-                {
-                    this.SpriteColor = Color.Red;
-                    this.Transparent = 0.7f;
-                }
-                else
-                {
-                    this.SpriteColor = Color.White;
-                    this.Transparent = 1;
-                }
-            }
-        }
-        #endregion
 
         public override bool isRiding(Solid solid)
         {
@@ -148,70 +108,91 @@ namespace GameProject.Entities.Player
 
             if (this.Scene.Grid.checkOverlap(this.size, new Vector2(this.Position.X, this.Position.Y + 1), this))
                 this.IsGrounded = true;
-
         }
+        #endregion
+
+        #region damage
+        public bool IsTakingDamage = false;
+        public void TakeDamage()
+        {
+            if (IsTakingDamage)
+                return;
+
+            IsTakingDamage = true;
+            Scene.GameManagement.Values["CURRENT_LIFES"]--;
+
+            CoroutineManagement.ClearCoroutines();
+            CoroutineManagement.StarCoroutine(DamageFX(CoroutineManagement.GameTime));
+        }
+
+        public IEnumerator DamageFX(GameTime gameTime)
+        {
+            for(int i = 0; i < 60 * 4; i++)
+            {
+                if (gameTime.TotalGameTime.TotalMilliseconds % 8 > 4)
+                {
+                    SpriteColor = Color.Red;
+                    Transparent = 0.7f;
+                }
+                else
+                {
+                    SpriteColor = Color.White;
+                    Transparent = 1;
+                }
+                yield return null;
+            }
+
+            IsTakingDamage = false;
+            SpriteColor = Color.White;
+            Transparent = 1f;
+
+            yield return null;
+        }
+        #endregion
 
         #region Animation and Render
         public AsepriteAnimation AsepriteAnimation;
         #region smashEFX
         private Vector2 _PositionSmash;
         private Point _BobySmash;
-        private bool _GroundHit = false;
-        private bool _ShootSmashEFX = false;
-        private bool _last_isgrounded = false;
-        public void SmashEfx(bool _shooting = false)
+        
+        public IEnumerator Squash()
         {
-            if (!_last_isgrounded && this.IsGrounded && !_GroundHit && !_shooting)
-            {
-                _BobySmash.X = -15;
-                _BobySmash.Y = 5;
-                _PositionSmash.X = 2;
-                _PositionSmash.Y = -2;
-                _GroundHit = true;
-                wait(0.2f, () =>
-                {
-                    _BobySmash = new Point(0, 0);
-                    _PositionSmash = new Vector2(0, 0);
-                    _GroundHit = false;
-                });
-            }
+            _BobySmash.X = -15;
+            _BobySmash.Y = 5;
+            _PositionSmash.X = 2;
+            _PositionSmash.Y = -2;
+            yield return CoroutineManagement.Wait(200f);
 
-            if (_shooting && !_ShootSmashEFX)
-            {
-                _ShootSmashEFX = true;
-
-                _BobySmash.X = 10;
-                _BobySmash.Y = -5;
-                _PositionSmash.X = 2;
-                _PositionSmash.Y = 3;
-                _GroundHit = true;
-                wait(0.2f, () =>
-                {
-                    _BobySmash = new Point(0, 0);
-                    _PositionSmash = new Vector2(0, 0);
-                    _ShootSmashEFX = false;
-                    _GroundHit = false;
-                });
-            }
-            else if (!_GroundHit)
-            {
-                _BobySmash = new Point(0, 0);
-                _PositionSmash = new Vector2(0, 0);
-            }
-
-            this._last_isgrounded = this.IsGrounded;
+            ResetSpriteSizes();
+            yield return null;
         }
+
+        public IEnumerable Stretch()
+        {
+            _BobySmash.X = 10;
+            _BobySmash.Y = -5;
+            _PositionSmash.X = 2;
+            _PositionSmash.Y = 3;
+            yield return CoroutineManagement.Wait(200f);
+
+            ResetSpriteSizes();
+            yield return null;
+        }
+
+        public void ResetSpriteSizes()
+        {
+            _BobySmash = new Point(0, 0);
+            _PositionSmash = new Vector2(0, 0);
+        }
+
         #endregion
 
-        public void Flip(bool right)
-        {
-            spriteEffect = right ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-        }
+        public void Flip(bool right) => spriteEffect = right ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             Body = AsepriteAnimation.Body;
-            SmashEfx();
             BeginDraw(spriteBatch);
             spriteBatch.Draw(
                 Sprite,
