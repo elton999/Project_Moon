@@ -67,7 +67,7 @@ namespace GameProject.UI.Gameplay
             for (int i = 0; i < 10; i++)
             {
                 float _PowerStatusFloat = Scene.GameManagement.Values["POWER"] / 10f;
-                int _PowerStatus = (int)(_PowerStatusFloat > 0 ? _PowerStatusFloat + 1 : _PowerStatusFloat);
+                int _PowerStatus = (int)_PowerStatusFloat;
 
                 StatusSprite_ON.Position = new Vector2(66 + (i * 5), Position.Y + 16);
                 StatusSprite_OFF.Position = StatusSprite_ON.Position;

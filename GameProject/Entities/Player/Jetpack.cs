@@ -18,15 +18,15 @@ namespace GameProject.Entities.Player
         public void CheckFuel(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //Power -= FuelDecrement * deltaTime;
             Power = Math.Clamp(Power - FuelDecrement * deltaTime, 0f, 100f);
-
-            if (Power == 0) 
-                NoFuelOnFlight();
+            
+            NoFuelOnFlight();
         }
 
         public  void NoFuelOnFlight()
         {
+            if(Power > 0)
+                return;
             Player.SwitchBehavior(new Behavior.PlayerOnGrounded(Player, Player, Player.AsepriteAnimation));
             Player.SwitchState(new States.PlayerStateFall());
         }
