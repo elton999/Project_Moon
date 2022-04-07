@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using GameProject.Entities.Player.Interfaces;
 
@@ -17,9 +18,10 @@ namespace GameProject.Entities.Player
         public void CheckFuel(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Power -= FuelDecrement * deltaTime;
+            //Power -= FuelDecrement * deltaTime;
+            Power = Math.Clamp(Power - FuelDecrement * deltaTime, 0f, 100f);
 
-            if (Power < 0) 
+            if (Power == 0) 
                 NoFuelOnFlight();
         }
 
@@ -31,13 +33,11 @@ namespace GameProject.Entities.Player
 
         public  void RechargeFuel()
         {
-            if (Player.IsFlying) return;
-
-            if (Power < 100)
-            {
-                Power++;
-                Player.wait(RechargeFuelTime, RechargeFuel);
-            }
+            if (Player.IsFlying)
+                return;
+                
+            Power = Math.Clamp(Power + 1f, 0f, 100f);
+            Player.wait(RechargeFuelTime, RechargeFuel);
         }
 
     }
