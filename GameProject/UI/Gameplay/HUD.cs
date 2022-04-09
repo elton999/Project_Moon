@@ -50,20 +50,30 @@ namespace GameProject.UI.Gameplay
         {
             BeginDraw(spriteBatch, false);
             //background
-            this.DrawSprite(spriteBatch);
+            DrawSprite(spriteBatch);
 
             // Texts
             LifeText.DrawSprite(spriteBatch);
             PowerText.DrawSprite(spriteBatch);
 
-            // life status
+            DrawLifeStatus(spriteBatch);
+
+            DrawBarOfPower(spriteBatch);
+
+            EndDraw(spriteBatch);
+        }
+
+        private void DrawLifeStatus(SpriteBatch spriteBatch)
+        {
             for (int i = 0; i < Scene.GameManagement.Values["CURRENT_LIFES"]; i++)
             {
                 LifeCountSprite_ON.Position = new Vector2(10 + (i * 11), Position.Y + 16);
                 LifeCountSprite_ON.DrawSprite(spriteBatch);
             }
+        }
 
-            // Fuel Status
+        private void DrawBarOfPower(SpriteBatch spriteBatch)
+        {
             for (int i = 0; i < 10; i++)
             {
                 float _PowerStatusFloat = Scene.GameManagement.Values["POWER"] / 10f;
@@ -77,7 +87,6 @@ namespace GameProject.UI.Gameplay
                 else
                     StatusSprite_OFF.DrawSprite(spriteBatch);
             }
-            EndDraw(spriteBatch);
         }
     }
 }
