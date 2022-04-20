@@ -7,17 +7,17 @@ namespace GameProject.Entities
 {
     public class SpriteDeforme : Actor
     {
-        protected Vector2 _PositionSmash;
-        protected Point _BobySmash;
+        protected Vector2 _positionSmash;
+        protected Point _bodySmash;
 
         public CoroutineManagement CoroutineManagement = new();
-        
+
         public IEnumerator Squash()
         {
-            _BobySmash.X = -15;
-            _BobySmash.Y = 5;
-            _PositionSmash.X = 2;
-            _PositionSmash.Y = -2;
+            _bodySmash.X = -15;
+            _bodySmash.Y = 5;
+            _positionSmash.X = 2;
+            _positionSmash.Y = -2;
             yield return CoroutineManagement.Wait(200f);
 
             ResetSpriteSizes();
@@ -26,10 +26,10 @@ namespace GameProject.Entities
 
         public IEnumerable Stretch()
         {
-            _BobySmash.X = 10;
-            _BobySmash.Y = -5;
-            _PositionSmash.X = 2;
-            _PositionSmash.Y = 3;
+            _bodySmash.X = 10;
+            _bodySmash.Y = -5;
+            _positionSmash.X = 2;
+            _positionSmash.Y = 3;
             yield return CoroutineManagement.Wait(200f);
 
             ResetSpriteSizes();
@@ -38,8 +38,8 @@ namespace GameProject.Entities
 
         public void ResetSpriteSizes()
         {
-            _BobySmash = new Point(0, 0);
-            _PositionSmash = new Vector2(0, 0);
+            _bodySmash = new Point(0, 0);
+            _positionSmash = new Vector2(0, 0);
         }
     }
 }

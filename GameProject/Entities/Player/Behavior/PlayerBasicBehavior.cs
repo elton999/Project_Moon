@@ -34,7 +34,7 @@ namespace GameProject.Entities.Player.Behavior
         public virtual void Idle(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            if(_directionY >= 0)
+            if (_directionY >= 0)
                 Animation.Play(gameTime, "idle", animationDirection);
             else
                 Animation.Play(gameTime, "shoot-up", animationDirection);
@@ -57,6 +57,7 @@ namespace GameProject.Entities.Player.Behavior
 
         public virtual void Move(GameTime gametime, Vector2 speed)
         {
+            TimeOnGround += (float)gametime.ElapsedGameTime.Milliseconds;
             _directionY = Math.Sign(speed.Y);
             Actor.velocity = speed * Vector2.UnitX + Actor.velocity * Vector2.UnitY;
         }

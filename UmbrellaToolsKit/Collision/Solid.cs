@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace UmbrellaToolsKit.Collision
 {
     public class Solid : GameObject
     {
-
         public bool Collidable = true;
 
         private float xRemainder = 0;

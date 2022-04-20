@@ -46,7 +46,7 @@ namespace GameProject.Entities.Player
 
         public void SwitchState(States.PlayerState state)
         {
-            if(CurrentState != null)
+            if (CurrentState != null)
                 CurrentState.Exit();
 
             state.Player = this;
@@ -66,7 +66,7 @@ namespace GameProject.Entities.Player
         public override void UpdateData(GameTime gameTime)
         {
             CheckGrounded();
-            
+
             CurrentState.PhysicsUpdate(gameTime);
 
             Scene.Camera.Target = Position + size.ToVector2() / 2f;
@@ -111,8 +111,8 @@ namespace GameProject.Entities.Player
             BeginDraw(spriteBatch);
             spriteBatch.Draw(
                 Sprite,
-                new Rectangle(Vector2.Subtract(Position, _PositionSmash).ToPoint(),
-                Vector2.Subtract(Body.Size.ToVector2(), _BobySmash.ToVector2()).ToPoint()),
+                new Rectangle(Vector2.Subtract(Position, _positionSmash).ToPoint(),
+                Vector2.Subtract(Body.Size.ToVector2(), _bodySmash.ToVector2()).ToPoint()),
                 Body, SpriteColor * Transparent, Rotation, Origin, spriteEffect, 0);
             EndDraw(spriteBatch);
         }

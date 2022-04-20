@@ -6,7 +6,7 @@ namespace GameProject.Entities.Player.Behavior
 {
     public class PlayerFlying : PlayerBasicBehavior
     {
-        public PlayerFlying(Actor actor, Player player, AsepriteAnimation animation):base(actor, player, animation)
+        public PlayerFlying(Actor actor, Player player, AsepriteAnimation animation) : base(actor, player, animation)
         {
             Player.IsFlying = true;
             Actor.moveY(-2);
@@ -42,6 +42,7 @@ namespace GameProject.Entities.Player.Behavior
         public override void Move(GameTime gameTime, Vector2 speed)
         {
             CheckFuel(gameTime);
+            TimeOfFly += gameTime.ElapsedGameTime.Milliseconds;
 
             Actor.velocityDecrecentY = 0;
             Actor.velocity.Y = -0.5f * (float)gameTime.ElapsedGameTime.TotalSeconds;
