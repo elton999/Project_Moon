@@ -62,7 +62,7 @@ namespace UmbrellaToolsKit
 
             if (CameraManagement != null && Scene != null)
             {
-                this.Scale = this.getCurrentResolutionSize.X / Scene.ScreemOffset.X;
+                this.Scale = this.getCurrentResolutionSize.X / Scene.ScreenOffset.X;
                 //CameraManagement.ScreemSize = Scene.ScreemOffset;
                 CameraManagement.Scale = this.Scale;
                 CameraManagement.update(gameTime);

@@ -39,7 +39,7 @@ namespace GameProject
         private void CreateHud()
         {
             GameplayHud = new HUD();
-            GameplayHud.Scene = this.SceneManagement.MainScene;
+            GameplayHud.Scene = SceneManagement.MainScene;
             GameplayHud.Start();
             SceneManagement.MainScene.UI.Add(this.GameplayHud);
         }
@@ -69,10 +69,10 @@ namespace GameProject
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            this.SceneManagement.MainScene.Draw(
+            SceneManagement.MainScene.Draw(
                 spriteBatch,
-                Game1.Instance.GraphicsDevice, 
-                new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width, 
+                Game1.Instance.GraphicsDevice,
+                new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width,
                 Game1.Instance.GraphicsDevice.Viewport.Height));
             base.Draw(spriteBatch);
         }

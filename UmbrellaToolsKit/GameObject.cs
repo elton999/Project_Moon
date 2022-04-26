@@ -10,7 +10,7 @@ using UmbrellaToolsKit.UI;
 
 namespace UmbrellaToolsKit
 {
-    public class GameObject
+    public class GameObject : IDisposable
     {
         public Vector2 Position = Vector2.Zero;
         public Vector2 Origin = Vector2.Zero;
@@ -45,9 +45,7 @@ namespace UmbrellaToolsKit
             EndDraw(spriteBatch);
         }
 
-        public virtual void DrawBeforeScene(SpriteBatch spriteBatch){}
-
-
+        public virtual void DrawBeforeScene(SpriteBatch spriteBatch) { }
 
         public Vector2 _bodySize;
         public float Density = 0f;
@@ -144,8 +142,6 @@ namespace UmbrellaToolsKit
             this._maxTime.AddRange(__maxTime);
         }
 
-
-
         public void DrawSprite(SpriteBatch spriteBatch)
         {
             if (this.Sprite != null)
@@ -174,9 +170,8 @@ namespace UmbrellaToolsKit
             );
         }
 
-        public void EndDraw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.End();
-        }
+        public void EndDraw(SpriteBatch spriteBatch) => spriteBatch.End();
+
+        public virtual void Dispose() => GC.SuppressFinalize(this);
     }
 }

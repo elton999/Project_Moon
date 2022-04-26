@@ -30,26 +30,26 @@ namespace GameProject
             Light2.Position = new Vector2(0, 0);
             Light2.Scale = 0.5f;
 
-            lightsLayer = new RenderTarget2D(this.Scene.ScreemGraphicsDevice, 400, 400);
+            lightsLayer = new RenderTarget2D(this.Scene.ScreenGraphicsDevice, 400, 400);
         }
 
         float timer = 0;
         public override void Update(GameTime gameTime)
         {
-            timer+= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Light2.Position.X = (float)Math.Cos(timer * 0.0005f) * 150f;
         }
 
         public override void DrawBeforeScene(SpriteBatch spriteBatch)
         {
             this.Effect = null;
-            this.Scene.ScreemGraphicsDevice.SetRenderTarget(lightsLayer);
-            this.Scene.ScreemGraphicsDevice.Clear(Color.Transparent);
+            this.Scene.ScreenGraphicsDevice.SetRenderTarget(lightsLayer);
+            this.Scene.ScreenGraphicsDevice.Clear(Color.Transparent);
             BeginDraw(spriteBatch, false);
             Light1.DrawSprite(spriteBatch);
             Light2.DrawSprite(spriteBatch);
             EndDraw(spriteBatch);
-            this.Scene.ScreemGraphicsDevice.SetRenderTarget(null);
+            this.Scene.ScreenGraphicsDevice.SetRenderTarget(null);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

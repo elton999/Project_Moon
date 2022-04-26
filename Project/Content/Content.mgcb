@@ -15,35 +15,10 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Maps/Level1/level_1.json
-/importer:OgmoTileMapImporter
-/processor:OgmoTileMapProcessor
-/build:Maps/Level1/level_1.json
-
-#begin Maps/Level1/level_2.json
-/importer:OgmoTileMapImporter
-/processor:OgmoTileMapProcessor
-/build:Maps/Level1/level_2.json
-
-#begin Maps/Level2/level_1.json
-/importer:OgmoTileMapImporter
-/processor:OgmoTileMapProcessor
-/build:Maps/Level2/level_1.json
-
-#begin Maps/Level3/level_1.json
-/importer:OgmoTileMapImporter
-/processor:OgmoTileMapProcessor
-/build:Maps/Level3/level_1.json
-
-#begin Maps/TileSettings.ldtk
+#begin Maps/TileMap.ldtk
 /importer:LdtkImporter
 /processor:LdtkProcessor
-/build:Maps/TileSettings.ldtk;Maps/TileSettingsLdtk.ldtk
-
-#begin Maps/TileSettings.ogmo
-/importer:OgmoImporter
-/processor:OgmoProcessor
-/build:Maps/TileSettings.ogmo
+/build:Maps/TileMap.ldtk
 
 #begin new.cdb
 /copy:new.cdb

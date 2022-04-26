@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -7,18 +8,17 @@ using UmbrellaToolsKit.Collision;
 
 namespace UmbrellaToolsKit
 {
-    public class Scene
+    public class Scene : IDisposable
     {
-        public Scene(GraphicsDevice ScreemGraphicsDevice, ContentManager Content)
+        public Scene(GraphicsDevice screenGraphicsDevice, ContentManager content)
         {
-            this.ScreemGraphicsDevice = ScreemGraphicsDevice;
-            this.Content = Content;
+            ScreenGraphicsDevice = screenGraphicsDevice;
+            Content = content;
             this.addLayers();
         }
 
         #region Layers
         public List<List<GameObject>> SortLayers = new List<List<GameObject>>();
-
 
         // UI
         public List<GameObject> UI = new List<GameObject>();
@@ -51,14 +51,14 @@ namespace UmbrellaToolsKit
         //Sizes
         private int Width = 426;
         private int Height = 240;
-        public GraphicsDevice ScreemGraphicsDevice;
+        public GraphicsDevice ScreenGraphicsDevice;
         public ContentManager Content;
 
         private Color BackgroundColor = Color.CornflowerBlue;
-        public ScreemController Screem { get; set; }
+        public ScreemController Screen { get; set; }
 
         //Camera
-        public Point ScreemOffset;
+        public Point ScreenOffset;
         private Vector2 CamPositionz;
         public CameraManagement Camera;
 
@@ -80,6 +80,7 @@ namespace UmbrellaToolsKit
 
         #region Load Level Tilemap
         public Ogmo.TileSet tileSet;
+        public ldtk.LdtkJson TileMapLdtk;
         public GameManagement GameManagement;
 
         public string MapLevelPath = "Maps/level_";
@@ -90,40 +91,45 @@ namespace UmbrellaToolsKit
 
         public void SetLevel(int level)
         {
-            System.Console.WriteLine($"Level: {this.MapLevelPath + level}");
-            this.CreateCamera();
+            System.Console.WriteLine($"Level: {MapLevelPath + level}");
+            CreateCamera();
 
-            Ogmo.TileMap tileMap = Content.Load<Ogmo.TileMap>(this.MapLevelPath + level);
+            Ogmo.TileMap tileMap = Content.Load<Ogmo.TileMap>(MapLevelPath + level);
 
-            Texture2D _tilemapSprite = Content.Load<Texture2D>(this.TileMapPath);
+            Texture2D _tilemapSprite = Content.Load<Texture2D>(TileMapPath);
 
             TileMap.TileMap.Create(this, tileMap, _tilemapSprite);
-            this.CreateBackBuffer();
+            CreateBackBuffer();
 
-            this.LevelReady = true;
+            LevelReady = true;
             System.Console.WriteLine("\nDone");
         }
 
         public void SetLevelLdtk(int level)
         {
-            System.Console.WriteLine($"Level: {this.MapLevelLdtkPath}");
-            Texture2D _tilemapSprite = Content.Load<Texture2D>(this.TileMapPath);
+            System.Console.WriteLine($"Level: {MapLevelLdtkPath}");
+            System.Console.WriteLine($"Level_{level}");
+            CreateCamera();
 
-            var tileMap = Content.Load<ldtk.LdtkJson>(this.MapLevelLdtkPath);
+            Texture2D _tilemapSprite = Content.Load<Texture2D>(TileMapPath);
+            TileMapLdtk = Content.Load<ldtk.LdtkJson>(MapLevelLdtkPath);
 
-            TileMap.TileMap.Create(this, tileMap, "Level_" + level, _tilemapSprite);
+            CreateBackBuffer();
+
+            TileMap.TileMap.Create(this, TileMapLdtk, "Level_" + level, _tilemapSprite);
+
+            LevelReady = true;
+            System.Console.WriteLine("\nDone");
         }
 
         public void CreateCamera()
         {
-            this.Camera = new CameraManagement();
-            this.Camera.Scene = this;
+            Camera ??= new CameraManagement();
+            Camera.Scene = this;
         }
 
-        public void CreateBackBuffer()
-        {
-            this._BackBuffer = new RenderTarget2D(ScreemGraphicsDevice, this.Width, this.Height);
-        }
+        public void CreateBackBuffer() => _BackBuffer ??= new RenderTarget2D(ScreenGraphicsDevice, Width, Height);
+
         #endregion
 
         #region Update
@@ -189,16 +195,16 @@ namespace UmbrellaToolsKit
         {
             Vector2 _gameObjectPosition = gameObject.Position;
 
-            if (Screem != null)
+            if (Screen != null)
             {
                 bool overlay_x = false;
                 bool overlay_y = false;
-                Vector2 CameraPosition = -this.Screem.CameraManagement.Position;
+                Vector2 CameraPosition = -Screen.CameraManagement.Position;
 
-                if (CameraPosition.X - (ScreemOffset.X / 2f) < _gameObjectPosition.X && CameraPosition.X + (ScreemOffset.X / 2f) > _gameObjectPosition.X)
+                if (CameraPosition.X - (ScreenOffset.X / 2f) < _gameObjectPosition.X && CameraPosition.X + (ScreenOffset.X / 2f) > _gameObjectPosition.X)
                     overlay_x = true;
 
-                if (CameraPosition.Y - (ScreemOffset.Y / 2f) < _gameObjectPosition.Y && CameraPosition.Y + (ScreemOffset.Y / 2f) > _gameObjectPosition.Y)
+                if (CameraPosition.Y - (ScreenOffset.Y / 2f) < _gameObjectPosition.Y && CameraPosition.Y + (ScreenOffset.Y / 2f) > _gameObjectPosition.Y)
                     overlay_y = true;
 
                 if (overlay_x && overlay_y)
@@ -234,7 +240,7 @@ namespace UmbrellaToolsKit
         private RenderTarget2D _BackBuffer;
         public void RestartRenderTarget()
         {
-            ScreemGraphicsDevice.SetRenderTarget(this._BackBuffer);
+            ScreenGraphicsDevice.SetRenderTarget(this._BackBuffer);
         }
 
         private void DrawGameObjects(SpriteBatch spriteBatch, List<List<GameObject>> layers)
@@ -285,7 +291,7 @@ namespace UmbrellaToolsKit
                     this.UI[i].Draw(spriteBatch);
             }
 
-            
+
 
             //Scale canvas settings
             float _xScale = Viewport.X / this.Width;
@@ -295,8 +301,8 @@ namespace UmbrellaToolsKit
             float _BackBuffer_Position_x = ((Viewport.X / 2) - (this.Width * _BackBuffer_scale / 2));
             float _BackBuffer_Position_y = ((Viewport.Y / 2) - (this.Height * _BackBuffer_scale / 2));
 
-            ScreemGraphicsDevice.SetRenderTarget(null);
-            ScreemGraphicsDevice.Clear(this.ClearColorScene);
+            ScreenGraphicsDevice.SetRenderTarget(null);
+            ScreenGraphicsDevice.Clear(this.ClearColorScene);
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, null);
             spriteBatch.Draw(
                 (Texture2D)this._BackBuffer,
@@ -312,5 +318,32 @@ namespace UmbrellaToolsKit
             spriteBatch.End();
         }
         #endregion
+
+        public void Dispose()
+        {
+            LevelReady = false;
+
+            _BackBuffer.Dispose();
+            _BackBuffer = null;
+
+            foreach (List<GameObject> layer in SortLayers)
+            {
+                foreach (GameObject gameObject in layer)
+                    gameObject.Dispose();
+                //layer.Clear();
+            }
+
+            foreach (GameObject gameObject in UI)
+                gameObject.Dispose();
+
+            UI.Clear();
+            AllSolids.Clear();
+            AllActors.Clear();
+
+            Grid.Dispose();
+
+            GC.SuppressFinalize(this);
+            GC.Collect();
+        }
     }
 }

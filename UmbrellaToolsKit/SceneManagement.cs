@@ -12,32 +12,27 @@ namespace UmbrellaToolsKit
         public int CurrentScene = 1;
         public int MaxScenes = 1;
 
-        public virtual void Start()
-        {
-            SetScene(CurrentScene);
-        }
+        public virtual void Start() => SetScene();
 
-        public virtual void SetScene(int Scene)
+        public virtual void SetScene()
         {
-            this.MainScene = new Scene(
+            MainScene = new Scene(
                 GameManagement.Game.GraphicsDevice,
                 GameManagement.Game.Content
             );
-            this.MainScene.GameManagement = this.GameManagement;
-            //this.MainScene.SetLevel(Scene);
-            this.MainScene.LevelReady = true;
+            MainScene.GameManagement = GameManagement;
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            if (this.MainScene != null && this.MainScene.LevelReady)
-                this.MainScene.Update(gameTime);
+            if (MainScene != null && MainScene.LevelReady)
+                MainScene.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (this.MainScene != null && this.MainScene.LevelReady)
-                this.MainScene.Draw(spriteBatch,
+            if (MainScene != null && MainScene.LevelReady)
+                MainScene.Draw(spriteBatch,
                 GameManagement.Game.GraphicsDevice,
                 new Vector2(
                     GameManagement.Game.GraphicsDevice.Viewport.Width,

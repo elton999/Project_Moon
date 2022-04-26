@@ -46,8 +46,8 @@ namespace GameProject
             AssetManagement.Set<Entities.Actors.Enemies.Shooter>("shooter", "ENEMIES");
             AssetManagement.Set<Entities.Actors.Enemies.Vomiter>("vomiter", "ENEMIES");
 
-            this.GameManagement = new GameManagementGame();
-            this.GameManagement.Start();
+            GameManagement = new GameManagementGame();
+            GameManagement.Start();
 
             base.Initialize();
         }
@@ -64,7 +64,7 @@ namespace GameProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            this.GameManagement.Update(gameTime);
+            GameManagement.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -73,7 +73,7 @@ namespace GameProject
         {
             GraphicsDevice.Clear(Color.Black);
 
-            this.GameManagement.Draw(_spriteBatch);
+            GameManagement.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }
