@@ -36,14 +36,14 @@ namespace UmbrellaToolsKit
         public void update(GameTime gameTime)
         {
 
-            this.InitialPosition = this._position;
-            this.Shake(gameTime);
+            InitialPosition = _position;
+            Shake(gameTime);
 
-            if (this.Target != Vector2.Zero)
+            if (Target != Vector2.Zero)
             {
                 var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                this.moveX(delta);
-                this.moveY(delta);
+                moveX(delta);
+                moveY(delta);
                 if (Scene.PixelArt) Position = Position.ToPoint().ToVector2();
             }
 
@@ -51,14 +51,14 @@ namespace UmbrellaToolsKit
 
         public void CheckActorAndSolids()
         {
-            Collision.Actor _actorCamera = new Collision.Actor();
-            _actorCamera.size = this.Scene.Sizes;
-            _actorCamera.Position = new Vector2(this.Position.X - this.Origin.X, this.Position.Y - this.Origin.Y);
-            List<Collision.Actor> _actorsList = new List<Collision.Actor>();
-            _actorsList.AddRange(this.Scene.AllActors);
+            var actorCamera = new Collision.Actor();
+            actorCamera.size = Scene.Sizes;
+            actorCamera.Position = new Vector2(Position.X - Origin.X, Position.Y - Origin.Y);
+            List<Collision.Actor> actorsList = new List<Collision.Actor>();
+            actorsList.AddRange(Scene.AllActors);
 
-            foreach (Collision.Actor actor in _actorsList)
-                if (actor.overlapCheck(_actorCamera))
+            foreach (Collision.Actor actor in actorsList)
+                if (actor.overlapCheck(actorCamera))
                     actor.Isvisible();
                 else
                     actor.IsNotvisible();
@@ -67,26 +67,26 @@ namespace UmbrellaToolsKit
         public bool UseLevelLimits = true;
         public void moveX(float delta)
         {
-            this._position.X = MathHelper.Lerp(this.Position.X, this.Target.X, this.MoveSpeed * delta);
-            if (this.UseLevelLimits)
+            _position.X = MathHelper.Lerp(Position.X, Target.X, MoveSpeed * delta);
+            if (UseLevelLimits)
             {
-                float maxValue = this.Scene.LevelSize.X + this.Scene.ScreenOffset.X - this.Origin.X;
-                float minValue = this.Scene.ScreenOffset.X + this.Origin.X;
-                this._position.X = Math.Max(this._position.X, minValue);
-                this._position.X = Math.Min(this._position.X, maxValue);
+                float maxValue = Scene.LevelSize.X + Scene.ScreenOffset.X - Origin.X;
+                float minValue = Scene.ScreenOffset.X + Origin.X;
+                _position.X = Math.Max(_position.X, minValue);
+                _position.X = Math.Min(_position.X, maxValue);
             }
         }
 
         public void moveY(float delta)
         {
-            this._position.Y = MathHelper.Lerp(this.Position.Y, this.Target.Y, this.MoveSpeed * delta);
+            _position.Y = MathHelper.Lerp(Position.Y, Target.Y, MoveSpeed * delta);
 
-            if (this.UseLevelLimits)
+            if (UseLevelLimits)
             {
-                float maxValue = this.Scene.LevelSize.Y + this.Scene.ScreenOffset.Y - this.Origin.Y;
-                float minValue = this.Scene.ScreenOffset.Y + this.Origin.Y;
-                this._position.Y = Math.Min(this._position.Y, maxValue);
-                this._position.Y = Math.Max(this._position.Y, minValue);
+                float maxValue = Scene.LevelSize.Y + Scene.ScreenOffset.Y - Origin.Y;
+                float minValue = Scene.ScreenOffset.Y + Origin.Y;
+                _position.Y = Math.Min(_position.Y, maxValue);
+                _position.Y = Math.Max(_position.Y, minValue);
 
             }
         }

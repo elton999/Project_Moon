@@ -330,13 +330,12 @@ namespace UmbrellaToolsKit
             {
                 foreach (GameObject gameObject in layer)
                     gameObject.Dispose();
-                //layer.Clear();
+                layer.Clear();
             }
 
             foreach (GameObject gameObject in UI)
                 gameObject.Dispose();
 
-            UI.Clear();
             AllSolids.Clear();
             AllActors.Clear();
 
