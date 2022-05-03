@@ -7,6 +7,7 @@ namespace GameProject
         public override void Start()
         {
             base.Start();
+            MainScene.updateDataTime = 1f / 60f;
             StartGame();
         }
 

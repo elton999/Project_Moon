@@ -16,16 +16,17 @@ namespace GameProject
         public void ChangeLevel(int level)
         {
             var player = MainScene.AllActors[0];
+            var background = MainScene.Backgrounds[0];
+            MainScene.Backgrounds.RemoveAt(0);
+
             _oldScenePosition = MainScene.ScreenOffset.ToVector2();
             MainScene.Players.Clear();
             MainScene.Dispose();
 
             MainScene.SetLevelLdtk(level);
-            RemovePlayerFromCurrentScene();
+            _setGameObjectsOnScene(player, background);
 
-            MainScene.Players.Add(player);
-            MainScene.AllActors.Insert(0, player);
-
+            MainScene.updateDataTime = 1f / 30f;
             Coroutine.StarCoroutine(CameraTransition());
         }
 
@@ -82,13 +83,16 @@ namespace GameProject
                 MainScene.Camera.Position = Vector2.Lerp(
                    MainScene.Camera.Position,
                    MainScene.Camera.Target,
-                   (float)Coroutine.GameTime.ElapsedGameTime.TotalSeconds * 8f
+                   (float)Coroutine.GameTime.ElapsedGameTime.TotalSeconds * 5f
                );
                 yield return null;
             }
+            MainScene.updateDataTime = 1f / 60f;
+            _removeOldBackground();
             _isCameraTransition = false;
             yield return null;
         }
+
 
         public void SetCamaraTargetToTransition()
         {
@@ -107,6 +111,26 @@ namespace GameProject
                 MainScene.Camera.Target = cameraPosition * Vector2.UnitX;
                 MainScene.Camera.Target += (velocityDirection.Y > 0 ? playerPosition + MainScene.Camera.Origin : playerPosition - MainScene.Camera.Origin) * Vector2.UnitY;
             }
+        }
+
+        private void _setGameObjectsOnScene(Actor player, GameObject background)
+        {
+            RemovePlayerFromCurrentScene();
+
+            _setPlayerOnLevel(player);
+            MainScene.Backgrounds.Add(background);
+        }
+
+        private void _setPlayerOnLevel(Actor player)
+        {
+            MainScene.Players.Add(player);
+            MainScene.AllActors.Insert(0, player);
+        }
+
+        private void _removeOldBackground()
+        {
+            MainScene.Backgrounds[1].Dispose();
+            MainScene.Backgrounds.RemoveAt(1);
         }
 
         private Actor _getPlayerActorDirection()

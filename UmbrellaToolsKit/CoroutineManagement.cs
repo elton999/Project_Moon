@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
@@ -9,22 +8,13 @@ namespace UmbrellaToolsKit
     {
         private List<IEnumerator> _coroutines = new List<IEnumerator>();
         private IEnumerator _coroutinesUpdate;
-        public  GameTime GameTime;
+        public GameTime GameTime;
 
-        public CoroutineManagement()
-        {
-            _coroutinesUpdate = coroutinesUpdate();
-        }
+        public CoroutineManagement() => _coroutinesUpdate = coroutinesUpdate();
 
-        public void StarCoroutine(IEnumerator coroutine)
-        {
-            _coroutines.Add(coroutine);
-        }
+        public void StarCoroutine(IEnumerator coroutine) => _coroutines.Add(coroutine);
 
-        public void ClearCoroutines()
-        {
-            _coroutines.Clear();
-        }
+        public void ClearCoroutines() => _coroutines.Clear();
 
         public void Update(GameTime gameTime)
         {
@@ -48,9 +38,7 @@ namespace UmbrellaToolsKit
             while (true)
             {
                 if (_coroutines.Count > 0)
-                {
                     ExecuteCoroutine();
-                }
                 yield return null;
             }
         }
