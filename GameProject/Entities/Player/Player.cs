@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Collections;
 using GameProject.Gameplay;
 using UmbrellaToolsKit;
 using UmbrellaToolsKit.Sprite;
@@ -7,12 +6,15 @@ using UmbrellaToolsKit.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Entities.Player.Behavior;
+using GameProject.Entities.Components;
 
 namespace GameProject.Entities.Player
 {
     public class Player : PlayerAnimationEfx
     {
         public Weapon Weapon;
+        public SpriteDeformeComponent SpriteDeforme;
+
         public States.PlayerState CurrentState;
         public AsepriteAnimation AsepriteAnimation;
 
@@ -32,6 +34,8 @@ namespace GameProject.Entities.Player
             size = new Point(10, 32);
             tag = "player";
             Weapon = new Weapon(this);
+
+            Components.Add(SpriteDeforme = new());
 
             Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
@@ -111,8 +115,8 @@ namespace GameProject.Entities.Player
             BeginDraw(spriteBatch);
             spriteBatch.Draw(
                 Sprite,
-                new Rectangle(Vector2.Subtract(Position, _positionSmash).ToPoint(),
-                Vector2.Subtract(Body.Size.ToVector2(), _bodySmash.ToVector2()).ToPoint()),
+                new Rectangle(Vector2.Subtract(Position, SpriteDeforme.PositionSmash).ToPoint(),
+                Vector2.Subtract(Body.Size.ToVector2(), SpriteDeforme.BodySmash.ToVector2()).ToPoint()),
                 Body, SpriteColor * Transparent, Rotation, Origin, spriteEffect, 0);
             EndDraw(spriteBatch);
         }

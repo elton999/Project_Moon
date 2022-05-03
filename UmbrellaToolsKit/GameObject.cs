@@ -33,11 +33,13 @@ namespace UmbrellaToolsKit
         public Vector2 InitialPosition;
         public static readonly Random getRandom = new Random();
 
+        public Component Components = new Component();
+
         public virtual void Start() { }
         public virtual void OnVisible() { }
         public virtual void OnInvisible() { }
-        public virtual void Update(GameTime gameTime) { }
-        public virtual void UpdateData(GameTime gameTime) { }
+        public virtual void Update(GameTime gameTime) => Components?.Update(gameTime);
+        public virtual void UpdateData(GameTime gameTime) => Components?.UpdateData(gameTime);
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             BeginDraw(spriteBatch, true);

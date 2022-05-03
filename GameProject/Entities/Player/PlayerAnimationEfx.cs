@@ -1,10 +1,14 @@
 using System.Collections;
 using Microsoft.Xna.Framework;
+using UmbrellaToolsKit;
+using UmbrellaToolsKit.Collision;
 
 namespace GameProject.Entities.Player
 {
-    public class PlayerAnimationEfx : SpriteDeforme
+    public class PlayerAnimationEfx : Actor
     {
+        public CoroutineManagement CoroutineManagement = new();
+
         protected string[] _enemyTags = new string[6] {
              "soldier",
              "spider",
@@ -30,7 +34,7 @@ namespace GameProject.Entities.Player
 
         public IEnumerator DamageFX(GameTime gameTime)
         {
-            for(int i = 0; i < 60 * 4; i++)
+            for (int i = 0; i < 60 * 4; i++)
             {
                 if (gameTime.TotalGameTime.TotalMilliseconds % 8 > 4)
                 {

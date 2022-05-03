@@ -15,7 +15,7 @@ namespace GameProject.Entities.Player.States
         public override void Exit()
         {
             base.Exit();
-            Player.CoroutineManagement.StarCoroutine(Player.Squash());
+            Player.SpriteDeforme.Squash();
         }
     }
 }
