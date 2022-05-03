@@ -10,13 +10,24 @@ using GameProject.Entities.Components;
 
 namespace GameProject.Entities.Player
 {
-    public class Player : PlayerAnimationEfx
+    public class Player : Actor
     {
+        protected string[] _enemyTags = new string[6] {
+             "soldier",
+             "spider",
+             "bat",
+             "jumper",
+             "damage",
+             "bullet"
+        };
+
         public Weapon Weapon;
         public SpriteDeformeComponent SpriteDeforme;
+        public DemageEfxComponent DemageEfx;
 
         public States.PlayerState CurrentState;
         public AsepriteAnimation AsepriteAnimation;
+        public CoroutineManagement CoroutineManagement = new();
 
         public float JumpForce = 0.012f;
         public float DashJumpForce = 0.095f;
@@ -36,6 +47,7 @@ namespace GameProject.Entities.Player
             Weapon = new Weapon(this);
 
             Components.Add(SpriteDeforme = new());
+            Components.Add(DemageEfx = new(this));
 
             Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
@@ -84,6 +96,16 @@ namespace GameProject.Entities.Player
 
             if (_enemyTags.Contains(tag))
                 TakeDamage();
+        }
+
+        public void TakeDamage()
+        {
+            if (DemageEfx.IsTakingDamage)
+                return;
+
+            DemageEfx.IsTakingDamage = true;
+            Scene.GameManagement.Values["CURRENT_LIFES"]--;
+            DemageEfx.DamageEfx();
         }
 
         public override bool isRiding(Solid solid)
