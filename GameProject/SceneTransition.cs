@@ -25,6 +25,7 @@ namespace GameProject
 
             MainScene.SetLevelLdtk(level);
             _setGameObjectsOnScene(player, background);
+            _setRampSettingOnScene();
 
             MainScene.updateDataTime = 1f / 30f;
             Coroutine.StarCoroutine(CameraTransition());
@@ -34,7 +35,7 @@ namespace GameProject
         {
             foreach (ldtk.Level level in MainScene.TileMapLdtk.Levels)
             {
-                var sceneBounds = new UmbrellaToolsKit.Collision.Solid()
+                var sceneBounds = new Solid()
                 {
                     Position = new Vector2(level.WorldX, level.WorldY),
                     size = new Point((int)level.PxWid, (int)level.PxHei)
@@ -49,7 +50,7 @@ namespace GameProject
 
         public bool CheckBoundsCurrentScene()
         {
-            var sceneBounds = new UmbrellaToolsKit.Collision.Solid()
+            var sceneBounds = new Solid()
             {
                 Position = MainScene.ScreenOffset.ToVector2(),
                 size = MainScene.LevelSize.ToPoint()
@@ -133,11 +134,17 @@ namespace GameProject
             MainScene.Backgrounds.RemoveAt(1);
         }
 
+        protected void _setRampSettingOnScene()
+        {
+            MainScene.Grid.CollidesRamps.Add("3");
+            MainScene.Grid.CollidesRamps.Add("2");
+        }
+
         private Actor _getPlayerActorDirection()
         {
             var directionPlayer = new Vector2(Math.Sign(MainScene.AllActors[0].velocity.X), Math.Sign(MainScene.AllActors[0].velocity.Y));
 
-            return new UmbrellaToolsKit.Collision.Actor()
+            return new Actor()
             {
                 Position = MainScene.AllActors[0].Position + directionPlayer * 2f,
                 size = MainScene.AllActors[0].size

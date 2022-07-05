@@ -51,7 +51,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
-    "duration": 200
+    "duration": 100
    },
    {
     "filename": "regina 6.aseprite",
@@ -60,7 +60,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
-    "duration": 200
+    "duration": 100
    },
    {
     "filename": "regina 7.aseprite",
@@ -69,7 +69,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
-    "duration": 200
+    "duration": 100
    },
    {
     "filename": "regina 8.aseprite",
@@ -79,22 +79,50 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
     "duration": 200
+   },
+   {
+    "filename": "regina 9.aseprite",
+    "frame": { "x": 576, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 10.aseprite",
+    "frame": { "x": 640, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
+   },
+   {
+    "filename": "regina 11.aseprite",
+    "frame": { "x": 704, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
    }
  ],
  "meta": {
   "app": "https://www.aseprite.org/",
-  "version": "1.2.34.1-x64",
+  "version": "1.2.35-x64",
   "image": "Regina.png",
   "format": "RGBA8888",
-  "size": { "w": 576, "h": 64 },
+  "size": { "w": 768, "h": 64 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 1, "to": 1, "direction": "reverse" },
    { "name": "jump", "from": 2, "to": 2, "direction": "forward" },
-   { "name": "fall", "from": 2, "to": 2, "direction": "forward" },
-   { "name": "shoot", "from": 3, "to": 3, "direction": "forward" },
-   { "name": "shoot-up", "from": 4, "to": 4, "direction": "forward" },
-   { "name": "walk", "from": 5, "to": 8, "direction": "forward" }
+   { "name": "fall", "from": 3, "to": 3, "direction": "forward" },
+   { "name": "fly", "from": 4, "to": 5, "direction": "forward" },
+   { "name": "shoot", "from": 6, "to": 6, "direction": "forward" },
+   { "name": "shoot-up", "from": 7, "to": 7, "direction": "forward" },
+   { "name": "walk", "from": 8, "to": 11, "direction": "forward" }
   ]
  }
 }

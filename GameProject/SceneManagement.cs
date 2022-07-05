@@ -11,7 +11,11 @@ namespace GameProject
             StartGame();
         }
 
-        public void StartGame() => MainScene.SetLevelLdtk(1);
+        public void StartGame()
+        {
+            MainScene.SetLevelLdtk(1);
+            _setRampSettingOnScene();
+        }
 
         public override void Update(GameTime gameTime)
         {

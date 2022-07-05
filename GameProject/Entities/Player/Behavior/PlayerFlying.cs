@@ -18,7 +18,7 @@ namespace GameProject.Entities.Player.Behavior
         public override void Idle(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
+            Animation.Play(gameTime, "fly", animationDirection);
 
             if (Player.CurrentState.ButtonShoot)
                 Shoot(gameTime, Player.CurrentState.ButtonUP);
@@ -30,7 +30,7 @@ namespace GameProject.Entities.Player.Behavior
                 Shoot(gameTime, Player.CurrentState.ButtonUP);
 
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
+            Animation.Play(gameTime, "fly", animationDirection);
         }
 
         public override void Shoot(GameTime gameTime, bool upShoot)
