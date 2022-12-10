@@ -12,10 +12,10 @@ namespace GameProject.Entities.Components
         public DemageEfxComponent(GameObject gameObject) => GameObject = gameObject;
         public CoroutineManagement CoroutineManagement = new();
 
-        public override void Update(GameTime gametime)
+        public override void Update(GameTime gameTime)
         {
-            CoroutineManagement.Update(gametime);
-            base.Update(gametime);
+            CoroutineManagement.Update(gameTime);
+            base.Update(gameTime);
         }
 
         public void DamageEfx() => CoroutineManagement.StarCoroutine(_damageEfxAnimation());

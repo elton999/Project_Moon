@@ -39,8 +39,10 @@ namespace GameProject.Gameplay
                     timerPressed = 0;
                     Shoot();
                 }
+                return;
             }
-            else
+
+            if (!fire)
             {
                 IsFire = false;
                 timerPressed = 0;
@@ -69,12 +71,13 @@ namespace GameProject.Gameplay
 
             if (!UpShoot)
                 randomPosition += Actor.spriteEffect == SpriteEffects.None ? _weaponPositionNormal : _weaponPositionNormal * new Vector2(-1, 1);
-            else
+
+            if (UpShoot)
                 randomPosition += Actor.spriteEffect == SpriteEffects.None ? _weaponPositionUp : _weaponPositionUp * new Vector2(-1, 1);
 
             return Actor.Position + randomPosition;
         }
 
-        
+
     }
 }

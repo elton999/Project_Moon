@@ -12,41 +12,38 @@ namespace GameProject.Gameplay
 {
     public class HitBoxDamage : Actor
     {
-
         Square Box;
         public override void Start()
         {
             base.Start();
-            this.tag = "damage";
+            tag = "damage";
 
-            if (this.Scene.GameManagement.Values["DEBUG"])
-            {
-                this.Box = new Square();
-                this.Box.Position = this.Position;
-                this.Box.size = this.size;
-                this.Box.SquareColor = Color.Red;
-                this.Box.Scene = this.Scene;
+            if (!Scene.GameManagement.Values["DEBUG"])
+                return;
 
-                this.Box.Start();
-            }
+            Box = new Square();
+            Box.Position = Position;
+            Box.size = size;
+            Box.SquareColor = Color.Red;
+            Box.Scene = Scene;
+
+            Box.Start();
         }
 
         public override void UpdateData(GameTime gameTime)
         {
-            if (this.Scene.AllActors[0].overlapCheckPixel(this))
-            {
-                this.Scene.AllActors[0].OnCollision(this.tag);
-            }
+            if (Scene.AllActors[0].overlapCheckPixel(this))
+                Scene.AllActors[0].OnCollision(tag);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            if (this.Scene.GameManagement.Values["DEBUG"])
+            if (Scene.GameManagement.Values["DEBUG"])
             {
-                this.Box.Scene = this.Scene;
-                this.Box.Position = this.Position;
-                this.Box.Draw(spriteBatch);
+                Box.Scene = Scene;
+                Box.Position = Position;
+                Box.Draw(spriteBatch);
             }
         }
     }
