@@ -13,12 +13,14 @@ namespace UmbrellaToolsKit.EditorEngine.Windows
     {
         private GameManagement _gameManagement;
         public GameObject GameObjectSelected;
+        public List<string> Logs = new List<string>();
 
         public SceneEditorWindow(GameManagement gameManagement)
         {
             BarEdtior.OnSwichEditorWindow += RemoveAsMainWindow;
             BarEdtior.OnOpenMainEditor += SetAsMainWindow;
             _gameManagement = gameManagement;
+            Log.OnLog += Logs.Add;
         }
 
         public void SetAsMainWindow()
@@ -116,6 +118,13 @@ namespace UmbrellaToolsKit.EditorEngine.Windows
             ImGui.SetNextWindowDockID(bottom, ImGuiCond.Once);
             ImGui.Begin("Console");
             ImGui.SetWindowFontScale(1.2f);
+            
+            if (ImGui.Button("Clear"))
+                Logs.Clear();
+
+            foreach(string line in Logs)
+                ImGui.TextUnformatted(line);
+
             ImGui.End();
         }
 

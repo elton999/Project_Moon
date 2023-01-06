@@ -64,6 +64,7 @@ namespace UmbrellaToolsKit.TileMap
         private static void SetEntities(Scene scene, ldtk.LayerInstance layer)
         {
             Console.WriteLine($"Loading Entities: {layer.Identifier} ");
+            EditorEngine.Log.Write($"Loading Entities: {layer.Identifier} ");
 
             for (var i = 0; i < layer.EntityInstances.Length; i++)
             {
@@ -84,6 +85,8 @@ namespace UmbrellaToolsKit.TileMap
         private static void SetEntities(Scene scene, Ogmo.TileMapLayers layer)
         {
             Console.WriteLine($"Loading Entities: {layer.name} ");
+            EditorEngine.Log.Write($"Loading Entities: {layer.name} ");
+
             foreach (Ogmo.TileMapEntity entity in layer.entities)
             {
                 System.Console.Write(".");

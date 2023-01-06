@@ -57,8 +57,8 @@ namespace UmbrellaToolsKit.Collision
                 this.EdgesIsCollision[EDGES.BOTTOM_RIGHT];
         }
 
-        public Vector2 gravity2D = new Vector2(0, 8);
-        public Vector2 velocity = new Vector2(0, 0);
+        [ShowEditor] public Vector2 gravity2D = new Vector2(0, 8);
+        [ShowEditor] public Vector2 velocity = new Vector2(0, 0);
         public float gravityScale = 1;
         public float velocityDecrecentY = 200;
         public float velocityDecrecentX = 200;

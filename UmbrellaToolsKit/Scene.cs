@@ -108,7 +108,10 @@ namespace UmbrellaToolsKit
         public void SetLevelLdtk(int level)
         {
             Console.WriteLine($"Level: {MapLevelLdtkPath}");
+            EditorEngine.Log.Write($"Level: {MapLevelLdtkPath}");
             Console.WriteLine($"Level_{level}");
+            EditorEngine.Log.Write($"Level_{level}");
+
             CreateCamera();
 
             Texture2D _tilemapSprite = Content.Load<Texture2D>(TileMapPath);
@@ -120,6 +123,7 @@ namespace UmbrellaToolsKit
 
             LevelReady = true;
             Console.WriteLine("\nDone");
+            EditorEngine.Log.Write("\nDone");
         }
 
         public void CreateCamera()

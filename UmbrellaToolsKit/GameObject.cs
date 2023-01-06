@@ -17,11 +17,11 @@ namespace UmbrellaToolsKit
         public Point size;
         [ShowEditor] public float Scale = 1;
         public Rectangle Body;
-        public float Rotation = 0;
+        [ShowEditor] public float Rotation = 0;
         public Color SpriteColor = Color.White;
         public SpriteEffects spriteEffect = SpriteEffects.None;
         public Texture2D Sprite;
-        public float Transparent = 1f;
+        [ShowEditor] public float Transparent = 1f;
         public string tag = "gameObject";
 
         public ContentManager Content;
