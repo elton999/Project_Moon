@@ -1,13 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.UI.Gameplay;
+using UmbrellaToolsKit.EditorEngine;
+using System;
 
 namespace GameProject
 {
     public class GameManagementGame : UmbrellaToolsKit.GameManagement
     {
+        private EditorMain _edtior;
         public HUD GameplayHud;
         public static GameManagementGame Instance;
+        public GameTime GameTime;
 
         public override void Start()
         {
@@ -21,6 +25,8 @@ namespace GameProject
             CreateHud();
             SceneManagement.MainScene.LevelReady = true;
             CurrentStatus = Status.PLAYING;
+
+            _edtior = new EditorMain(Game, this);
 
             // teste light
             /*var lights = new Light();
@@ -64,17 +70,15 @@ namespace GameProject
         }
         public override void Update(GameTime gameTime)
         {
+            GameTime = gameTime;
             base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            SceneManagement.MainScene.Draw(
-                spriteBatch,
-                Game1.Instance.GraphicsDevice,
-                new Vector2(Game1.Instance.GraphicsDevice.Viewport.Width,
-                Game1.Instance.GraphicsDevice.Viewport.Height));
+            SpriteBatch = spriteBatch;
             base.Draw(spriteBatch);
+            _edtior.Draw(GameTime);
         }
     }
 }

@@ -18,11 +18,13 @@ namespace UmbrellaToolsKit
         public SceneManagement SceneManagement;
         public Game Game;
 
+        public SpriteBatch SpriteBatch;
+
         public override void Start()
         {
-            this.CurrentStatus = Status.PLAYING;
-            this.SceneManagement = new SceneManagement();
-            this.SceneManagement.GameManagement = this;
+            CurrentStatus = Status.PLAYING;
+            SceneManagement = new SceneManagement();
+            SceneManagement.GameManagement = this;
         }
 
         public override void Update(GameTime gameTime)

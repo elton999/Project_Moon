@@ -12,10 +12,10 @@ namespace UmbrellaToolsKit
 {
     public class GameObject : IDisposable
     {
-        public Vector2 Position = Vector2.Zero;
-        public Vector2 Origin = Vector2.Zero;
+        [ShowEditor] public Vector2 Position = Vector2.Zero;
+        [ShowEditor] public Vector2 Origin = Vector2.Zero;
         public Point size;
-        public float Scale = 1;
+        [ShowEditor] public float Scale = 1;
         public Rectangle Body;
         public float Rotation = 0;
         public Color SpriteColor = Color.White;

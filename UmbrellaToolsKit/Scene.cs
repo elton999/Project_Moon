@@ -91,7 +91,7 @@ namespace UmbrellaToolsKit
 
         public void SetLevel(int level)
         {
-            System.Console.WriteLine($"Level: {MapLevelPath + level}");
+            Console.WriteLine($"Level: {MapLevelPath + level}");
             CreateCamera();
 
             Ogmo.TileMap tileMap = Content.Load<Ogmo.TileMap>(MapLevelPath + level);
@@ -102,13 +102,13 @@ namespace UmbrellaToolsKit
             CreateBackBuffer();
 
             LevelReady = true;
-            System.Console.WriteLine("\nDone");
+            Console.WriteLine("\nDone");
         }
 
         public void SetLevelLdtk(int level)
         {
-            System.Console.WriteLine($"Level: {MapLevelLdtkPath}");
-            System.Console.WriteLine($"Level_{level}");
+            Console.WriteLine($"Level: {MapLevelLdtkPath}");
+            Console.WriteLine($"Level_{level}");
             CreateCamera();
 
             Texture2D _tilemapSprite = Content.Load<Texture2D>(TileMapPath);
@@ -119,7 +119,7 @@ namespace UmbrellaToolsKit
             TileMap.TileMap.Create(this, TileMapLdtk, "Level_" + level, _tilemapSprite);
 
             LevelReady = true;
-            System.Console.WriteLine("\nDone");
+            Console.WriteLine("\nDone");
         }
 
         public void CreateCamera()
@@ -238,6 +238,7 @@ namespace UmbrellaToolsKit
 
         #region Draw
         private RenderTarget2D _BackBuffer;
+        public Texture2D SceneRendered { get => (Texture2D)_BackBuffer; }
         public void RestartRenderTarget()
         {
             ScreenGraphicsDevice.SetRenderTarget(this._BackBuffer);
@@ -303,6 +304,11 @@ namespace UmbrellaToolsKit
 
             ScreenGraphicsDevice.SetRenderTarget(null);
             ScreenGraphicsDevice.Clear(this.ClearColorScene);
+            DrawBuffer(spriteBatch, _BackBuffer_scale, _BackBuffer_Position_x, _BackBuffer_Position_y);
+        }
+
+        public void DrawBuffer(SpriteBatch spriteBatch, float _BackBuffer_scale, float _BackBuffer_Position_x, float _BackBuffer_Position_y)
+        {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, null);
             spriteBatch.Draw(
                 (Texture2D)this._BackBuffer,
