@@ -137,7 +137,7 @@ namespace UmbrellaToolsKit.EditorEngine.Windows
                 ShowGameObjectFromLayer(_gameManagement.SceneManagement.MainScene.Foreground);
             if (ImGui.TreeNode("Player"))
                 ShowGameObjectFromLayer(_gameManagement.SceneManagement.MainScene.Players);
-            if (ImGui.TreeNode("Enimies"))
+            if (ImGui.TreeNode("Enemies"))
                 ShowGameObjectFromLayer(_gameManagement.SceneManagement.MainScene.Enemies);
             if (ImGui.TreeNode("Middleground"))
                 ShowGameObjectFromLayer(_gameManagement.SceneManagement.MainScene.Middleground);
