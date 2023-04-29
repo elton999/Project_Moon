@@ -78,7 +78,7 @@
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
-    "duration": 200
+    "duration": 100
    },
    {
     "filename": "regina 9.aseprite",
@@ -106,23 +106,43 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
     "sourceSize": { "w": 64, "h": 64 },
     "duration": 200
+   },
+   {
+    "filename": "regina 12.aseprite",
+    "frame": { "x": 768, "y": 0, "w": 64, "h": 64 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 200
    }
  ],
  "meta": {
   "app": "https://www.aseprite.org/",
-  "version": "1.2.35-x64",
+  "version": "1.2.40-x64",
   "image": "Regina.png",
   "format": "RGBA8888",
-  "size": { "w": 768, "h": 64 },
+  "size": { "w": 832, "h": 64 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 1, "to": 1, "direction": "reverse" },
-   { "name": "jump", "from": 2, "to": 2, "direction": "forward" },
-   { "name": "fall", "from": 3, "to": 3, "direction": "forward" },
-   { "name": "fly", "from": 4, "to": 5, "direction": "forward" },
-   { "name": "shoot", "from": 6, "to": 6, "direction": "forward" },
-   { "name": "shoot-up", "from": 7, "to": 7, "direction": "forward" },
-   { "name": "walk", "from": 8, "to": 11, "direction": "forward" }
+   { "name": "squat", "from": 2, "to": 2, "direction": "forward" },
+   { "name": "jump", "from": 3, "to": 3, "direction": "forward" },
+   { "name": "fall", "from": 4, "to": 4, "direction": "forward" },
+   { "name": "fly", "from": 5, "to": 6, "direction": "forward" },
+   { "name": "shoot", "from": 7, "to": 7, "direction": "forward" },
+   { "name": "shoot-up", "from": 8, "to": 8, "direction": "forward" },
+   { "name": "walk", "from": 9, "to": 12, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "R arms", "opacity": 255, "blendMode": "normal" },
+   { "name": "body", "opacity": 255, "blendMode": "normal" },
+   { "name": "legs", "opacity": 255, "blendMode": "normal" },
+   { "name": "L arms", "opacity": 255, "blendMode": "normal" },
+   { "name": "head 2", "opacity": 255, "blendMode": "normal" },
+   { "name": "efx", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
   ]
  }
 }
