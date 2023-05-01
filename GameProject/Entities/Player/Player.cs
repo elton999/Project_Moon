@@ -22,7 +22,7 @@ namespace GameProject.Entities.Player
         };
 
         public Weapon Weapon;
-        public SpriteDeformeComponent SpriteDeforme;
+        public SpriteDeformeComponent SpriteDeformer;
         public DemageEfxComponent DemageEfx;
 
         public States.PlayerState CurrentState;
@@ -46,7 +46,7 @@ namespace GameProject.Entities.Player
             tag = "player";
             Weapon = new Weapon(this);
 
-            Components.Add(SpriteDeforme = new());
+            Components.Add(SpriteDeformer = new());
             Components.Add(DemageEfx = new(this));
 
             Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
@@ -137,8 +137,8 @@ namespace GameProject.Entities.Player
             BeginDraw(spriteBatch);
             spriteBatch.Draw(
                 Sprite,
-                new Rectangle(Vector2.Subtract(Position, SpriteDeforme.PositionSmash).ToPoint(),
-                Vector2.Subtract(Body.Size.ToVector2(), SpriteDeforme.BodySmash.ToVector2()).ToPoint()),
+                new Rectangle(Vector2.Subtract(Position, SpriteDeformer.PositionSmash).ToPoint(),
+                Vector2.Subtract(Body.Size.ToVector2(), SpriteDeformer.BodySmash.ToVector2()).ToPoint()),
                 Body, SpriteColor * Transparent, Rotation, Origin, spriteEffect, 0);
             EndDraw(spriteBatch);
         }
