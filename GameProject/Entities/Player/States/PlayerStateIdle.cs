@@ -21,6 +21,9 @@ namespace GameProject.Entities.Player.States
             if (CanJump)
                 Player.SwitchState(new PlayerStateJump());
 
+            if (ButtonDown && !Player.IsFlying)
+                Player.SwitchState(new PlayerSquatState());
+
             base.InputUpdate();
         }
 

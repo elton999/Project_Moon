@@ -18,6 +18,7 @@ namespace GameProject.Entities.Player.Behavior
         protected string _jumpAnimationId = "jump";
         protected string _shoot_upAnimationId = "shoot-up";
         protected string _shootAnimationId = "shoot";
+        protected string _squatAnimationId = "squat";
 
         public Actor Actor { get; set; }
         public AsepriteAnimation Animation { get; set; }
@@ -61,6 +62,8 @@ namespace GameProject.Entities.Player.Behavior
             Weapon.UpShoot = upShoot;
             Weapon.Update(gameTime, true);
         }
+
+        public virtual void Squat(GameTime gameTime) => Animation.Play(gameTime, _squatAnimationId);
 
         public virtual void Move(GameTime gametime, Vector2 speed)
         {

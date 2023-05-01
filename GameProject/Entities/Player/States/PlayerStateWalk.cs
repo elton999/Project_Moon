@@ -1,22 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace GameProject.Entities.Player.States
 {
     public class PlayerStateWalk : PlayerState
     {
-        public override void Enter()
-        {
-            base.Enter();
-        }
-
         public override void InputUpdate()
         {
             _direction = Vector2.Zero;
 
             if (ButtonRight)
             {
-                _direction = Vector2.UnitX * - 1f;
+                _direction = Vector2.UnitX * -1f;
                 Player.Flip(true);
             }
             else if (ButtonLeft)
@@ -27,13 +21,13 @@ namespace GameProject.Entities.Player.States
 
             if (ButtonUP)
                 _direction.Y = 1;
-            
+
             if (ButtonDown)
                 _direction.Y = -1;
 
             if (CanJump && ButtonJump)
                 Player.SwitchState(new PlayerStateJump());
-            
+
             base.InputUpdate();
         }
 
@@ -48,6 +42,9 @@ namespace GameProject.Entities.Player.States
 
             if (!Player.IsGrounded && !Player.IsFlying)
                 Player.SwitchState(new PlayerStateFall());
+
+            if (!Player.IsFlying && _direction.Length() == 0)
+                Player.SwitchState(new PlayerStateIdle());
         }
 
     }
