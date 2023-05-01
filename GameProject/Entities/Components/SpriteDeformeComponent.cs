@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework;
 
 namespace GameProject.Entities.Components
 {
-    public class SpriteDeformeComponent : Component
+    public class SpriteDeformerComponent : Component
     {
+        private const float _deformerDuration = 200f;
+
         public Vector2 PositionSmash;
         public Point BodySmash;
 
@@ -27,7 +29,7 @@ namespace GameProject.Entities.Components
             PositionSmash.X = 2;
             PositionSmash.Y = -2;
 
-            yield return CoroutineManagement.Wait(200f);
+            yield return CoroutineManagement.Wait(_deformerDuration);
 
             ResetSpriteSizes();
             yield return null;
@@ -39,7 +41,7 @@ namespace GameProject.Entities.Components
             BodySmash.Y = -5;
             PositionSmash.X = 2;
             PositionSmash.Y = 3;
-            yield return CoroutineManagement.Wait(200f);
+            yield return CoroutineManagement.Wait(_deformerDuration);
 
             ResetSpriteSizes();
             yield return null;

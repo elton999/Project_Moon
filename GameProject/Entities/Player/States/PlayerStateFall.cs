@@ -6,7 +6,7 @@ namespace GameProject.Entities.Player.States
     {
         public override void LogicUpdate(GameTime gameTime) => Player.Behavior.Fall(gameTime);
 
-        public override void InputUpdate() {}
+        public override void InputUpdate() { }
 
         public override void PhysicsUpdate(GameTime gameTime)
         {
@@ -17,7 +17,7 @@ namespace GameProject.Entities.Player.States
         public override void Exit()
         {
             base.Exit();
-            Player.SpriteDeforme.Squash();
+            Player.SpriteDeformer.Squash();
         }
     }
 }

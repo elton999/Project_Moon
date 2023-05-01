@@ -22,8 +22,8 @@ namespace GameProject.Entities.Player
         };
 
         public Weapon Weapon;
-        public SpriteDeformeComponent SpriteDeformer;
-        public DemageEfxComponent DemageEfx;
+        public SpriteDeformerComponent SpriteDeformer;
+        public DamageEfxComponent DamageEfx;
 
         public States.PlayerState CurrentState;
         public AsepriteAnimation AsepriteAnimation;
@@ -47,7 +47,7 @@ namespace GameProject.Entities.Player
             Weapon = new Weapon(this);
 
             Components.Add(SpriteDeformer = new());
-            Components.Add(DemageEfx = new(this));
+            Components.Add(DamageEfx = new(this));
 
             Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
@@ -100,12 +100,12 @@ namespace GameProject.Entities.Player
 
         public void TakeDamage()
         {
-            if (DemageEfx.IsTakingDamage)
+            if (DamageEfx.IsTakingDamage)
                 return;
 
-            DemageEfx.IsTakingDamage = true;
+            DamageEfx.IsTakingDamage = true;
             Scene.GameManagement.Values["CURRENT_LIFES"]--;
-            DemageEfx.DamageEfx();
+            DamageEfx.DamageEfx();
         }
 
         public override bool isRiding(Solid solid)

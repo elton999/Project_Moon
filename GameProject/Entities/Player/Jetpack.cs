@@ -13,6 +13,8 @@ namespace GameProject.Entities.Player
         public bool CanTurnOffJetpack { get => TimeOfFly >= 1000f; }
         public bool CanTurnOnJetpack { get => TimeOnGround >= 1000f; }
 
+        public bool HasAnyPower { get => Power > 0; }
+
         public float Power
         {
             get => Player.Scene.GameManagement.Values["POWER"];
@@ -31,8 +33,7 @@ namespace GameProject.Entities.Player
 
         public void NoFuelOnFlight()
         {
-            if (Power > 0)
-                return;
+            if (HasAnyPower) return;
             TurnOffJetPack();
         }
 

@@ -31,7 +31,8 @@ namespace GameProject.Entities.Player.States
             _jumpButtonReleased = keyboard.IsKeyUp(Keys.Z);
 
             float power = (float)Player.Scene.GameManagement.Values["POWER"];
-            if (ButtonFlyPressed && power > 0f && !Player.IsFlying && Player.Behavior.CanTurnOnJetpack)
+            bool hasAnyPower = power > 0f;
+            if (ButtonFlyPressed && hasAnyPower && !Player.IsFlying && Player.Behavior.CanTurnOnJetpack)
                 Player.SwitchBehavior(new Behavior.PlayerFlying(Player, Player, Player.AsepriteAnimation));
 
             if (Player.Behavior.CanTurnOffJetpack && Player.IsFlying && ButtonFlyPressed)

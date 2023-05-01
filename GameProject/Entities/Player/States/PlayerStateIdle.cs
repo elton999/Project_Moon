@@ -5,7 +5,6 @@ namespace GameProject.Entities.Player.States
 {
     public class PlayerStateIdle : PlayerState
     {
-        
         public override void Enter()
         {
             base.Enter();
@@ -21,7 +20,7 @@ namespace GameProject.Entities.Player.States
 
             if (CanJump)
                 Player.SwitchState(new PlayerStateJump());
-         
+
             base.InputUpdate();
         }
 

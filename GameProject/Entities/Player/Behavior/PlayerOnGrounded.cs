@@ -6,7 +6,7 @@ namespace GameProject.Entities.Player.Behavior
 {
     public class PlayerOnGrounded : PlayerBasicBehavior
     {
-        public PlayerOnGrounded(Actor actor, Player player, AsepriteAnimation animation):base(actor, player, animation){}
+        public PlayerOnGrounded(Actor actor, Player player, AsepriteAnimation animation) : base(actor, player, animation) { }
 
         public override void Idle(GameTime gameTime)
         {
@@ -28,7 +28,7 @@ namespace GameProject.Entities.Player.Behavior
         {
             if (Player.IsGrounded && Player.CurrentState.ButtonShoot)
             {
-                Actor.velocity.X = 0;
+                StopHorizontalMovement();
                 return;
             }
             base.Move(gametime, speed);
@@ -55,14 +55,12 @@ namespace GameProject.Entities.Player.Behavior
 
         public void ShootAnimation(GameTime gameTime, bool upShoot)
         {
-            Actor.velocity.X = 0;
-
+            StopHorizontalMovement();
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            if (!upShoot)
-                Animation.Play(gameTime, "shoot", animationDirection);
-            else
-                Animation.Play(gameTime, "shoot-up", animationDirection);
+            string animationId = !upShoot ? _shootAnimationId : _shoot_upAnimationId;
+            Animation.Play(gameTime, animationId, animationDirection);
         }
 
+        private void StopHorizontalMovement() => Actor.velocity.X = 0;
     }
 }

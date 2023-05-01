@@ -12,6 +12,13 @@ namespace GameProject.Entities.Player.Behavior
         private readonly float _gravityY = 0.0008f;
         private float _directionY = 0f;
 
+        protected string _idleAnimationId = "idle";
+        protected string _walkAnimationId = "walk";
+        protected string _fallingAnimationId = "fall";
+        protected string _jumpAnimationId = "jump";
+        protected string _shoot_upAnimationId = "shoot-up";
+        protected string _shootAnimationId = "shoot";
+
         public Actor Actor { get; set; }
         public AsepriteAnimation Animation { get; set; }
         public Weapon Weapon;
@@ -35,16 +42,16 @@ namespace GameProject.Entities.Player.Behavior
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
             if (_directionY >= 0)
-                Animation.Play(gameTime, "idle", animationDirection);
+                Animation.Play(gameTime, _idleAnimationId, animationDirection);
             else
-                Animation.Play(gameTime, "shoot-up", animationDirection);
+                Animation.Play(gameTime, _shoot_upAnimationId, animationDirection);
         }
 
         public virtual void Walk(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
             if (Actor.velocity.X != 0)
-                Animation.Play(gameTime, "walk", animationDirection);
+                Animation.Play(gameTime, _walkAnimationId, animationDirection);
             else
                 Idle(gameTime);
         }
@@ -65,13 +72,13 @@ namespace GameProject.Entities.Player.Behavior
         public virtual void Jump(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "jump", animationDirection);
+            Animation.Play(gameTime, _jumpAnimationId, animationDirection);
         }
 
         public virtual void Fall(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "fall", animationDirection);
+            Animation.Play(gameTime, _fallingAnimationId, animationDirection);
         }
 
         public void Attack(GameTime gameTime) { }

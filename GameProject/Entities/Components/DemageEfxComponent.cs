@@ -4,12 +4,12 @@ using System.Collections;
 
 namespace GameProject.Entities.Components
 {
-    public class DemageEfxComponent : Component
+    public class DamageEfxComponent : Component
     {
         public GameObject GameObject;
         public bool IsTakingDamage = false;
 
-        public DemageEfxComponent(GameObject gameObject) => GameObject = gameObject;
+        public DamageEfxComponent(GameObject gameObject) => GameObject = gameObject;
         public CoroutineManagement CoroutineManagement = new();
 
         public override void Update(GameTime gameTime)

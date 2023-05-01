@@ -6,6 +6,8 @@ namespace GameProject.Entities.Player.Behavior
 {
     public class PlayerFlying : PlayerBasicBehavior
     {
+        protected string _flyAnimationId = "fly";
+
         public PlayerFlying(Actor actor, Player player, AsepriteAnimation animation) : base(actor, player, animation)
         {
             Player.IsFlying = true;
@@ -18,7 +20,7 @@ namespace GameProject.Entities.Player.Behavior
         public override void Idle(GameTime gameTime)
         {
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "fly", animationDirection);
+            Animation.Play(gameTime, _flyAnimationId, animationDirection);
 
             if (Player.CurrentState.ButtonShoot)
                 Shoot(gameTime, Player.CurrentState.ButtonUP);
@@ -30,7 +32,7 @@ namespace GameProject.Entities.Player.Behavior
                 Shoot(gameTime, Player.CurrentState.ButtonUP);
 
             var animationDirection = AsepriteAnimation.AnimationDirection.LOOP;
-            Animation.Play(gameTime, "fly", animationDirection);
+            Animation.Play(gameTime, _flyAnimationId, animationDirection);
         }
 
         public override void Shoot(GameTime gameTime, bool upShoot)
