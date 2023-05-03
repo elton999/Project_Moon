@@ -41,17 +41,17 @@ namespace GameProject.Entities.Player
         public override void Start()
         {
             base.Start();
+            tag = "player";
             Scene.AllActors.Add(this);
             size = new Point(10, 32);
-            tag = "player";
-            Weapon = new Weapon(this);
+            Origin = new Vector2(27, 16);
 
+            Weapon = new Weapon(this);
             Components.Add(SpriteDeformer = new());
             Components.Add(DamageEfx = new(this));
 
             Sprite = Content.Load<Texture2D>("Sprites/Player/Regina");
             AsepriteAnimation = new AsepriteAnimation(Content.Load<AsepriteDefinitions>("Sprites/Player/ReginaAnimations"));
-            Origin = new Vector2(27, 16);
 
             SwitchBehavior(new PlayerOnGrounded(this, this, AsepriteAnimation));
 
