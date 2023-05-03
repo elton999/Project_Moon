@@ -24,14 +24,14 @@ namespace GameProject.Entities.Player.Behavior
                 base.Walk(gameTime);
         }
 
-        public override void Move(GameTime gametime, Vector2 speed)
+        public override void Move(GameTime gameTime, Vector2 speed)
         {
             if (Player.IsGrounded && Player.CurrentState.ButtonShoot)
             {
                 StopHorizontalMovement();
                 return;
             }
-            base.Move(gametime, speed);
+            base.Move(gameTime, speed);
         }
 
         public override void Jump(GameTime gameTime)

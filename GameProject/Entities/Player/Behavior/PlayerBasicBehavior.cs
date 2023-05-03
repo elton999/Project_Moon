@@ -63,11 +63,16 @@ namespace GameProject.Entities.Player.Behavior
             Weapon.Update(gameTime, true);
         }
 
-        public virtual void Squat(GameTime gameTime) => Animation.Play(gameTime, _squatAnimationId);
-
-        public virtual void Move(GameTime gametime, Vector2 speed)
+        public virtual void Squat(GameTime gameTime)
         {
-            TimeOnGround += (float)gametime.ElapsedGameTime.Milliseconds;
+            if (Player.CurrentState.ButtonShoot)
+                Shoot(gameTime, false);
+            Animation.Play(gameTime, _squatAnimationId);
+        }
+
+        public virtual void Move(GameTime gameTime, Vector2 speed)
+        {
+            TimeOnGround += (float)gameTime.ElapsedGameTime.Milliseconds;
             _directionY = Math.Sign(speed.Y);
             Actor.velocity = speed * Vector2.UnitX + Actor.velocity * Vector2.UnitY;
         }
