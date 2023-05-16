@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 
 namespace GameProject.Entities.Player.States
 {
-    public class PlayerStateWalk : PlayerState
+    public class PlayerStateMove : PlayerState
     {
         public override void InputUpdate()
         {

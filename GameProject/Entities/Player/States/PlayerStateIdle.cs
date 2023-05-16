@@ -16,7 +16,7 @@ namespace GameProject.Entities.Player.States
             var keyboard = Keyboard.GetState();
 
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.Down))
-                Player.SwitchState(new PlayerStateWalk());
+                Player.SwitchState(new PlayerStateMove());
 
             if (CanJump)
                 Player.SwitchState(new PlayerStateJump());
